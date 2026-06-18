@@ -216,3 +216,32 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# ------------------------
+# AfriVoices ASR Project
+# ------------------------
+
+# Weights & Biases
+wandb/
+
+# Hugging Face cache (optional)
+.cache/huggingface/
+
+# Model artifacts
+checkpoints/
+models/
+
+# Training outputs
+outputs/
+results/
+
+# Large datasets
+data/raw/
+data/processed/
+
+# Audio recordings
+audio/
+
+# Mac files
+.DS_Store
