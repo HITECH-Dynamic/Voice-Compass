@@ -1,0 +1,21 @@
+model_name: openai/whisper-small
+
+training:
+  output_dir: checkpoints
+  batch_size: 8
+  gradient_accumulation_steps: 2
+  learning_rate: 1e-5
+  num_epochs: 3
+  warmup_steps: 500
+  weight_decay: 0.01
+
+lora:
+  rank: 16
+  alpha: 32
+  dropout: 0.05
+
+evaluation:
+  metric: wer
+
+wandb:
+  project: afrivoices-asr
