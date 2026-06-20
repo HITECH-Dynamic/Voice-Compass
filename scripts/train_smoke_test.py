@@ -9,6 +9,7 @@ Goal    : Strengthen the baseline after Experiment 001 proved the pipeline works
 
 import wandb
 import torch
+import evaluate
 from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 
@@ -26,9 +27,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 1000
 EVAL_SAMPLES = 100
 MAX_STEPS = 500
-OUTPUT_DIR = "outputs/exp003-whisper-small-1000"
+OUTPUT_DIR = "outputs/exp004-whisper-small-wer"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp003-whisper-small-1000"
+RUN_NAME = "exp004-whisper-small-wer"
 SEED = 42
 
 if torch.cuda.is_available():
@@ -56,7 +57,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 003. 1000-example baseline.",
+        "notes": "Experiment 004. Adds WER evaluation to Experiment 003 baseline.",
     },
 )
 
@@ -133,6 +134,32 @@ class DataCollatorSpeechSeq2SeqWithPadding:
 
 data_collator = DataCollatorSpeechSeq2SeqWithPadding(processor=processor)
 
+print("Loading WER metric...")
+wer_metric = evaluate.load("wer")
+
+def compute_metrics(pred):
+    pred_ids = pred.predictions
+    label_ids = pred.label_ids
+
+    label_ids[label_ids == -100] = processor.tokenizer.pad_token_id
+
+    pred_str = processor.tokenizer.batch_decode(
+        pred_ids,
+        skip_special_tokens=True,
+    )
+
+    label_str = processor.tokenizer.batch_decode(
+        label_ids,
+        skip_special_tokens=True,
+    )
+
+    wer = wer_metric.compute(
+        predictions=pred_str,
+        references=label_str,
+    )
+
+    return {"wer": round(wer, 4)}
+
 print("Loading model...")
 model = WhisperForConditionalGeneration.from_pretrained(MODEL_ID)
 
@@ -153,11 +180,16 @@ training_args = Seq2SeqTrainingArguments(
     warmup_steps=10,
     fp16=use_fp16,
     bf16=use_bf16,
-    predict_with_generate=False,
-    eval_strategy="no",
+    predict_with_generate=True,
+    generation_max_length=225,
+    eval_strategy="steps",
+    eval_steps=100,
     save_strategy="steps",
     save_steps=100,
     logging_steps=10,
+    load_best_model_at_end=True,
+    metric_for_best_model="wer",
+    greater_is_better=False,
     report_to=["wandb"],
     run_name=RUN_NAME,
     seed=SEED,
@@ -168,7 +200,9 @@ trainer = Seq2SeqTrainer(
     model=model,
     args=training_args,
     train_dataset=train_ds,
+    eval_dataset=eval_ds,
     data_collator=data_collator,
+    compute_metrics=compute_metrics,
     processing_class=processor.feature_extractor,
 )
 
@@ -181,4 +215,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 003 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 004 complete. Model saved to: {OUTPUT_DIR}")
