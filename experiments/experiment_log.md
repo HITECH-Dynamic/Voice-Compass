@@ -143,3 +143,20 @@ Conclusion:
 
 Data quantity is more important than additional training duration.
 
+
+# Experiment 004
+
+Status: PLANNED
+
+Purpose:
+
+Add Word Error Rate (WER) evaluation.
+
+Only change relative to Experiment 003:
+
+- Introduce WER metric.
+
+Question:
+
+How good are the transcriptions?
+
