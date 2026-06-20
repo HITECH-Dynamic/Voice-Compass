@@ -1,17 +1,17 @@
 """
-Experiment 001 — Smoke test
+Experiment 002 — 500-step baseline
 
 Model   : Whisper Small
-Data    : FLEURS sw_KE
-Steps   : 50
-
-Goal:
-Prove Trainer + W&B + checkpointing work end-to-end.
+Data    : FLEURS sw_ke
+Steps   : 500
+Goal    : Strengthen the baseline after Experiment 001 proved the pipeline works.
 """
 
 import wandb
 import torch
-# import evaluate  # deferred until evaluation stage
+from dataclasses import dataclass
+from typing import Any, Dict, List, Union
+
 from datasets import load_dataset, Audio
 from transformers import (
     WhisperProcessor,
@@ -20,31 +20,16 @@ from transformers import (
     Seq2SeqTrainingArguments,
 )
 
-# --------------------------------------------------
-# Configuration
-# --------------------------------------------------
-
 MODEL_ID = "openai/whisper-small"
-
 LANGUAGE = "Swahili"
 TASK = "transcribe"
-
 TRAIN_SAMPLES = 100
 EVAL_SAMPLES = 50
-
-MAX_STEPS = 50
-
-OUTPUT_DIR = "outputs/exp001-smoke-test"
-
+MAX_STEPS = 500
+OUTPUT_DIR = "outputs/exp002-whisper-small-500"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp001-whisper-small-smoke"
-
+RUN_NAME = "exp002-whisper-small-500"
 SEED = 42
-
-
-# --------------------------------------------------
-# Device
-# --------------------------------------------------
 
 if torch.cuda.is_available():
     DEVICE = "cuda"
@@ -56,27 +41,27 @@ else:
 print(f"Device: {DEVICE}")
 print(f"PyTorch: {torch.__version__}")
 
-
-# --------------------------------------------------
-# W&B
-# --------------------------------------------------
-
 wandb.init(
     project=WANDB_PROJECT,
     name=RUN_NAME,
+    config={
+        "model_id": MODEL_ID,
+        "language": LANGUAGE,
+        "task": TASK,
+        "train_samples": TRAIN_SAMPLES,
+        "eval_samples": EVAL_SAMPLES,
+        "max_steps": MAX_STEPS,
+        "device": DEVICE,
+        "seed": SEED,
+        "lora": False,
+        "augmentation": False,
+        "language_weighting": False,
+        "notes": "Experiment 002. 500-step baseline.",
+    },
 )
-
-# --------------------------------------------------
-# Dataset
-# --------------------------------------------------
 
 print("Loading dataset...")
-
-raw = load_dataset(
-    "google/fleurs",
-    "sw_KE",
-    trust_remote_code=True,
-)
+raw = load_dataset("google/fleurs", "sw_ke")
 
 train_ds = raw["train"].shuffle(seed=SEED).select(range(TRAIN_SAMPLES))
 eval_ds = raw["validation"].shuffle(seed=SEED).select(range(EVAL_SAMPLES))
@@ -86,3 +71,114 @@ eval_ds = eval_ds.cast_column("audio", Audio(sampling_rate=16_000))
 
 print(train_ds)
 print(eval_ds)
+
+print("Loading processor...")
+processor = WhisperProcessor.from_pretrained(
+    MODEL_ID,
+    language=LANGUAGE,
+    task=TASK,
+)
+
+def prepare_dataset(batch):
+    audio = batch["audio"]
+    batch["input_features"] = processor.feature_extractor(
+        audio["array"],
+        sampling_rate=audio["sampling_rate"],
+    ).input_features[0]
+    batch["labels"] = processor.tokenizer(batch["transcription"]).input_ids
+    return batch
+
+print("Processing audio...")
+train_ds = train_ds.map(
+    prepare_dataset,
+    remove_columns=train_ds.column_names,
+    num_proc=1,
+)
+eval_ds = eval_ds.map(
+    prepare_dataset,
+    remove_columns=eval_ds.column_names,
+    num_proc=1,
+)
+
+@dataclass
+class DataCollatorSpeechSeq2SeqWithPadding:
+    processor: Any
+
+    def __call__(
+        self,
+        features: List[Dict[str, Union[List[int], torch.Tensor]]],
+    ) -> Dict[str, torch.Tensor]:
+        input_features = [{"input_features": f["input_features"]} for f in features]
+        batch = self.processor.feature_extractor.pad(
+            input_features,
+            return_tensors="pt",
+        )
+
+        label_features = [{"input_ids": f["labels"]} for f in features]
+        labels_batch = self.processor.tokenizer.pad(
+            label_features,
+            return_tensors="pt",
+        )
+
+        labels = labels_batch["input_ids"].masked_fill(
+            labels_batch.attention_mask.ne(1),
+            -100,
+        )
+
+        if (labels[:, 0] == self.processor.tokenizer.bos_token_id).all().cpu().item():
+            labels = labels[:, 1:]
+
+        batch["labels"] = labels
+        return batch
+
+data_collator = DataCollatorSpeechSeq2SeqWithPadding(processor=processor)
+
+print("Loading model...")
+model = WhisperForConditionalGeneration.from_pretrained(MODEL_ID)
+
+model.generation_config.language = LANGUAGE
+model.generation_config.task = TASK
+model.generation_config.forced_decoder_ids = None
+
+use_fp16 = DEVICE == "cuda"
+use_bf16 = False
+
+training_args = Seq2SeqTrainingArguments(
+    output_dir=OUTPUT_DIR,
+    max_steps=MAX_STEPS,
+    per_device_train_batch_size=4,
+    per_device_eval_batch_size=4,
+    gradient_accumulation_steps=1,
+    learning_rate=1e-5,
+    warmup_steps=10,
+    fp16=use_fp16,
+    bf16=use_bf16,
+    predict_with_generate=False,
+    eval_strategy="no",
+    save_strategy="steps",
+    save_steps=100,
+    logging_steps=10,
+    report_to=["wandb"],
+    run_name=RUN_NAME,
+    seed=SEED,
+    push_to_hub=False,
+)
+
+trainer = Seq2SeqTrainer(
+    model=model,
+    args=training_args,
+    train_dataset=train_ds,
+    data_collator=data_collator,
+    processing_class=processor.feature_extractor,
+)
+
+print("Starting training...")
+trainer.train()
+
+print("Saving final model...")
+trainer.save_model(OUTPUT_DIR)
+processor.save_pretrained(OUTPUT_DIR)
+
+wandb.finish()
+
+print(f"Experiment 002 complete. Model saved to: {OUTPUT_DIR}")
