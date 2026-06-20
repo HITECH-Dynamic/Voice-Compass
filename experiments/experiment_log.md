@@ -112,3 +112,34 @@ Result: SUCCESS
 Key observation:
 
 The model memorized the dataset. Increasing training duration is no longer the limiting factor. Additional data should be explored before introducing more complexity.
+
+# Experiment 003
+
+Model: Whisper Small
+
+Dataset: FLEURS Swahili (sw_ke)
+
+Train examples: 1000
+
+Validation examples: 100
+
+Steps: 500
+
+Hardware: Tesla T4
+
+Runtime: ~1610 sec
+
+Final train loss: 0.839
+
+Last logged loss: 0.231
+
+Result: SUCCESS
+
+Observation:
+
+Increasing dataset size from 100 to 1000 examples prevented severe overfitting and produced much more stable learning.
+
+Conclusion:
+
+Data quantity is more important than additional training duration.
+
