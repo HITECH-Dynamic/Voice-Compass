@@ -1,5 +1,5 @@
 """
-Experiment 002 — 500-step baseline
+Experiment 003 — 1000-example baseline
 
 Model   : Whisper Small
 Data    : FLEURS sw_ke
@@ -23,12 +23,12 @@ from transformers import (
 MODEL_ID = "openai/whisper-small"
 LANGUAGE = "Swahili"
 TASK = "transcribe"
-TRAIN_SAMPLES = 100
-EVAL_SAMPLES = 50
+TRAIN_SAMPLES = 1000
+EVAL_SAMPLES = 100
 MAX_STEPS = 500
-OUTPUT_DIR = "outputs/exp002-whisper-small-500"
+OUTPUT_DIR = "outputs/exp003-whisper-small-1000"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp002-whisper-small-500"
+RUN_NAME = "exp003-whisper-small-1000"
 SEED = 42
 
 if torch.cuda.is_available():
@@ -56,7 +56,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 002. 500-step baseline.",
+        "notes": "Experiment 003. 1000-example baseline.",
     },
 )
 
@@ -181,4 +181,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 002 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 003 complete. Model saved to: {OUTPUT_DIR}")
