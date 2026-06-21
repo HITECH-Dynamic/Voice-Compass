@@ -622,3 +622,72 @@ Question:
 
 Does full-data Whisper Medium improve WER?
 
+
+# Experiment 011
+
+Status: SUCCESS
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Final train loss:
+
+0.3407
+
+Final eval loss:
+
+0.3954
+
+Final WER:
+
+0.2246
+
+Best WER:
+
+0.2002
+
+WER progression:
+
+100 → 0.3281
+200 → 0.2839
+300 → 0.2730
+400 → 0.2350
+500 → 0.2538
+600 → 0.2262
+700 → 0.2366
+800 → 0.2371
+900 → 0.2002
+1000 → 0.2246
+
+Observation:
+
+Full FLEURS Swahili training improved the best WER compared with Experiment 010.
+
+Conclusion:
+
+Experiment 011 becomes the current champion.
+
+Current champion:
+
+Whisper Medium
+3070 examples
+1000 steps
+Best WER = 0.2002
+
