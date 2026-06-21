@@ -160,3 +160,78 @@ Question:
 
 How good are the transcriptions?
 
+
+# Experiment 004
+
+Status: RUNNING
+
+Purpose:
+
+Add Word Error Rate evaluation.
+
+Only change relative to Experiment 003:
+
+- WER metric
+
+Question:
+
+How good are the transcriptions?
+
+
+# Experiment 004
+
+Status: RUNNING
+
+Purpose:
+
+Add Word Error Rate evaluation.
+
+Only change relative to Experiment 003:
+
+- WER metric
+
+Question:
+
+How good are the transcriptions?
+
+
+# Experiment 004
+
+Model: Whisper Small
+
+Dataset: FLEURS Swahili (sw_ke)
+
+Train examples: 1000
+
+Validation examples: 100
+
+Steps: 500
+
+Hardware: Tesla T4
+
+Runtime: ~1891 sec
+
+Final train loss: 0.8395
+
+Final eval loss: 0.6423
+
+Final WER: 0.3250
+
+Result: SUCCESS
+
+WER progression:
+
+100 steps → 0.4077
+200 steps → 0.3385
+300 steps → 0.3380
+400 steps → 0.3307
+500 steps → 0.3250
+
+Observation:
+
+WER improved steadily throughout training.
+
+Conclusion:
+
+Phase 2 evaluation infrastructure is operational and WER is now the primary metric for future experiments.
+
