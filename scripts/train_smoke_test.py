@@ -26,10 +26,10 @@ LANGUAGE = "Swahili"
 TASK = "transcribe"
 TRAIN_SAMPLES = 1000
 EVAL_SAMPLES = 100
-MAX_STEPS = 500
-OUTPUT_DIR = "outputs/exp004-whisper-small-wer"
+MAX_STEPS = 1000
+OUTPUT_DIR = "outputs/exp005-whisper-small-1000steps"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp004-whisper-small-wer"
+RUN_NAME = "exp005-whisper-small-1000steps"
 SEED = 42
 
 if torch.cuda.is_available():
@@ -57,7 +57,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 004. Adds WER evaluation to Experiment 003 baseline.",
+        "notes": "Experiment 005. Increase training duration from 500 to 1000 steps.",
     },
 )
 
@@ -215,4 +215,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 004 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 005 complete. Model saved to: {OUTPUT_DIR}")

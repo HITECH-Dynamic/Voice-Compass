@@ -235,3 +235,22 @@ Conclusion:
 
 Phase 2 evaluation infrastructure is operational and WER is now the primary metric for future experiments.
 
+
+# Experiment 005
+
+Status: PLANNED
+
+Purpose:
+
+Evaluate whether additional training beyond 500 steps improves WER.
+
+Only change:
+
+MAX_STEPS
+
+500 → 1000
+
+Question:
+
+Does WER continue improving?
+
