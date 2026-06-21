@@ -1,5 +1,5 @@
 """
-Experiment 011 — Whisper Medium full FLEURS Swahili
+Experiment 012 — Whisper Medium full FLEURS Swahili
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -27,9 +27,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 3070
 EVAL_SAMPLES = 100
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp011-whisper-medium-full-fleurs"
+OUTPUT_DIR = "outputs/exp012-whisper-medium-full-fleurs-lr5e6"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp011-whisper-medium-full-fleurs"
+RUN_NAME = "exp012-whisper-medium-full-fleurs-lr5e6"
 SEED = 42
 
 if torch.cuda.is_available():
@@ -57,7 +57,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 011. Whisper Medium with full FLEURS Swahili training set.",
+        "notes": "Experiment 012. Whisper Medium full FLEURS with lower learning rate 5e-6.",
     },
 )
 
@@ -176,7 +176,7 @@ training_args = Seq2SeqTrainingArguments(
     per_device_train_batch_size=4,
     per_device_eval_batch_size=4,
     gradient_accumulation_steps=1,
-    learning_rate=1e-5,
+    learning_rate=5e-6,
     warmup_steps=10,
     fp16=use_fp16,
     bf16=use_bf16,
@@ -216,4 +216,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 011 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 012 complete. Model saved to: {OUTPUT_DIR}")

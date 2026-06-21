@@ -691,3 +691,44 @@ Whisper Medium
 1000 steps
 Best WER = 0.2002
 
+
+# Experiment 012
+
+Status: PLANNED
+
+Purpose:
+
+Evaluate whether a lower learning rate improves Whisper Medium performance.
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+5e-6
+
+Reference baseline:
+
+Experiment 011 best WER = 0.2002
+
+Question:
+
+Does lower learning rate improve WER?
+
