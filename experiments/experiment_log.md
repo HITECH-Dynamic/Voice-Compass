@@ -355,3 +355,28 @@ Conclusion:
 
 Increasing data quantity continues to provide meaningful gains and appears more important than simply extending training duration.
 
+
+# Experiment 007
+
+Status: INFRASTRUCTURE COMPLETE
+
+Purpose:
+
+Build prediction-saving infrastructure.
+
+Components:
+
+- scripts/save_predictions.py
+
+Outputs:
+
+- exp007_predictions.csv
+
+Observation:
+
+Prediction artifacts are intentionally excluded from Git via .gitignore.
+
+Next step:
+
+Generate predictions using the Experiment 006 model and perform qualitative error analysis.
+

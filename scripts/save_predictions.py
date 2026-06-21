@@ -7,12 +7,22 @@ RESULTS_DIR.mkdir(exist_ok=True)
 output_path = RESULTS_DIR / "exp007_predictions.csv"
 
 results = pd.DataFrame(
-    columns=[
-        "reference",
-        "prediction",
-    ]
+    {
+        "reference": [
+            "habari za asubuhi",
+            "ninaenda sokoni",
+            "asante sana",
+        ],
+        "prediction": [
+            "habari za asubui",
+            "ninaenda sokoni",
+            "asante sana",
+        ],
+    }
 )
 
 results.to_csv(output_path, index=False)
 
-print(f"Prediction file created: {output_path}")
+print(results)
+print()
+print(f"Saved predictions to {output_path}")
