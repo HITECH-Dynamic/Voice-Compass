@@ -320,3 +320,38 @@ Baseline to beat:
 
 Experiment 005 best WER = 0.3094
 
+
+# Experiment 006
+
+Status: SUCCESS
+
+Model: Whisper Small
+
+Dataset: FLEURS Swahili (sw_ke)
+
+Train examples: 2000
+
+Validation examples: 100
+
+Steps: 1000
+
+Hardware: NVIDIA L4 (Google Colab)
+
+Best WER observed:
+
+0.2813
+
+Final WER:
+
+0.3016
+
+Observation:
+
+Doubling the amount of training data from 1000 to 2000 examples produced a clear improvement over Experiment 005.
+
+Performance peaked around step 900.
+
+Conclusion:
+
+Increasing data quantity continues to provide meaningful gains and appears more important than simply extending training duration.
+
