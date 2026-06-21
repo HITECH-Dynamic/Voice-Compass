@@ -409,3 +409,72 @@ Conclusion:
 
 Prediction-saving infrastructure is operational.
 
+
+# Experiment 008
+
+Status: SUCCESS
+
+Purpose:
+
+Perform qualitative error analysis.
+
+Major error categories:
+
+- Phonetic substitutions
+- Word splitting and merging
+- Named entity instability
+- Number errors
+- Severe acoustic confusions
+
+Observation:
+
+Most outputs remain understandable despite transcription errors.
+
+Conclusion:
+
+Data quantity appears more valuable than additional training duration.
+
+# Experiment 009
+
+Status: BASELINE V1 ESTABLISHED
+
+Model:
+
+Whisper Small
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+2000
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Best WER:
+
+0.2813
+
+Hardware:
+
+Google Colab L4
+
+Characteristics:
+
+- Reproducible
+- Stable
+- W&B integrated
+- Prediction infrastructure
+- Error analysis completed
+
+Conclusion:
+
+This model becomes the reference baseline for Phase 3 optimization.
+
