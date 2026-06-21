@@ -283,3 +283,40 @@ Conclusion:
 
 Longer training helps, but the gains are smaller. Future runs should limit checkpoint accumulation.
 
+
+# Experiment 006
+
+Status: PLANNED
+
+Purpose:
+
+Test whether increasing training data improves WER.
+
+Only major modeling change relative to Experiment 005:
+
+TRAIN_SAMPLES
+
+1000 → 2000
+
+Configuration:
+
+- Model: Whisper Small
+- Dataset: FLEURS Swahili (sw_ke)
+- Train examples: 2000
+- Validation examples: 100
+- Target steps: 1000
+- WER evaluation: enabled
+
+Infrastructure change:
+
+- save_steps = 500
+- save_total_limit = 2
+
+Question:
+
+Does more data reduce WER?
+
+Baseline to beat:
+
+Experiment 005 best WER = 0.3094
+

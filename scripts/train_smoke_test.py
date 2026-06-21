@@ -24,12 +24,12 @@ from transformers import (
 MODEL_ID = "openai/whisper-small"
 LANGUAGE = "Swahili"
 TASK = "transcribe"
-TRAIN_SAMPLES = 1000
+TRAIN_SAMPLES = 2000
 EVAL_SAMPLES = 100
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp005-whisper-small-1000steps"
+OUTPUT_DIR = "outputs/exp006-whisper-small-2000examples"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp005-whisper-small-1000steps"
+RUN_NAME = "exp006-whisper-small-2000examples"
 SEED = 42
 
 if torch.cuda.is_available():
@@ -57,7 +57,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 005. Increase training duration from 500 to 1000 steps.",
+        "notes": "Experiment 006. Increase training examples from 1000 to 2000.",
     },
 )
 
@@ -185,7 +185,8 @@ training_args = Seq2SeqTrainingArguments(
     eval_strategy="steps",
     eval_steps=100,
     save_strategy="steps",
-    save_steps=100,
+    save_steps=500,
+    save_total_limit=2,
     logging_steps=10,
     load_best_model_at_end=True,
     metric_for_best_model="wer",
@@ -215,4 +216,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 005 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 006 complete. Model saved to: {OUTPUT_DIR}")
