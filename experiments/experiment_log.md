@@ -254,3 +254,32 @@ Question:
 
 Does WER continue improving?
 
+
+# Experiment 005
+
+Status: PARTIAL SUCCESS
+
+Model: Whisper Small
+
+Dataset: FLEURS Swahili (sw_ke)
+
+Train examples: 1000
+
+Validation examples: 100
+
+Target steps: 1000
+
+Best WER observed:
+
+0.3094
+
+Observation:
+
+Increasing training duration beyond 500 steps continued improving WER, but with diminishing returns.
+
+Training terminated near step 800 because the Kaggle session ran out of storage while writing checkpoints.
+
+Conclusion:
+
+Longer training helps, but the gains are smaller. Future runs should limit checkpoint accumulation.
+
