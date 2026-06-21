@@ -585,3 +585,40 @@ Whisper Medium
 
 Best WER = 0.2059
 
+
+# Experiment 011
+
+Status: PLANNED
+
+Purpose:
+
+Evaluate Whisper Medium using the full FLEURS Swahili training split.
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Reference baseline:
+
+Experiment 010 best WER = 0.2059
+
+Question:
+
+Does full-data Whisper Medium improve WER?
+

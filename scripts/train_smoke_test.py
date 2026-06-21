@@ -1,5 +1,5 @@
 """
-Experiment 010 — whisper medium baseline
+Experiment 011 — Whisper Medium full FLEURS Swahili
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -24,12 +24,12 @@ from transformers import (
 MODEL_ID = "openai/whisper-medium"
 LANGUAGE = "Swahili"
 TASK = "transcribe"
-TRAIN_SAMPLES = 2000
+TRAIN_SAMPLES = 3070
 EVAL_SAMPLES = 100
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp010-whisper-medium"
+OUTPUT_DIR = "outputs/exp011-whisper-medium-full-fleurs"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp010-whisper-medium"
+RUN_NAME = "exp011-whisper-medium-full-fleurs"
 SEED = 42
 
 if torch.cuda.is_available():
@@ -57,7 +57,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 010. Whisper Medium baseline.",
+        "notes": "Experiment 011. Whisper Medium with full FLEURS Swahili training set.",
     },
 )
 
@@ -216,4 +216,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 010 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 011 complete. Model saved to: {OUTPUT_DIR}")
