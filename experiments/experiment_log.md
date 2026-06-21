@@ -515,3 +515,73 @@ Question:
 
 Does model capacity matter more than data quantity?
 
+
+# Experiment 010
+
+Status: SUCCESS
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+2000
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Runtime:
+
+~37.7 minutes
+
+Final train loss:
+
+0.2962
+
+Final eval loss:
+
+0.4129
+
+Best WER:
+
+0.2059
+
+WER progression:
+
+100 → 0.3380
+200 → 0.2995
+300 → 0.2527
+400 → 0.2444
+500 → 0.2278
+600 → 0.2070
+700 → 0.2111
+800 → 0.2111
+900 → 0.2059
+1000 → 0.2059
+
+Observation:
+
+Whisper Medium substantially outperformed Whisper Small.
+
+Conclusion:
+
+Stable Baseline v2 established.
+
+Current champion:
+
+Whisper Medium
+2000 examples
+1000 steps
+
+Best WER = 0.2059
+
