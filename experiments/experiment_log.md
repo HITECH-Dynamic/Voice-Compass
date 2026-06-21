@@ -380,3 +380,32 @@ Next step:
 
 Generate predictions using the Experiment 006 model and perform qualitative error analysis.
 
+
+# Experiment 007
+
+Status: SUCCESS
+
+Purpose:
+
+Generate prediction/reference pairs from the Experiment 006 model.
+
+Source model:
+
+outputs/exp006-whisper-small-2000examples
+
+Output:
+
+results/exp007_predictions.csv
+
+Standalone script WER:
+
+0.3401
+
+Observation:
+
+Prediction generation succeeded. The standalone WER differs from the W&B best WER from Experiment 006, so W&B remains the official evaluation metric. The prediction CSV will be used for qualitative error analysis.
+
+Conclusion:
+
+Prediction-saving infrastructure is operational.
+
