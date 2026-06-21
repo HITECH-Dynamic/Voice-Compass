@@ -1,7 +1,7 @@
 """
-Experiment 003 — 1000-example baseline
+Experiment 010 — whisper medium baseline
 
-Model   : Whisper Small
+Model   : Whisper Medium
 Data    : FLEURS sw_ke
 Steps   : 500
 Goal    : Strengthen the baseline after Experiment 001 proved the pipeline works.
@@ -21,15 +21,15 @@ from transformers import (
     Seq2SeqTrainingArguments,
 )
 
-MODEL_ID = "openai/whisper-small"
+MODEL_ID = "openai/whisper-medium"
 LANGUAGE = "Swahili"
 TASK = "transcribe"
 TRAIN_SAMPLES = 2000
 EVAL_SAMPLES = 100
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp006-whisper-small-2000examples"
+OUTPUT_DIR = "outputs/exp010-whisper-medium"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp006-whisper-small-2000examples"
+RUN_NAME = "exp010-whisper-medium"
 SEED = 42
 
 if torch.cuda.is_available():
@@ -57,7 +57,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 006. Increase training examples from 1000 to 2000.",
+        "notes": "Experiment 010. Whisper Medium baseline.",
     },
 )
 
@@ -216,4 +216,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 006 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 010 complete. Model saved to: {OUTPUT_DIR}")

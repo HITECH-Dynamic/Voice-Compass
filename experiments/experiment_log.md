@@ -478,3 +478,40 @@ Conclusion:
 
 This model becomes the reference baseline for Phase 3 optimization.
 
+
+# Experiment 010
+
+Status: PLANNED
+
+Purpose:
+
+Evaluate whether a larger model improves ASR performance.
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+2000
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Reference baseline:
+
+Whisper Small best WER = 0.2813
+
+Question:
+
+Does model capacity matter more than data quantity?
+
