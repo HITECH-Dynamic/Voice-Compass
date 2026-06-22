@@ -973,3 +973,70 @@ Question:
 
 Does the champion configuration remain strong under a different random seed?
 
+
+# Experiment 014
+
+Status: SUCCESS
+
+Purpose:
+
+Reproducibility test for the champion configuration.
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Seed:
+
+123
+
+Final train loss:
+
+0.3294
+
+Final eval loss:
+
+0.3884
+
+Final WER:
+
+0.1979
+
+Best WER:
+
+0.1963
+
+Observation:
+
+Changing the random seed produced only a small degradation in WER.
+
+Conclusion:
+
+Experiment 013's result is robust and not attributable to a lucky seed.
+
+Current standings:
+
+Exp013 (seed 42): 0.1893
+
+Exp014 (seed 123): 0.1963
+
