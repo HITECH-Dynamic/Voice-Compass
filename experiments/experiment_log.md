@@ -1157,3 +1157,48 @@ Exp014 (seed 123): 0.1963
 
 Exp015 (seed 456): 0.2042
 
+
+# Experiment 016
+
+Status: PLANNED
+
+Purpose:
+
+Scaling test using Whisper Large-v3.
+
+Model:
+
+Whisper Large-v3
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Seed:
+
+42
+
+Reference baseline:
+
+Experiment 013 best WER = 0.1893
+
+Question:
+
+Does Whisper Large-v3 outperform Whisper Medium using the same recipe?
+

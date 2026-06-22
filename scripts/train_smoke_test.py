@@ -1,5 +1,5 @@
 """
-Experiment 015 — Whisper Medium full FLEURS Swahili reproducibility test with seed 456
+Experiment 016 — Whisper Large-v3 scaling test
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -24,16 +24,16 @@ from transformers import (
     set_seed,
 )
 
-MODEL_ID = "openai/whisper-medium"
+MODEL_ID = "openai/whisper-large-v3"
 LANGUAGE = "Swahili"
 TASK = "transcribe"
 TRAIN_SAMPLES = 3070
 EVAL_SAMPLES = 100
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp015-whisper-medium-seed456"
+OUTPUT_DIR = "outputs/exp016-whisper-large-v3"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp015-whisper-medium-seed456"
-SEED = 456
+RUN_NAME = "exp016-whisper-large-v3"
+SEED = 42
 
 random.seed(SEED)
 np.random.seed(SEED)
@@ -69,7 +69,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 015. Reproducibility test using seed 456.",
+        "notes": "Experiment 016. Whisper Large-v3 scaling test using winning Exp013 recipe.",
     },
 )
 
@@ -229,4 +229,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 015 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 016 complete. Model saved to: {OUTPUT_DIR}")
