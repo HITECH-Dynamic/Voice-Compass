@@ -905,3 +905,26 @@ Next step:
 
 Add full seed control to the training script.
 
+
+# Phase 3A Seed Control
+
+Status: COMPLETE
+
+Implemented:
+
+- Python random seed
+- NumPy seed
+- PyTorch seed
+- CUDA seed
+- HuggingFace seed
+- Trainer seed
+- Dataset seed
+
+Purpose:
+
+Improve experimental reproducibility.
+
+Motivation:
+
+Feedback from Tiago Hersan emphasized the importance of random seeds to distinguish genuine improvements from random variation.
+

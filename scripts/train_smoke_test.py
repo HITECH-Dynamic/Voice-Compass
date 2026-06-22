@@ -10,6 +10,8 @@ Goal    : Strengthen the baseline after Experiment 001 proved the pipeline works
 import wandb
 import torch
 import evaluate
+import random
+import numpy as np
 from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 
@@ -19,6 +21,7 @@ from transformers import (
     WhisperForConditionalGeneration,
     Seq2SeqTrainer,
     Seq2SeqTrainingArguments,
+    set_seed,
 )
 
 MODEL_ID = "openai/whisper-medium"
@@ -31,6 +34,15 @@ OUTPUT_DIR = "outputs/exp013-whisper-medium-full-fleurs-lr2e5"
 WANDB_PROJECT = "afrivoices-asr"
 RUN_NAME = "exp013-whisper-medium-full-fleurs-lr2e5"
 SEED = 42
+
+random.seed(SEED)
+np.random.seed(SEED)
+torch.manual_seed(SEED)
+
+if torch.cuda.is_available():
+    torch.cuda.manual_seed_all(SEED)
+
+set_seed(SEED)
 
 if torch.cuda.is_available():
     DEVICE = "cuda"
@@ -194,6 +206,7 @@ training_args = Seq2SeqTrainingArguments(
     report_to=["wandb"],
     run_name=RUN_NAME,
     seed=SEED,
+    data_seed=SEED,
     push_to_hub=False,
 )
 
