@@ -825,3 +825,62 @@ Question:
 
 Does higher learning rate improve WER?
 
+
+# Experiment 013
+
+Status: SUCCESS
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Final train loss:
+
+0.3214
+
+Final eval loss:
+
+0.3722
+
+Final WER:
+
+0.1893
+
+Best WER:
+
+0.1893
+
+Observation:
+
+Higher learning rate initially produced worse WER, but later converged to the best result observed so far.
+
+Conclusion:
+
+Learning rate 2e-5 outperformed both 1e-5 and 5e-6.
+
+Current champion:
+
+Experiment 013
+
+WER = 0.1893
+
