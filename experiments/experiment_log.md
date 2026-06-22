@@ -1202,3 +1202,59 @@ Question:
 
 Does Whisper Large-v3 outperform Whisper Medium using the same recipe?
 
+
+# Experiment 016
+
+Status: INFRASTRUCTURE-LIMITED
+
+Purpose:
+
+Full fine-tuning scaling test with Whisper Large-v3.
+
+Model:
+
+Whisper Large-v3
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Seed:
+
+42
+
+Outcome:
+
+Did not complete.
+
+Failure modes:
+
+- FP16 batch size 4: CUDA out-of-memory.
+- FP16 batch size 2 with gradient accumulation 2: FP16 gradient scaler error.
+- BF16 batch size 2: CUDA out-of-memory.
+- BF16 batch size 1 with gradient accumulation 4: unstable exploding loss and evaluation dtype mismatch.
+
+Conclusion:
+
+Whisper Large-v3 full fine-tuning is not feasible on the current L4 setup. Continue Phase 4 using LoRA or a higher-memory GPU.
+
+Next experiment:
+
+Experiment 017 — Whisper Large-v3 LoRA.
+
