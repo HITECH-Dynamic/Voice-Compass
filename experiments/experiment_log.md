@@ -928,3 +928,48 @@ Motivation:
 
 Feedback from Tiago Hersan emphasized the importance of random seeds to distinguish genuine improvements from random variation.
 
+
+# Experiment 014
+
+Status: PLANNED
+
+Purpose:
+
+Reproducibility test for the current champion configuration.
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Seed:
+
+123
+
+Reference baseline:
+
+Experiment 013 best WER = 0.1893
+
+Question:
+
+Does the champion configuration remain strong under a different random seed?
+
