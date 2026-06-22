@@ -175,7 +175,7 @@ def compute_metrics(pred):
     return {"wer": round(wer, 4)}
 
 print("Loading model...")
-model = WhisperForConditionalGeneration.from_pretrained(MODEL_ID)
+model = WhisperForConditionalGeneration.from_pretrained(MODEL_ID, torch_dtype=torch.float32)
 
 lora_config = LoraConfig(
     r=16,
