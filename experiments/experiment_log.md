@@ -1271,3 +1271,138 @@ Question:
 
 Can LoRA make Large-v3 trainable where full fine-tuning failed?
 
+# EXP017
+
+Model:
+Whisper Large-v3
+
+Method:
+LoRA
+
+Parameters:
+r = 16
+alpha = 32
+target_modules = q_proj, v_proj
+
+Trainable parameters:
+7,864,320 (0.51%)
+
+Training:
+1000 steps
+1.30 epochs
+
+Final metrics:
+Eval loss = 0.5209
+WER = 0.2798
+
+Status:
+✅ Benchmark
+Freeze configuration.
+Future experiments should branch from this baseline.
+# Experiment 017
+
+Status: SUCCESS
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Seed:
+
+42
+
+LoRA configuration:
+
+- r = 16
+- alpha = 32
+- dropout = 0.05
+- target_modules = q_proj, v_proj
+
+Trainable parameters:
+
+7,864,320
+
+Trainable percentage:
+
+0.5069%
+
+Final train loss:
+
+1.187
+
+Final eval loss:
+
+0.5209
+
+Final WER:
+
+0.2798
+
+Best WER:
+
+0.2798
+
+Observation:
+
+Large-v3 LoRA trained successfully on L4 and improved steadily through step 1000.
+
+Conclusion:
+
+LoRA makes Whisper Large-v3 feasible on the available GPU environment, but this configuration does not outperform the Whisper Medium champion.
+
+Git tag:
+
+exp017_whisper_large_v3_lora_r16_alpha32_qv
+
+# Experiment 018
+
+Status: PLANNED
+
+Purpose:
+
+Expand Large-v3 LoRA target modules.
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Target modules:
+
+q_proj, k_proj, v_proj, out_proj
+
+Reference baseline:
+
+Experiment 017 best WER = 0.2798
+
+Question:
+
+Does broader LoRA coverage improve WER?
+
