@@ -69,7 +69,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 016. Whisper Large-v3 scaling test using winning Exp013 recipe.",
+        "notes": "Experiment 016. Whisper Large-v3 scaling test with reduced batch size and gradient accumulation.",
     },
 )
 
@@ -179,15 +179,15 @@ model.generation_config.language = LANGUAGE
 model.generation_config.task = TASK
 model.generation_config.forced_decoder_ids = None
 
-use_fp16 = False
-use_bf16 = DEVICE == "cuda"
+use_fp16 = DEVICE == "cuda"
+use_bf16 = False
 
 training_args = Seq2SeqTrainingArguments(
     output_dir=OUTPUT_DIR,
     max_steps=MAX_STEPS,
-    per_device_train_batch_size=4,
-    per_device_eval_batch_size=4,
-    gradient_accumulation_steps=1,
+    per_device_train_batch_size=2,
+    per_device_eval_batch_size=2,
+    gradient_accumulation_steps=2,
     learning_rate=2e-5,
     warmup_steps=10,
     fp16=use_fp16,
