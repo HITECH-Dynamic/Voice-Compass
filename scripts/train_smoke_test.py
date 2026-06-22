@@ -1,5 +1,5 @@
 """
-Experiment 014 — Whisper Medium full FLEURS Swahili reproducibility test with seed 123
+Experiment 015 — Whisper Medium full FLEURS Swahili reproducibility test with seed 456
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -30,10 +30,10 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 3070
 EVAL_SAMPLES = 100
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp014-whisper-medium-seed123"
+OUTPUT_DIR = "outputs/exp015-whisper-medium-seed456"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp014-whisper-medium-seed123"
-SEED = 123
+RUN_NAME = "exp015-whisper-medium-seed456"
+SEED = 456
 
 random.seed(SEED)
 np.random.seed(SEED)
@@ -69,7 +69,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 014. Reproducibility test using seed 123.",
+        "notes": "Experiment 015. Reproducibility test using seed 456.",
     },
 )
 
@@ -229,4 +229,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 014 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 015 complete. Model saved to: {OUTPUT_DIR}")

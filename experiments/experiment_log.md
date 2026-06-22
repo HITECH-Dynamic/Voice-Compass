@@ -1040,3 +1040,49 @@ Exp013 (seed 42): 0.1893
 
 Exp014 (seed 123): 0.1963
 
+
+# Experiment 015
+
+Status: PLANNED
+
+Purpose:
+
+Second reproducibility test for the champion configuration.
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Seed:
+
+456
+
+Reference results:
+
+Experiment 013 seed 42 best WER = 0.1893
+Experiment 014 seed 123 best WER = 0.1963
+
+Question:
+
+Does the champion configuration remain stable across a third random seed?
+
