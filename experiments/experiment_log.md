@@ -1258,3 +1258,16 @@ Next experiment:
 
 Experiment 017 — Whisper Large-v3 LoRA.
 
+
+# Experiment 017
+
+Status: PLANNED
+
+Purpose:
+
+Whisper Large-v3 LoRA scaling test.
+
+Question:
+
+Can LoRA make Large-v3 trainable where full fine-tuning failed?
+

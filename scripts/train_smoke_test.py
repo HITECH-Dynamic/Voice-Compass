@@ -1,5 +1,5 @@
 """
-Experiment 016 — Whisper Large-v3 scaling test
+Experiment 017 — Whisper Large-v3 LoRA scaling test
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -16,6 +16,8 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 
 from datasets import load_dataset, Audio
+from peft import LoraConfig, get_peft_model
+
 from transformers import (
     WhisperProcessor,
     WhisperForConditionalGeneration,
@@ -30,9 +32,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 3070
 EVAL_SAMPLES = 100
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp016-whisper-large-v3"
+OUTPUT_DIR = "outputs/exp017-whisper-large-v3-lora"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp016-whisper-large-v3"
+RUN_NAME = "exp017-whisper-large-v3-lora"
 SEED = 42
 
 random.seed(SEED)
@@ -69,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 016. Whisper Large-v3 scaling test with reduced batch size and gradient accumulation.",
+        "notes": "Experiment 017. Whisper Large-v3 LoRA scaling test after full fine-tuning exceeded L4 limits.",
     },
 )
 
@@ -175,19 +177,30 @@ def compute_metrics(pred):
 print("Loading model...")
 model = WhisperForConditionalGeneration.from_pretrained(MODEL_ID)
 
+lora_config = LoraConfig(
+    r=16,
+    lora_alpha=32,
+    target_modules=["q_proj", "v_proj"],
+    lora_dropout=0.05,
+    bias="none",
+)
+
+model = get_peft_model(model, lora_config)
+model.print_trainable_parameters()
+
 model.generation_config.language = LANGUAGE
 model.generation_config.task = TASK
 model.generation_config.forced_decoder_ids = None
 
 use_fp16 = False
-use_bf16 = DEVICE == "cuda"
+use_bf16 = False
 
 training_args = Seq2SeqTrainingArguments(
     output_dir=OUTPUT_DIR,
     max_steps=MAX_STEPS,
-    per_device_train_batch_size=1,
-    per_device_eval_batch_size=1,
-    gradient_accumulation_steps=4,
+    per_device_train_batch_size=2,
+    per_device_eval_batch_size=2,
+    gradient_accumulation_steps=2,
     learning_rate=2e-5,
     warmup_steps=10,
     fp16=use_fp16,
@@ -229,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 016 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 017 complete. Model saved to: {OUTPUT_DIR}")
