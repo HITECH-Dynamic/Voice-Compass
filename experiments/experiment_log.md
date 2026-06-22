@@ -732,3 +732,96 @@ Question:
 
 Does lower learning rate improve WER?
 
+
+# Experiment 012
+
+Status: SUCCESS
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+5e-6
+
+Final train loss:
+
+0.4031
+
+Final eval loss:
+
+0.4276
+
+Final WER:
+
+0.2111
+
+Best WER:
+
+0.2111
+
+Observation:
+
+Lower learning rate produced stable training but did not beat Experiment 011.
+
+Conclusion:
+
+Learning rate 5e-6 is worse than 1e-5 for this setup.
+
+# Experiment 013
+
+Status: PLANNED
+
+Purpose:
+
+Evaluate whether a higher learning rate improves Whisper Medium performance.
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Reference baseline:
+
+Experiment 011 best WER = 0.2002
+
+Question:
+
+Does higher learning rate improve WER?
+
