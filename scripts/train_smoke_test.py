@@ -185,9 +185,9 @@ use_bf16 = DEVICE == "cuda"
 training_args = Seq2SeqTrainingArguments(
     output_dir=OUTPUT_DIR,
     max_steps=MAX_STEPS,
-    per_device_train_batch_size=2,
-    per_device_eval_batch_size=2,
-    gradient_accumulation_steps=2,
+    per_device_train_batch_size=1,
+    per_device_eval_batch_size=1,
+    gradient_accumulation_steps=4,
     learning_rate=2e-5,
     warmup_steps=10,
     fp16=use_fp16,
