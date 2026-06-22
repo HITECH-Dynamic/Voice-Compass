@@ -884,3 +884,24 @@ Experiment 013
 
 WER = 0.1893
 
+
+# Phase 3A Reproducibility
+
+Status: STARTED
+
+Action:
+
+Created a separate Colab training requirements file.
+
+File:
+
+requirements-colab.txt
+
+Reason:
+
+The existing requirements.txt reflects the local development environment and does not match the Colab training environment used for the winning experiments.
+
+Next step:
+
+Add full seed control to the training script.
+
