@@ -179,8 +179,8 @@ model.generation_config.language = LANGUAGE
 model.generation_config.task = TASK
 model.generation_config.forced_decoder_ids = None
 
-use_fp16 = DEVICE == "cuda"
-use_bf16 = False
+use_fp16 = False
+use_bf16 = DEVICE == "cuda"
 
 training_args = Seq2SeqTrainingArguments(
     output_dir=OUTPUT_DIR,
