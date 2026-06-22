@@ -1086,3 +1086,74 @@ Question:
 
 Does the champion configuration remain stable across a third random seed?
 
+
+# Experiment 015
+
+Status: SUCCESS
+
+Purpose:
+
+Second reproducibility test for the champion configuration.
+
+Model:
+
+Whisper Medium
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Seed:
+
+456
+
+Final train loss:
+
+0.3192
+
+Final eval loss:
+
+0.4100
+
+Final WER:
+
+0.2042
+
+Best WER:
+
+0.2042
+
+Observation:
+
+Changing the seed produced only modest variation.
+
+Conclusion:
+
+Experiment 013's champion result is reproducible.
+
+Phase 3A Reproducibility completed.
+
+Current standings:
+
+Exp013 (seed 42): 0.1893
+
+Exp014 (seed 123): 0.1963
+
+Exp015 (seed 456): 0.2042
+
