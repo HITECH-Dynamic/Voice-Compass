@@ -1662,3 +1662,36 @@ Success criterion:
 
 WER < 0.2637
 
+
+# Experiment 020
+
+Status: COMPLETE
+
+Result:
+
+WER = 0.2278
+
+Comparison:
+
+Exp018 = 0.2637
+Exp020 = 0.2278
+
+Improvement:
+
+13.6% relative WER reduction
+
+Conclusion:
+
+Adding fc1 and fc2 produced the strongest improvement observed so far.
+
+New baseline architecture:
+
+q_proj
+k_proj
+v_proj
+out_proj
+fc1
+fc2
+
+Future experiments should keep this architecture fixed while exploring other variables.
+
