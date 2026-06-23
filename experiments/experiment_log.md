@@ -1574,4 +1574,23 @@ Question:
 
 Does expanding training time improve WER?
 
-EOF
+## Exp019 — Whisper Large V3 LoRA (qkvo) — 2000 Steps
+
+Date: 2026-06-23
+
+Changes:
+- Same configuration as Exp018
+- Increased training from 1000 → 2000 steps
+
+Results:
+- Validation WER: 0.2668
+
+Comparison:
+- Exp018 WER: 0.2637
+
+Conclusion:
+- Additional training did not improve WER.
+- Slight regression observed.
+- More steps alone are unlikely to be the highest-value optimization path.
+
+
