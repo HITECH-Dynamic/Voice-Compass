@@ -1594,3 +1594,71 @@ Conclusion:
 - More steps alone are unlikely to be the highest-value optimization path.
 
 
+
+# Experiment 020
+
+Status: PLANNED
+
+Purpose:
+
+Test whether adding feed-forward LoRA adapters improves over the Exp018 champion.
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Seed:
+
+42
+
+LoRA configuration:
+
+- r = 16
+- alpha = 32
+- dropout = 0.05
+- target_modules = q_proj, k_proj, v_proj, out_proj, fc1, fc2
+
+Reference baseline:
+
+Experiment 018 best WER = 0.2637
+
+Previous test:
+
+Experiment 019 showed that increasing steps from 1000 to 2000 did not improve WER.
+
+Question:
+
+Does expanding LoRA into the feed-forward layers improve WER?
+
+Only variable changed from Exp018:
+
+Added fc1 and fc2 to target_modules.
+
+Success criterion:
+
+WER < 0.2637
+

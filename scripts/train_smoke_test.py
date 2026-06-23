@@ -1,5 +1,5 @@
 """
-Experiment 019 — Whisper Large-v3 LoRA longer training
+Experiment 020 — Whisper Large-v3 LoRA attention plus feed-forward layers
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -31,10 +31,10 @@ LANGUAGE = "Swahili"
 TASK = "transcribe"
 TRAIN_SAMPLES = 3070
 EVAL_SAMPLES = 100
-MAX_STEPS = 2000
-OUTPUT_DIR = "outputs/exp019-whisper-large-v3-lora-qkvo-2000steps"
+MAX_STEPS = 1000
+OUTPUT_DIR = "outputs/exp020-whisper-large-v3-lora-qkvo-fc"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp019-whisper-large-v3-lora-qkvo-2000steps"
+RUN_NAME = "exp020-whisper-large-v3-lora-qkvo-fc"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 019. Longer training of the Exp018 champion configuration.",
+        "notes": "Experiment 020. Whisper Large-v3 LoRA with attention and feed-forward target modules.",
     },
 )
 
@@ -180,7 +180,7 @@ model = WhisperForConditionalGeneration.from_pretrained(MODEL_ID, torch_dtype=to
 lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
-    target_modules=["q_proj", "k_proj", "v_proj", "out_proj"],
+    target_modules=["q_proj", "k_proj", "v_proj", "out_proj", "fc1", "fc2"],
     lora_dropout=0.05,
     bias="none",
 )
@@ -242,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 019 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 020 complete. Model saved to: {OUTPUT_DIR}")
