@@ -1695,3 +1695,54 @@ fc2
 
 Future experiments should keep this architecture fixed while exploring other variables.
 
+
+# Experiment 021
+
+Status: PLANNED
+
+Purpose:
+
+Evaluate whether earlier stopping improves WER.
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Configuration:
+
+- r = 16
+- alpha = 32
+- target_modules = q_proj, k_proj, v_proj, out_proj, fc1, fc2
+
+Steps:
+
+800
+
+Learning rate:
+
+2e-5
+
+Reference baseline:
+
+Exp020 best WER = 0.2278
+
+Only variable changed:
+
+MAX_STEPS 1000 → 800
+
+Question:
+
+Can earlier stopping outperform Exp020?
+
+Success criterion:
+
+WER < 0.2278
+

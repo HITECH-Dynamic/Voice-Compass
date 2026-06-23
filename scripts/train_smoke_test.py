@@ -1,5 +1,5 @@
 """
-Experiment 020 — Whisper Large-v3 LoRA attention plus feed-forward layers
+Experiment 021 — Whisper Large-v3 LoRA early-stop study
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -31,10 +31,10 @@ LANGUAGE = "Swahili"
 TASK = "transcribe"
 TRAIN_SAMPLES = 3070
 EVAL_SAMPLES = 100
-MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp020-whisper-large-v3-lora-qkvo-fc"
+MAX_STEPS = 800
+OUTPUT_DIR = "outputs/exp021-whisper-large-v3-lora-qkvo-fc-800steps"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp020-whisper-large-v3-lora-qkvo-fc"
+RUN_NAME = "exp021-whisper-large-v3-lora-qkvo-fc-800steps"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 020. Whisper Large-v3 LoRA with attention and feed-forward target modules.",
+        "notes": "Experiment 021. Early-stop study using the Exp020 champion architecture.",
     },
 )
 
@@ -242,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 020 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 021 complete. Model saved to: {OUTPUT_DIR}")
