@@ -1406,3 +1406,172 @@ Question:
 
 Does broader LoRA coverage improve WER?
 
+
+## Exp018
+
+Date: 2026-06-22
+
+Model:
+Whisper Large-v3
+
+Configuration:
+- r=16
+- alpha=32
+- target_modules=[q_proj, k_proj, v_proj, out_proj]
+- lr=2e-5
+- max_steps=1000
+
+Results:
+Final WER: 0.2637
+Train loss: 1.027
+Epochs completed: 1.30
+
+Findings:
+Expanded qkvo target modules train stably and outperform previous configurations.
+Improvement slows near epoch 1.0, suggesting additional epochs may yield smaller gains.
+
+Decision:
+Promote qkvo architecture to baseline.
+
+Next:
+Exp019 — identical configuration with extended training (~2 epochs).
+
+cat >> experiments/experiment_log.md <<'EOF'
+
+# Experiment 018
+
+Status: SUCCESS
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+1000
+
+Learning rate:
+
+2e-5
+
+Seed:
+
+42
+
+LoRA configuration:
+
+- r = 16
+- alpha = 32
+- dropout = 0.05
+- target_modules = q_proj, k_proj, v_proj, out_proj
+
+Trainable parameters:
+
+15,728,640
+
+Trainable percentage:
+
+1.0088%
+
+Final eval loss:
+
+0.4859
+
+Final WER:
+
+0.2637
+
+Best WER:
+
+0.2637
+
+Observation:
+
+Expanded attention adapters improved over previous LoRA configurations. Training was stable and converged smoothly.
+
+Conclusion:
+
+q_proj, k_proj, v_proj, and out_proj should become the new baseline architecture.
+
+Git tag:
+
+exp018_whisper_large_v3_lora_r16_alpha32_qkvo
+
+# Experiment 019
+
+Status: PLANNED
+
+Purpose:
+
+Determine whether longer training time improves over Experiment 018.
+Only variable changed from Exp018:
+
+MAX_STEPS increased from 1000 to 2000.
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Train examples:
+
+3070
+
+Validation examples:
+
+100
+
+Steps:
+
+2000
+
+Learning rate:
+
+2e-5
+
+Seed:
+
+42
+
+LoRA configuration:
+
+- r = 16
+- alpha = 32
+- dropout = 0.05
+
+Target modules:
+
+q_proj, k_proj, v_proj, out_proj,
+
+Reference baseline:
+
+Experiment 018 best WER = 0.2637
+
+Question:
+
+Does expanding training time improve WER?
+
+EOF
