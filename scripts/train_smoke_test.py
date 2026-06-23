@@ -1,5 +1,5 @@
 """
-Experiment 018 — Whisper Large-v3 LoRA expanded target modules
+Experiment 019 — Whisper Large-v3 LoRA longer training
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -31,10 +31,10 @@ LANGUAGE = "Swahili"
 TASK = "transcribe"
 TRAIN_SAMPLES = 3070
 EVAL_SAMPLES = 100
-MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp018-whisper-large-v3-lora-qkvo"
+MAX_STEPS = 2000
+OUTPUT_DIR = "outputs/exp019-whisper-large-v3-lora-qkvo-2000steps"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp018-whisper-large-v3-lora-qkvo"
+RUN_NAME = "exp019-whisper-large-v3-lora-qkvo-2000steps"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 018. Whisper Large-v3 LoRA with expanded q_proj, k_proj, v_proj, out_proj target modules.",
+        "notes": "Experiment 019. Longer training of the Exp018 champion configuration.",
     },
 )
 
@@ -242,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 018 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 019 complete. Model saved to: {OUTPUT_DIR}")
