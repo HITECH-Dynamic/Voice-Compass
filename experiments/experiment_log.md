@@ -1820,3 +1820,40 @@ Success criterion:
 
 WER < 0.2278
 
+
+# Experiment 022
+
+Status: COMPLETE
+
+Purpose:
+
+Test whether increasing LoRA rank improves over the Exp020 champion.
+
+Configuration:
+
+Same as Exp020 except:
+
+- r = 32
+- alpha = 32
+
+Result:
+
+Best WER = 0.2387
+Final WER = 0.2397
+
+Reference baseline:
+
+Exp020 best WER = 0.2278
+
+Conclusion:
+
+Increasing LoRA rank from 16 to 32 did not improve WER. Exp022 is not promoted.
+
+Current champion remains:
+
+Exp020
+
+Next candidate:
+
+Exp023 alpha study.
+
