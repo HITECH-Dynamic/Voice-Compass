@@ -1857,3 +1857,49 @@ Next candidate:
 
 Exp023 alpha study.
 
+
+# Experiment 023
+
+Status: PLANNED
+
+Purpose:
+
+Evaluate the effect of increasing LoRA alpha while keeping the Exp020 champion architecture fixed.
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Configuration:
+
+- r = 16
+- alpha = 64
+- target_modules = q_proj, k_proj, v_proj, out_proj, fc1, fc2
+- learning_rate = 2e-5
+- max_steps = 1000
+- seed = 42
+
+Reference baseline:
+
+Exp020 best WER = 0.2278
+
+Only variable changed:
+
+LoRA alpha increased from 32 to 64.
+
+Question:
+
+Does increasing LoRA alpha improve WER?
+
+Success criterion:
+
+WER < 0.2278
+
