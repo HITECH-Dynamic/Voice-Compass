@@ -1,5 +1,5 @@
 """
-Experiment 021 — Whisper Large-v3 LoRA early-stop study
+Experiment 022 — Whisper Large-v3 LoRA rank 32 study
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -31,10 +31,10 @@ LANGUAGE = "Swahili"
 TASK = "transcribe"
 TRAIN_SAMPLES = 3070
 EVAL_SAMPLES = 100
-MAX_STEPS = 800
-OUTPUT_DIR = "outputs/exp021-whisper-large-v3-lora-qkvo-fc-800steps"
+MAX_STEPS = 1000
+OUTPUT_DIR = "outputs/exp022-whisper-large-v3-lora-qkvo-fc-r32"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp021-whisper-large-v3-lora-qkvo-fc-800steps"
+RUN_NAME = "exp022-whisper-large-v3-lora-qkvo-fc-r32"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 021. Early-stop study using the Exp020 champion architecture.",
+        "notes": "Experiment 022. Rank 32 study using the Exp020 champion architecture.",
     },
 )
 
@@ -178,7 +178,7 @@ print("Loading model...")
 model = WhisperForConditionalGeneration.from_pretrained(MODEL_ID, torch_dtype=torch.float32)
 
 lora_config = LoraConfig(
-    r=16,
+    r=32,
     lora_alpha=32,
     target_modules=["q_proj", "k_proj", "v_proj", "out_proj", "fc1", "fc2"],
     lora_dropout=0.05,
@@ -242,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 021 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 022 complete. Model saved to: {OUTPUT_DIR}")

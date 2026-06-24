@@ -1746,3 +1746,77 @@ Success criterion:
 
 WER < 0.2278
 
+
+# Experiment 021
+
+Status: COMPLETE
+
+Purpose:
+
+Evaluate whether earlier stopping improves WER.
+
+Configuration:
+
+Same as Exp020 except MAX_STEPS changed from 1000 to 800.
+
+Result:
+
+WER = 0.2418
+
+Reference baseline:
+
+Exp020 best WER = 0.2278
+
+Conclusion:
+
+Earlier stopping did not improve performance. Exp021 is not promoted.
+
+Current champion remains:
+
+Exp020
+
+# Experiment 022
+
+Status: PLANNED
+
+Purpose:
+
+Test whether increasing LoRA rank improves over the Exp020 champion.
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Configuration:
+
+- r = 32
+- alpha = 32
+- target_modules = q_proj, k_proj, v_proj, out_proj, fc1, fc2
+- learning_rate = 2e-5
+- max_steps = 1000
+- seed = 42
+
+Reference baseline:
+
+Exp020 best WER = 0.2278
+
+Only variable changed from Exp020:
+
+LoRA rank increased from 16 to 32.
+
+Question:
+
+Does increasing LoRA rank improve WER?
+
+Success criterion:
+
+WER < 0.2278
+
