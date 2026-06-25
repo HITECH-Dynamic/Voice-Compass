@@ -30,11 +30,11 @@ MODEL_ID = "openai/whisper-large-v3"
 LANGUAGE = "Swahili"
 TASK = "transcribe"
 TRAIN_SAMPLES = 2570
-EVAL_SAMPLES = 500
+EVAL_SAMPLES = 211
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp026-whisper-large-v3-lora-qkvo-fc-val500"
+OUTPUT_DIR = "outputs/exp026-whisper-large-v3-lora-qkvo-fc-val211"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp026-whisper-large-v3-lora-qkvo-fc-val500"
+RUN_NAME = "exp026-whisper-large-v3-lora-qkvo-fc-val211"
 SEED = 42
 
 random.seed(SEED)

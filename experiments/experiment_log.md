@@ -2110,7 +2110,7 @@ Status: PLANNED
 
 Purpose:
 
-Re-run the Exp020 champion configuration with a larger validation split based on Tiago's feedback.
+Re-run the Exp020 champion configuration with a full available validation split based on Tiago's feedback.
 
 Model:
 
@@ -2136,15 +2136,15 @@ Configuration:
 Split:
 
 - train_samples = 2570
-- eval_samples = 500
+- eval_samples = 211
 
 Only variable changed from Exp020:
 
-Validation split increased from 100 to 500 examples.
+Validation split increased from 100 to the full available 211 validation examples.
 
 Question:
 
-Does the champion configuration remain reliable under a larger validation set?
+Does the champion configuration remain reliable under a full available validation set?
 
 Note:
 
