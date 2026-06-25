@@ -2063,3 +2063,43 @@ Success criterion:
 
 WER < 0.2278
 
+
+# Experiment 025
+
+Status: COMPLETE
+
+Purpose:
+
+Test whether a slightly higher learning rate improves over the Exp020 champion.
+
+Configuration:
+
+Same as Exp020 except:
+
+- learning_rate = 3e-5
+
+Result:
+
+Best WER = 0.2257
+Final WER = 0.2371
+
+Reference baseline:
+
+Exp020 best WER = 0.2278
+
+Conclusion:
+
+Learning rate 3e-5 reached the lowest observed WER so far but did not maintain it through the end of training. Exp025 is not promoted as the stable champion because the final model underperformed Exp020.
+
+Current stable champion remains:
+
+Exp020
+
+Important finding:
+
+Exp025 suggests that a higher learning rate may be useful if paired with early stopping, best-checkpoint saving, or scheduler changes.
+
+Next direction:
+
+Learning-rate scheduler / checkpoint-selection study.
+
