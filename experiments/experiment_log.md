@@ -1986,3 +1986,80 @@ Success criterion:
 
 WER < 0.2278
 
+
+# Experiment 024
+
+Status: COMPLETE
+
+Purpose:
+
+Test whether lowering the learning rate improves over the Exp020 champion.
+
+Configuration:
+
+Same as Exp020 except:
+
+- learning_rate = 1e-5
+
+Result:
+
+Best WER = 0.2595
+Final WER = 0.2600
+
+Reference baseline:
+
+Exp020 best WER = 0.2278
+
+Conclusion:
+
+Lowering the learning rate from 2e-5 to 1e-5 did not improve WER. Exp024 is not promoted.
+
+Current champion remains:
+
+Exp020
+
+# Experiment 025
+
+Status: PLANNED
+
+Purpose:
+
+Test whether a slightly higher learning rate improves over the Exp020 champion.
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Configuration:
+
+- r = 16
+- alpha = 32
+- target_modules = q_proj, k_proj, v_proj, out_proj, fc1, fc2
+- learning_rate = 3e-5
+- max_steps = 1000
+- seed = 42
+
+Reference baseline:
+
+Exp020 best WER = 0.2278
+
+Only variable changed:
+
+Learning rate increased from 2e-5 to 3e-5.
+
+Question:
+
+Does a slightly higher learning rate improve WER?
+
+Success criterion:
+
+WER < 0.2278
+
