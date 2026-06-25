@@ -1,5 +1,5 @@
 """
-Experiment 028 — Whisper Large-v3 LoRA best checkpoint study
+Experiment 028 — Whisper Large-v3 LoRA cosine scheduler study
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -32,9 +32,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 2570
 EVAL_SAMPLES = 211
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp028-whisper-large-v3-lora-best-checkpoint"
+OUTPUT_DIR = "outputs/exp028-whisper-large-v3-lora-cosine-scheduler"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp028-whisper-large-v3-lora-best-checkpoint"
+RUN_NAME = "exp028-whisper-large-v3-lora-cosine-scheduler"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 028. Automatic best-checkpoint selection study.",
+        "notes": "Experiment 028. Explicit cosine learning-rate scheduler study.",
     },
 )
 
@@ -202,6 +202,7 @@ training_args = Seq2SeqTrainingArguments(
     per_device_eval_batch_size=2,
     gradient_accumulation_steps=2,
     learning_rate=2e-5,
+    lr_scheduler_type="cosine",
     warmup_steps=10,
     fp16=use_fp16,
     bf16=use_bf16,

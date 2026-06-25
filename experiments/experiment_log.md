@@ -2267,3 +2267,34 @@ Success criterion:
 
 WER < 0.2318
 
+
+# Experiment 028
+
+Status: PLANNED
+
+Purpose:
+
+Test an explicit cosine learning-rate scheduler.
+
+Configuration:
+
+Same as Exp026 except:
+
+- lr_scheduler_type = "cosine"
+
+Infrastructure note:
+
+Best-checkpoint saving is now part of the standard training pipeline and is not treated as the experimental variable.
+
+Reference baseline:
+
+Exp026 WER = 0.2318
+
+Question:
+
+Does cosine scheduling improve WER versus the previous default scheduler behavior?
+
+Success criterion:
+
+WER < 0.2318
+
