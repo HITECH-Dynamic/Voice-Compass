@@ -1,5 +1,5 @@
 """
-Experiment 025 — Whisper Large-v3 LoRA learning rate 3e-5 study
+Experiment 026 — Whisper Large-v3 LoRA larger validation baseline
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -29,12 +29,12 @@ from transformers import (
 MODEL_ID = "openai/whisper-large-v3"
 LANGUAGE = "Swahili"
 TASK = "transcribe"
-TRAIN_SAMPLES = 3070
-EVAL_SAMPLES = 100
+TRAIN_SAMPLES = 2570
+EVAL_SAMPLES = 500
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp025-whisper-large-v3-lora-qkvo-fc-lr3e5"
+OUTPUT_DIR = "outputs/exp026-whisper-large-v3-lora-qkvo-fc-val500"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp025-whisper-large-v3-lora-qkvo-fc-lr3e5"
+RUN_NAME = "exp026-whisper-large-v3-lora-qkvo-fc-val500"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 025. Learning rate 3e-5 study using the Exp020 champion architecture.",
+        "notes": "Experiment 026. Larger validation baseline using the Exp020 champion architecture.",
     },
 )
 
@@ -201,7 +201,7 @@ training_args = Seq2SeqTrainingArguments(
     per_device_train_batch_size=2,
     per_device_eval_batch_size=2,
     gradient_accumulation_steps=2,
-    learning_rate=3e-5,
+    learning_rate=2e-5,
     warmup_steps=10,
     fp16=use_fp16,
     bf16=use_bf16,
@@ -242,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 025 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 026 complete. Model saved to: {OUTPUT_DIR}")

@@ -2103,3 +2103,50 @@ Next direction:
 
 Learning-rate scheduler / checkpoint-selection study.
 
+
+# Experiment 026
+
+Status: PLANNED
+
+Purpose:
+
+Re-run the Exp020 champion configuration with a larger validation split based on Tiago's feedback.
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Configuration:
+
+- r = 16
+- alpha = 32
+- target_modules = q_proj, k_proj, v_proj, out_proj, fc1, fc2
+- learning_rate = 2e-5
+- max_steps = 1000
+- seed = 42
+
+Split:
+
+- train_samples = 2570
+- eval_samples = 500
+
+Only variable changed from Exp020:
+
+Validation split increased from 100 to 500 examples.
+
+Question:
+
+Does the champion configuration remain reliable under a larger validation set?
+
+Note:
+
+Exp026 should become the new evaluation baseline for future optimization experiments.
+
