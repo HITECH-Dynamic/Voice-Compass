@@ -2197,3 +2197,28 @@ Success criterion:
 
 WER < 0.2318
 
+
+# Experiment 027
+
+Status: FAILED
+
+Purpose:
+
+Test Tiago's suggestion to explicitly set LoRA task_type to SEQ_2_SEQ_LM.
+
+Result:
+
+Failed before training began.
+
+Error:
+
+got multiple values for keyword argument 'input_ids'
+
+Conclusion:
+
+task_type=TaskType.SEQ_2_SEQ_LM is incompatible with the current PEFT + Whisper setup. Do not promote.
+
+Decision:
+
+Return to Exp026 baseline.
+

@@ -1,5 +1,5 @@
 """
-Experiment 027 — Whisper Large-v3 LoRA task_type SEQ_2_SEQ_LM
+Experiment 026 — Whisper Large-v3 LoRA full validation baseline
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 
 from datasets import load_dataset, Audio
-from peft import LoraConfig, get_peft_model, TaskType
+from peft import LoraConfig, get_peft_model
 
 from transformers import (
     WhisperProcessor,
@@ -32,9 +32,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 2570
 EVAL_SAMPLES = 211
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp027-whisper-large-v3-lora-qkvo-fc-seq2seq"
+OUTPUT_DIR = "outputs/exp026-whisper-large-v3-lora-qkvo-fc-val211"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp027-whisper-large-v3-lora-qkvo-fc-seq2seq"
+RUN_NAME = "exp026-whisper-large-v3-lora-qkvo-fc-val211"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 027. Adds task_type=SEQ_2_SEQ_LM to the Exp026 baseline.",
+        "notes": "Experiment 026. Full available validation baseline using the Exp020 champion architecture.",
     },
 )
 
@@ -181,7 +181,6 @@ lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
     target_modules=["q_proj", "k_proj", "v_proj", "out_proj", "fc1", "fc2"],
-    task_type=TaskType.SEQ_2_SEQ_LM,
     lora_dropout=0.05,
     bias="none",
 )
@@ -243,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 027 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 026 complete. Model saved to: {OUTPUT_DIR}")
