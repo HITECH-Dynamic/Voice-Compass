@@ -2150,3 +2150,50 @@ Note:
 
 Exp026 should become the new evaluation baseline for future optimization experiments.
 
+
+# Experiment 026
+
+Status: COMPLETE
+
+Purpose:
+
+Re-run the Exp020 champion configuration with the full available FLEURS Swahili validation split.
+
+Result:
+
+- Final WER = 0.2318
+- Final eval loss = 0.4474
+- Train samples = 2570
+- Validation samples = 211
+- Runtime = approximately 3h 7m
+
+Conclusion:
+
+The champion configuration remained strong under a larger validation split. Exp026 becomes the new trustworthy evaluation baseline.
+
+# Experiment 027
+
+Status: PLANNED
+
+Purpose:
+
+Test Tiago's suggestion to explicitly set LoRA task_type to SEQ_2_SEQ_LM.
+
+Configuration:
+
+Same as Exp026 except:
+
+- task_type = TaskType.SEQ_2_SEQ_LM
+
+Reference baseline:
+
+Exp026 final WER = 0.2318
+
+Question:
+
+Does explicitly setting the PEFT LoRA task type improve Whisper seq2seq ASR fine-tuning?
+
+Success criterion:
+
+WER < 0.2318
+
