@@ -1940,3 +1940,49 @@ Next direction:
 
 Begin multilingual sampling experiments using the Exp020 champion configuration.
 
+
+# Experiment 024
+
+Status: PLANNED
+
+Purpose:
+
+Test whether lowering the learning rate improves over the Exp020 champion.
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Dataset:
+
+FLEURS Swahili (sw_ke)
+
+Configuration:
+
+- r = 16
+- alpha = 32
+- target_modules = q_proj, k_proj, v_proj, out_proj, fc1, fc2
+- learning_rate = 1e-5
+- max_steps = 1000
+- seed = 42
+
+Reference baseline:
+
+Exp020 best WER = 0.2278
+
+Only variable changed:
+
+Learning rate decreased from 2e-5 to 1e-5.
+
+Question:
+
+Does a lower learning rate improve WER?
+
+Success criterion:
+
+WER < 0.2278
+

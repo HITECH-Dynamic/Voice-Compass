@@ -1,5 +1,5 @@
 """
-Experiment 023 — Whisper Large-v3 LoRA alpha 64 study
+Experiment 024 — Whisper Large-v3 LoRA learning rate 1e-5 study
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -32,9 +32,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 3070
 EVAL_SAMPLES = 100
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp023-whisper-large-v3-lora-qkvo-fc-a64"
+OUTPUT_DIR = "outputs/exp024-whisper-large-v3-lora-qkvo-fc-lr1e5"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp023-whisper-large-v3-lora-qkvo-fc-a64"
+RUN_NAME = "exp024-whisper-large-v3-lora-qkvo-fc-lr1e5"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 023. Alpha 64 study using the Exp020 champion architecture.",
+        "notes": "Experiment 024. Learning rate 1e-5 study using the Exp020 champion architecture.",
     },
 )
 
@@ -179,7 +179,7 @@ model = WhisperForConditionalGeneration.from_pretrained(MODEL_ID, torch_dtype=to
 
 lora_config = LoraConfig(
     r=16,
-    lora_alpha=64,
+    lora_alpha=32,
     target_modules=["q_proj", "k_proj", "v_proj", "out_proj", "fc1", "fc2"],
     lora_dropout=0.05,
     bias="none",
@@ -201,7 +201,7 @@ training_args = Seq2SeqTrainingArguments(
     per_device_train_batch_size=2,
     per_device_eval_batch_size=2,
     gradient_accumulation_steps=2,
-    learning_rate=2e-5,
+    learning_rate=1e-5,
     warmup_steps=10,
     fp16=use_fp16,
     bf16=use_bf16,
@@ -242,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 023 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 024 complete. Model saved to: {OUTPUT_DIR}")
