@@ -2222,3 +2222,48 @@ Decision:
 
 Return to Exp026 baseline.
 
+
+# Experiment 028
+
+Status: PLANNED
+
+Purpose:
+
+Evaluate whether automatic best-checkpoint selection improves the final model.
+
+Model:
+
+Whisper Large-v3
+
+Method:
+
+LoRA
+
+Configuration:
+
+Same as Exp026 except:
+
+- save_strategy = "steps"
+- save_steps = 100
+- evaluation_strategy = "steps"
+- eval_steps = 100
+- load_best_model_at_end = True
+- metric_for_best_model = "wer"
+- greater_is_better = False
+
+Reference baseline:
+
+Exp026 final WER = 0.2318
+
+Only variable changed:
+
+Best checkpoint selection.
+
+Question:
+
+Does restoring the best validation checkpoint improve the final WER?
+
+Success criterion:
+
+WER < 0.2318
+

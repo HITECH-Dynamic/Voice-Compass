@@ -1,5 +1,5 @@
 """
-Experiment 026 — Whisper Large-v3 LoRA full validation baseline
+Experiment 028 — Whisper Large-v3 LoRA best checkpoint study
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -32,9 +32,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 2570
 EVAL_SAMPLES = 211
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp026-whisper-large-v3-lora-qkvo-fc-val211"
+OUTPUT_DIR = "outputs/exp028-whisper-large-v3-lora-best-checkpoint"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp026-whisper-large-v3-lora-qkvo-fc-val211"
+RUN_NAME = "exp028-whisper-large-v3-lora-best-checkpoint"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 026. Full available validation baseline using the Exp020 champion architecture.",
+        "notes": "Experiment 028. Automatic best-checkpoint selection study.",
     },
 )
 
@@ -208,6 +208,11 @@ training_args = Seq2SeqTrainingArguments(
     predict_with_generate=True,
     generation_max_length=225,
     eval_strategy="steps",
+    save_steps=100,
+    save_strategy="steps",
+    load_best_model_at_end=True,
+    metric_for_best_model="wer",
+    greater_is_better=False,
     eval_steps=100,
     save_strategy="steps",
     save_steps=500,
@@ -242,4 +247,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 026 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 028 complete. Model saved to: {OUTPUT_DIR}")
