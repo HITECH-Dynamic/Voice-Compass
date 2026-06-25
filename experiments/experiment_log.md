@@ -1903,3 +1903,40 @@ Success criterion:
 
 WER < 0.2278
 
+
+# Experiment 023
+
+Status: COMPLETE
+
+Purpose:
+
+Test whether increasing LoRA alpha improves over the Exp020 champion.
+
+Configuration:
+
+Same as Exp020 except:
+
+- r = 16
+- alpha = 64
+
+Result:
+
+Best WER = 0.2319
+Final WER = 0.2376
+
+Reference baseline:
+
+Exp020 best WER = 0.2278
+
+Conclusion:
+
+Increasing LoRA alpha from 32 to 64 did not improve WER. Exp023 is not promoted.
+
+Current champion remains:
+
+Exp020
+
+Next direction:
+
+Begin multilingual sampling experiments using the Exp020 champion configuration.
+
