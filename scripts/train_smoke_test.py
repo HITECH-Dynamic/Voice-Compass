@@ -1,5 +1,5 @@
 """
-Experiment 028 — Whisper Large-v3 LoRA cosine scheduler study
+Experiment 029 — Whisper Large-v3 LoRA warmup study
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -32,9 +32,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 2570
 EVAL_SAMPLES = 211
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp028-whisper-large-v3-lora-cosine-scheduler"
+OUTPUT_DIR = "outputs/exp029-whisper-large-v3-lora-warmup50"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp028-whisper-large-v3-lora-cosine-scheduler"
+RUN_NAME = "exp029-whisper-large-v3-lora-warmup50"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 028. Explicit cosine learning-rate scheduler study.",
+        "notes": "Experiment 029. Warmup study (50 steps).",
     },
 )
 
@@ -202,8 +202,7 @@ training_args = Seq2SeqTrainingArguments(
     per_device_eval_batch_size=2,
     gradient_accumulation_steps=2,
     learning_rate=2e-5,
-    lr_scheduler_type="cosine",
-    warmup_steps=10,
+    warmup_steps=50,
     fp16=use_fp16,
     bf16=use_bf16,
     predict_with_generate=True,
@@ -243,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 028 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 029 complete. Model saved to: {OUTPUT_DIR}")

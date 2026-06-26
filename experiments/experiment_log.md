@@ -2332,3 +2332,51 @@ Difference:
 
 ### Conclusion
 The cosine scheduler reduced performance under the current training configuration. The default linear scheduler remains the preferred scheduler for future experiments.
+
+| Component           | Champion                                   |
+| ------------------- | ------------------------------------------ |
+| Base model          | Whisper Large-v3                           |
+| Validation split    | 2570 / 211                                 |
+| LoRA targets        | q_proj, k_proj, v_proj, out_proj, fc1, fc2 |
+| Rank                | 16                                         |
+| Alpha               | 32                                         |
+| Learning rate       | 2e-5                                       |
+| Scheduler           | Linear                                     |
+| Warmup              | 10 *(until Exp029)*                        |
+| Weight decay        | TBD                                        |
+| LoRA dropout        | 0.05 *(until Exp031)*                      |
+| Task type           | Default                                    |
+| Best validation WER | **0.2318 (Exp026)**                        |
+
+
+
+# Experiment 029
+
+Status: PLANNED
+
+Purpose
+
+Determine whether increasing warmup from 10 to 50 steps improves convergence.
+
+Reference
+
+Exp026
+
+Variable Changed
+
+warmup_steps
+
+10
+
+↓
+
+50
+
+Everything Else
+
+Unchanged.
+
+Success Criterion
+
+WER < 0.2318
+
