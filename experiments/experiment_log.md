@@ -2268,7 +2268,7 @@ Success criterion:
 WER < 0.2318
 
 
-# Experiment 028
+# Experiment 028 Revised
 
 Status: PLANNED
 
@@ -2298,3 +2298,37 @@ Success criterion:
 
 WER < 0.2318
 
+
+## Exp028 — Whisper Large-v3 LoRA + Cosine Scheduler
+
+**Date:** 2026-06-26
+
+### Purpose
+Evaluate whether replacing the default linear learning-rate scheduler with a cosine scheduler improves validation WER.
+
+### Variable Changed
+- `lr_scheduler_type`
+  - Linear → Cosine
+
+### Constant Parameters
+- Whisper Large-v3
+- LoRA r=16
+- LoRA alpha=32
+- LoRA targets: q_proj, k_proj, v_proj, out_proj, fc1, fc2
+- Learning rate: 2e-5
+- Train/Validation split: 2570 / 211
+- Batch size unchanged
+- Max steps: 1000
+
+### Results
+- Validation WER: **0.2505**
+
+### Comparison
+Exp026 (Linear Scheduler): **0.2318**
+Exp028 (Cosine Scheduler): **0.2505**
+
+Difference:
++0.0187 WER (≈8% relative degradation)
+
+### Conclusion
+The cosine scheduler reduced performance under the current training configuration. The default linear scheduler remains the preferred scheduler for future experiments.
