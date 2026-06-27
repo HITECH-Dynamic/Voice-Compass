@@ -2508,3 +2508,46 @@ Success criterion:
 
 WER < 0.2318
 
+
+# Experiment 032
+
+Status: COMPLETE
+
+Purpose:
+
+Test constant_with_warmup scheduler.
+
+Result:
+
+- Best usable WER = 0.2419
+- Final WER = 4.0899
+- Final eval loss = 0.38857
+
+Conclusion:
+
+constant_with_warmup was rejected. WER diverged late despite decreasing eval loss.
+
+Decision:
+
+Restore default linear scheduler.
+
+# Experiment 033
+
+Status: PLANNED
+
+Purpose:
+
+Test whether stronger LoRA dropout improves generalization.
+
+Reference baseline:
+
+Exp026 WER = 0.2318
+
+Only variable changed:
+
+- lora_dropout = 0.10
+
+Success criterion:
+
+WER < 0.2318
+

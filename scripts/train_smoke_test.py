@@ -1,5 +1,5 @@
 """
-Experiment 032 — Whisper Large-v3 LoRA constant_with_warmup scheduler study
+Experiment 033 — Whisper Large-v3 LoRA dropout 0.10 study
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -32,9 +32,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 2570
 EVAL_SAMPLES = 211
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp032-whisper-large-v3-lora-constant-with-warmup"
+OUTPUT_DIR = "outputs/exp033-whisper-large-v3-lora-dropout-010"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp032-whisper-large-v3-lora-constant-with-warmup"
+RUN_NAME = "exp033-whisper-large-v3-lora-dropout-010"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 032. constant_with_warmup scheduler study using Exp026 baseline.",
+        "notes": "Experiment 033. LoRA dropout 0.10 study using Exp026 baseline.",
     },
 )
 
@@ -181,7 +181,7 @@ lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
     target_modules=["q_proj", "k_proj", "v_proj", "out_proj", "fc1", "fc2"],
-    lora_dropout=0.05,
+    lora_dropout=0.10,
     bias="none",
 )
 
@@ -202,7 +202,6 @@ training_args = Seq2SeqTrainingArguments(
     per_device_eval_batch_size=2,
     gradient_accumulation_steps=2,
     learning_rate=2e-5,
-    lr_scheduler_type="constant_with_warmup",
     warmup_steps=10,
     fp16=use_fp16,
     bf16=use_bf16,
@@ -243,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 032 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 033 complete. Model saved to: {OUTPUT_DIR}")
