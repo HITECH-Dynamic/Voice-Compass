@@ -1,5 +1,5 @@
 """
-Experiment 031 — Whisper Large-v3 LoRA weight decay 0.001 study
+Experiment 032 — Whisper Large-v3 LoRA constant_with_warmup scheduler study
 
 Model   : Whisper Medium
 Data    : FLEURS sw_ke
@@ -32,9 +32,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 2570
 EVAL_SAMPLES = 211
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp031-whisper-large-v3-lora-weight-decay-0001"
+OUTPUT_DIR = "outputs/exp032-whisper-large-v3-lora-constant-with-warmup"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp031-whisper-large-v3-lora-weight-decay-0001"
+RUN_NAME = "exp032-whisper-large-v3-lora-constant-with-warmup"
 SEED = 42
 
 random.seed(SEED)
@@ -71,7 +71,7 @@ wandb.init(
         "lora": False,
         "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 031. Lighter weight decay study using Exp026 baseline.",
+        "notes": "Experiment 032. constant_with_warmup scheduler study using Exp026 baseline.",
     },
 )
 
@@ -202,7 +202,7 @@ training_args = Seq2SeqTrainingArguments(
     per_device_eval_batch_size=2,
     gradient_accumulation_steps=2,
     learning_rate=2e-5,
-    weight_decay=0.001,
+    lr_scheduler_type="constant_with_warmup",
     warmup_steps=10,
     fp16=use_fp16,
     bf16=use_bf16,
@@ -243,4 +243,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 031 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 032 complete. Model saved to: {OUTPUT_DIR}")

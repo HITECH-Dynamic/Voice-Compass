@@ -2484,3 +2484,27 @@ Matched the baseline and Exp030 exactly. No measurable improvement observed.
 
 **Decision**
 Weight decay is not currently a productive optimization direction. Restore the baseline configuration (no explicit weight decay) and move to the next optimization study.
+# Experiment 032
+
+Status: PLANNED
+
+Purpose:
+
+Test constant_with_warmup scheduler.
+
+Reference baseline:
+
+Exp026 / Exp030 / Exp031 WER = 0.2318
+
+Only variable changed:
+
+- lr_scheduler_type = "constant_with_warmup"
+
+Important reset:
+
+- Remove explicit weight_decay from Exp031.
+
+Success criterion:
+
+WER < 0.2318
+
