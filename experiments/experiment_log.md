@@ -2423,3 +2423,45 @@ Success criterion:
 
 WER < 0.2318
 
+
+# Experiment 030
+
+Status: COMPLETE
+
+Purpose:
+
+Test whether weight_decay=0.01 improves generalization.
+
+Result:
+
+- Final WER = 0.2318
+- Final eval loss = 0.4474
+
+Conclusion:
+
+weight_decay=0.01 matched Exp026 but did not clearly improve it.
+
+Decision:
+
+Do not promote yet.
+
+# Experiment 031
+
+Status: PLANNED
+
+Purpose:
+
+Test lighter weight decay.
+
+Reference baseline:
+
+Exp026 WER = 0.2318
+
+Only variable changed:
+
+- weight_decay = 0.001
+
+Success criterion:
+
+WER < 0.2318
+
