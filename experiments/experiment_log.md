@@ -2222,6 +2222,10 @@ Decision:
 
 Return to Exp026 baseline.
 
+"So Exp027 likely failed because PeftModelForSeq2SeqLM assumes a text seq2seq interface and passes input_ids, while Whisper training uses input_features for audio. There is also a PEFT GitHub issue specifically about Whisper and input_ids, which strongly supports this being a known PEFT/Whisper compatibility pattern.
+
+Decision: keep Exp027 closed as failed/incompatible. Do not spend compute retrying it during Phase 3. We can add a note later that the failure is likely due to PEFT’s SEQ_2_SEQ_LM wrapper being designed around text seq2seq models, not Whisper’s audio encoder interface."
+
 
 # Experiment 028
 
@@ -2377,6 +2381,45 @@ Everything Else
 Unchanged.
 
 Success Criterion
+
+WER < 0.2318
+
+
+# Experiment 029
+
+Status: COMPLETE
+
+Result:
+
+- Best observed WER = 0.2359
+- Final WER = 0.2460
+- Final eval loss = 0.4456
+
+Conclusion:
+
+warmup_steps=50 did not improve over Exp026. Reject.
+
+Decision:
+
+Restore warmup_steps=10.
+
+# Experiment 030
+
+Status: PLANNED
+
+Purpose:
+
+Test whether weight decay improves generalization.
+
+Reference baseline:
+
+Exp026 WER = 0.2318
+
+Only variable changed:
+
+- weight_decay = 0.01
+
+Success criterion:
 
 WER < 0.2318
 
