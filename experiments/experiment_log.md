@@ -2465,3 +2465,22 @@ Success criterion:
 
 WER < 0.2318
 
+## Exp031 — Weight Decay = 0.001
+
+**Objective**
+Evaluate whether a smaller weight decay (0.001) improves Whisper Small fine-tuning performance compared to the baseline and Exp030.
+
+**Configuration**
+- Based on: Exp026
+- weight_decay = 0.001
+- All other parameters unchanged
+
+**Results**
+- Eval Loss: 0.44737
+- WER: 0.2318
+
+**Outcome**
+Matched the baseline and Exp030 exactly. No measurable improvement observed.
+
+**Decision**
+Weight decay is not currently a productive optimization direction. Restore the baseline configuration (no explicit weight decay) and move to the next optimization study.
