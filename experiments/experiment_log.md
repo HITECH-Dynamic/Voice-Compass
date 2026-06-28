@@ -2551,3 +2551,38 @@ Success criterion:
 
 WER < 0.2318
 
+
+## Exp033 — Whisper Large-v3 LoRA Dropout 0.10
+
+**Date:** 2026-06-27
+
+### Objective
+Evaluate whether increasing LoRA dropout from 0.05 to 0.10 improves generalization and lowers validation WER.
+
+### Configuration
+- Base model: Whisper Large-v3
+- LoRA rank: 128
+- LoRA alpha: 64
+- LoRA dropout: **0.10**
+- Learning rate: 2e-5
+- Epochs: 1.56
+- Train/Validation split: 2570 / 211
+
+### Results
+- Best Validation WER: **0.2325**
+
+### Comparison
+- Exp026 (dropout 0.05): **0.2325**
+- Exp033 (dropout 0.10): **0.2325**
+
+Difference: **0.0000**
+
+### Conclusion
+Increasing LoRA dropout from 0.05 to 0.10 produced no measurable improvement. The model does not appear to be overfitting enough for additional LoRA regularization to be beneficial.
+
+### Decision
+Close the LoRA dropout study.
+
+Future experiments will continue using:
+
+- LoRA dropout = **0.05**
