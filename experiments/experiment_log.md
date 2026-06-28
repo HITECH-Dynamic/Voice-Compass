@@ -2692,3 +2692,66 @@ Effective batch:
 
 Success Criterion:
 WER < 0.2318
+
+
+## Experiment 035 — Effective Batch Size Study
+
+**Status:** COMPLETE
+
+**Date:** Day 11 (2026-06-28)
+
+### Objective
+
+Evaluate whether increasing the effective batch size improves Whisper Large-v3 LoRA performance.
+
+### Hypothesis
+
+Increasing the effective batch size from 4 to 8 will provide smoother optimization and reduce validation WER.
+
+### Configuration
+
+**Reference Baseline**
+
+* Exp026 (Champion)
+
+**Variable Changed**
+
+* Gradient Accumulation Steps:
+
+  * 2 → 4
+
+Effective Batch Size:
+
+* 4 → 8
+
+Everything else remained identical to the Exp026 champion.
+
+### Results
+
+Validation WER:
+
+**0.2371**
+
+Reference:
+
+Exp026 = **0.2318**
+
+Difference:
+
++0.0053 WER
+
+### Interpretation
+
+Increasing the effective batch size produced stable training but did not improve recognition accuracy over the current champion.
+
+Training converged normally and remained competitive, suggesting that effective batch size is not a major performance driver for the current dataset.
+
+### Conclusion
+
+Hypothesis not supported.
+
+### Decision
+
+Close the effective batch size study.
+
+Retain Exp026 as the current champion configuration.
