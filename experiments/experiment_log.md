@@ -1,3 +1,14 @@
+# Champion Timeline
+
+| Date | Experiment | WER | Change | Status |
+|------|------------|----:|--------|--------|
+| Day 2 | Baseline | TBD | Initial Whisper Large-v3 baseline | Champion |
+| Day 8 | Exp026 | **0.2318** | Improved validation split + optimized LoRA configuration | 🏆 Current Champion |
+
+---
+
+
+
 # Experiment 001
 
 Date: June 21, 2026
@@ -2586,3 +2597,36 @@ Close the LoRA dropout study.
 Future experiments will continue using:
 
 - LoRA dropout = **0.05**
+# Experiment 034
+
+Status: PLANNED
+
+Purpose:
+
+Test training-only audio augmentation.
+
+Hypothesis:
+
+Light speed and gain augmentation will improve acoustic robustness and reduce WER.
+
+Reference baseline:
+
+Exp026 WER = 0.2318
+
+Only variable changed:
+
+- Training audio augmentation enabled
+
+Augmentation:
+
+- Speed perturbation: 0.9x, 1.0x, 1.1x
+- Gain perturbation: -3 dB to +3 dB
+
+Validation:
+
+- No augmentation applied to validation set.
+
+Success criterion:
+
+WER < 0.2318
+

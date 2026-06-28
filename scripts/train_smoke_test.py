@@ -1,10 +1,10 @@
 """
-Experiment 033 — Whisper Large-v3 LoRA dropout 0.10 study
+Experiment 034 — Whisper Large-v3 LoRA audio augmentation study
 
-Model   : Whisper Medium
+Model   : Whisper Large-v3
 Data    : FLEURS sw_ke
-Steps   : 500
-Goal    : Strengthen the baseline after Experiment 001 proved the pipeline works.
+Steps   : 1000
+Goal    : Test training-only speed and gain augmentation against the Exp026 champion.
 """
 
 import wandb
@@ -32,9 +32,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 2570
 EVAL_SAMPLES = 211
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp033-whisper-large-v3-lora-dropout-010"
+OUTPUT_DIR = "outputs/exp034-whisper-large-v3-lora-audio-augmentation"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp033-whisper-large-v3-lora-dropout-010"
+RUN_NAME = "exp034-whisper-large-v3-lora-audio-augmentation"
 SEED = 42
 
 random.seed(SEED)
@@ -69,9 +69,9 @@ wandb.init(
         "device": DEVICE,
         "seed": SEED,
         "lora": False,
-        "augmentation": False,
+        "augmentation": True,
         "language_weighting": False,
-        "notes": "Experiment 033. LoRA dropout 0.10 study using Exp026 baseline.",
+        "notes": "Experiment 034. Training-only audio augmentation study using Exp026 champion baseline.",
     },
 )
 
@@ -94,10 +94,41 @@ processor = WhisperProcessor.from_pretrained(
     task=TASK,
 )
 
-def prepare_dataset(batch):
+def augment_audio_array(audio_array, sampling_rate):
+    """
+    Training-only augmentation.
+
+    Applies:
+    - speed perturbation: 0.9x, 1.0x, 1.1x
+    - gain perturbation: -3 dB to +3 dB
+    """
+    audio_array = np.asarray(audio_array, dtype=np.float32)
+
+    speed = random.choice([0.9, 1.0, 1.1])
+    if speed != 1.0 and len(audio_array) > 1:
+        old_indices = np.arange(len(audio_array))
+        new_length = max(1, int(len(audio_array) / speed))
+        new_indices = np.linspace(0, len(audio_array) - 1, new_length)
+        audio_array = np.interp(new_indices, old_indices, audio_array).astype(np.float32)
+
+    gain_db = random.uniform(-3.0, 3.0)
+    gain = 10 ** (gain_db / 20.0)
+    audio_array = audio_array * gain
+
+    audio_array = np.clip(audio_array, -1.0, 1.0).astype(np.float32)
+
+    return audio_array
+
+
+def prepare_dataset(batch, augment=False):
     audio = batch["audio"]
+    audio_array = audio["array"]
+
+    if augment:
+        audio_array = augment_audio_array(audio_array, audio["sampling_rate"])
+
     batch["input_features"] = processor.feature_extractor(
-        audio["array"],
+        audio_array,
         sampling_rate=audio["sampling_rate"],
     ).input_features[0]
     batch["labels"] = processor.tokenizer(batch["transcription"]).input_ids
@@ -105,12 +136,12 @@ def prepare_dataset(batch):
 
 print("Processing audio...")
 train_ds = train_ds.map(
-    prepare_dataset,
+    lambda batch: prepare_dataset(batch, augment=True),
     remove_columns=train_ds.column_names,
     num_proc=1,
 )
 eval_ds = eval_ds.map(
-    prepare_dataset,
+    lambda batch: prepare_dataset(batch, augment=False),
     remove_columns=eval_ds.column_names,
     num_proc=1,
 )
@@ -181,7 +212,7 @@ lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
     target_modules=["q_proj", "k_proj", "v_proj", "out_proj", "fc1", "fc2"],
-    lora_dropout=0.10,
+    lora_dropout=0.05,
     bias="none",
 )
 
@@ -242,4 +273,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 033 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 034 complete. Model saved to: {OUTPUT_DIR}")
