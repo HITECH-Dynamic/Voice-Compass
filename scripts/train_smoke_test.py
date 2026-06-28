@@ -1,10 +1,10 @@
 """
-Experiment 034 — Whisper Large-v3 LoRA audio augmentation study
+Experiment 035 — Whisper Large-v3 effective batch size study
 
 Model   : Whisper Large-v3
 Data    : FLEURS sw_ke
 Steps   : 1000
-Goal    : Test training-only speed and gain augmentation against the Exp026 champion.
+Goal    : Test effective batch size 8 against the Exp026 champion.
 """
 
 import wandb
@@ -32,9 +32,9 @@ TASK = "transcribe"
 TRAIN_SAMPLES = 2570
 EVAL_SAMPLES = 211
 MAX_STEPS = 1000
-OUTPUT_DIR = "outputs/exp034-whisper-large-v3-lora-audio-augmentation"
+OUTPUT_DIR = "outputs/exp035-whisper-large-v3-effective-batch-8"
 WANDB_PROJECT = "afrivoices-asr"
-RUN_NAME = "exp034-whisper-large-v3-lora-audio-augmentation"
+RUN_NAME = "exp035-whisper-large-v3-effective-batch-8"
 SEED = 42
 
 random.seed(SEED)
@@ -69,9 +69,9 @@ wandb.init(
         "device": DEVICE,
         "seed": SEED,
         "lora": False,
-        "augmentation": True,
+        "augmentation": False,
         "language_weighting": False,
-        "notes": "Experiment 034. Training-only audio augmentation study using Exp026 champion baseline.",
+        "notes": "Experiment 035. Effective batch size 8 study using Exp026 champion baseline.",
     },
 )
 
@@ -94,41 +94,10 @@ processor = WhisperProcessor.from_pretrained(
     task=TASK,
 )
 
-def augment_audio_array(audio_array, sampling_rate):
-    """
-    Training-only augmentation.
-
-    Applies:
-    - speed perturbation: 0.9x, 1.0x, 1.1x
-    - gain perturbation: -3 dB to +3 dB
-    """
-    audio_array = np.asarray(audio_array, dtype=np.float32)
-
-    speed = random.choice([0.9, 1.0, 1.1])
-    if speed != 1.0 and len(audio_array) > 1:
-        old_indices = np.arange(len(audio_array))
-        new_length = max(1, int(len(audio_array) / speed))
-        new_indices = np.linspace(0, len(audio_array) - 1, new_length)
-        audio_array = np.interp(new_indices, old_indices, audio_array).astype(np.float32)
-
-    gain_db = random.uniform(-3.0, 3.0)
-    gain = 10 ** (gain_db / 20.0)
-    audio_array = audio_array * gain
-
-    audio_array = np.clip(audio_array, -1.0, 1.0).astype(np.float32)
-
-    return audio_array
-
-
-def prepare_dataset(batch, augment=False):
+def prepare_dataset(batch):
     audio = batch["audio"]
-    audio_array = audio["array"]
-
-    if augment:
-        audio_array = augment_audio_array(audio_array, audio["sampling_rate"])
-
     batch["input_features"] = processor.feature_extractor(
-        audio_array,
+        audio["array"],
         sampling_rate=audio["sampling_rate"],
     ).input_features[0]
     batch["labels"] = processor.tokenizer(batch["transcription"]).input_ids
@@ -136,12 +105,12 @@ def prepare_dataset(batch, augment=False):
 
 print("Processing audio...")
 train_ds = train_ds.map(
-    lambda batch: prepare_dataset(batch, augment=True),
+    prepare_dataset,
     remove_columns=train_ds.column_names,
     num_proc=1,
 )
 eval_ds = eval_ds.map(
-    lambda batch: prepare_dataset(batch, augment=False),
+    prepare_dataset,
     remove_columns=eval_ds.column_names,
     num_proc=1,
 )
@@ -231,7 +200,7 @@ training_args = Seq2SeqTrainingArguments(
     max_steps=MAX_STEPS,
     per_device_train_batch_size=2,
     per_device_eval_batch_size=2,
-    gradient_accumulation_steps=2,
+    gradient_accumulation_steps=4,
     learning_rate=2e-5,
     warmup_steps=10,
     fp16=use_fp16,
@@ -273,4 +242,4 @@ processor.save_pretrained(OUTPUT_DIR)
 
 wandb.finish()
 
-print(f"Experiment 034 complete. Model saved to: {OUTPUT_DIR}")
+print(f"Experiment 035 complete. Model saved to: {OUTPUT_DIR}")

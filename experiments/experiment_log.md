@@ -2670,3 +2670,25 @@ For the present training recipe, Whisper Large-v3 appears to generalize better w
 Close augmentation study.
 
 Exp026 remains the project champion.
+
+
+## Exp035 — Effective Batch Size Study
+
+Status: PLANNED
+
+Reference:
+Exp026 champion
+
+Hypothesis:
+Increasing the effective batch size from 4 to 8 will improve optimization stability and reduce WER.
+
+Variable Changed:
+gradient_accumulation_steps
+
+2 → 4
+
+Effective batch:
+4 → 8
+
+Success Criterion:
+WER < 0.2318
