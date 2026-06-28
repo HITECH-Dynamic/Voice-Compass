@@ -2630,3 +2630,43 @@ Success criterion:
 
 WER < 0.2318
 
+
+## Exp034 — Audio Augmentation (Speed + Gain)
+
+Date: 2026-06-28
+
+### Objective
+Evaluate whether simple training-time audio augmentation improves Whisper Large-v3 LoRA performance.
+
+### Configuration
+- Base model: Whisper Large-v3
+- LoRA: q_proj, k_proj, v_proj, out_proj, fc1, fc2
+- Dataset: FLEURS Swahili
+- Train/Validation: 2570 / 211 (80/20)
+- Learning rate: 2e-5
+- Batch size: unchanged
+- Epochs: unchanged
+- Audio augmentation:
+  - Random speed perturbation
+  - Random gain adjustment
+- Validation data left untouched
+
+### Result
+Validation WER: 0.2484
+
+### Comparison
+Exp026 (baseline): 0.2318
+
+Difference:
++0.0166 WER
+≈7.2% relative degradation
+
+### Conclusion
+Training-only audio augmentation did not improve recognition performance on the current validation set.
+
+For the present training recipe, Whisper Large-v3 appears to generalize better without these augmentations.
+
+### Decision
+Close augmentation study.
+
+Exp026 remains the project champion.
