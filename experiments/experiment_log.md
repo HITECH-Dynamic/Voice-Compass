@@ -2756,8 +2756,11 @@ Close the effective batch size study.
 
 Retain Exp026 as the current champion configuration.
 
-| Exp036A | AfriVoices Dataset Profiling | Whisper Large-v3 (N/A) | Dataset Engineering | Completed | Successfully profiled the full AfriVoices competition corpus (1.08M utterances, 5,542.97 hours, 6 languages, 7 source repositories). Identified significant language imbalance and validated dataset accessibility. Established reusable profiling pipeline to support manifest generation and future experiments. |
+# | Exp036A | 
+AfriVoices Dataset Profiling | Whisper Large-v3 (N/A) | Dataset Engineering | Completed | Successfully profiled the full AfriVoices competition corpus (1.08M utterances, 5,542.97 hours, 6 languages, 7 source repositories). Identified significant language imbalance and validated dataset accessibility. Established reusable profiling pipeline to support manifest generation and future experiments. |
 
-| Exp036B | Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Planned | Build normalized train/dev/test manifest parquet files from all AfriVoices source repositories. This is the final data-engineering step before Exp037 competition baseline training. |
+# | Exp036B | 
+Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Planned | Build normalized train/dev/test manifest parquet files from all AfriVoices source repositories. This is the final data-engineering step before Exp037 competition baseline training. |
 
-| Exp036B | Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed | Generated train/dev/test manifests across all six AfriVoices languages. Added row-level unique IDs. Train/dev/test rows: 1,015,803 / 35,578 / 30,618. |
+# | Exp036B | 
+Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed | Generated train/dev/test manifests across all six AfriVoices languages. Added row-level unique IDs. Train/dev/test rows: 1,015,803 / 35,578 / 30,618. |
