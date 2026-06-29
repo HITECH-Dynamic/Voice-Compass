@@ -64,6 +64,13 @@ def normalize_split(split):
     return split
 
 
+def safe_series(df, column, default=""):
+    """Return a column as a Series, or a default Series when missing."""
+    if column in df.columns:
+        return df[column]
+    return pd.Series([default] * len(df), index=df.index)
+
+
 def load_anv_source(iso, info):
     repo = info["repo"]
     files = list_repo_files(repo_id=repo, repo_type="dataset")
@@ -98,7 +105,8 @@ def load_anv_source(iso, info):
         except Exception:
             pass
 
-        tx["id"] = tx.get("mediaPathId", "").astype(str).str.replace("VOICE_COLLECTION/", "", regex=False).str.replace(".wav", "", regex=False)
+        media_path = safe_series(tx, "mediaPathId", "")
+tx["id"] = media_path.astype(str).str.replace("VOICE_COLLECTION/", "", regex=False).str.replace(".wav", "", regex=False)
         tx["language"] = iso
         tx["language_name"] = info["name"]
         tx["source_repo"] = repo
@@ -107,18 +115,18 @@ def load_anv_source(iso, info):
         tx["raw_split"] = raw_split
         tx["speech_type"] = speech_type
         tx["audio_source_type"] = "parquet_bytes"
-        tx["audio_ref"] = tx.get("mediaPathId", "")
-        tx["audio_filename"] = tx.get("mediaPathId", "").astype(str).str.split("/").str[-1]
+        tx["audio_ref"] = safe_series(tx, "mediaPathId", "")
+        tx["audio_filename"] = safe_series(tx, "mediaPathId", "").astype(str).str.split("/").str[-1]
         tx["audio_parquet_candidates"] = json.dumps(audio_map.get((raw_split, speech_type), []))
-        tx["transcription"] = tx.get("actualSentence", tx.get("transcription", ""))
-        tx["translation"] = tx.get("translatedText", "")
-        tx["duration_seconds"] = pd.to_numeric(tx.get("duration", None), errors="coerce")
-        tx["speaker_id"] = tx.get("recorder_uuid", "")
-        tx["dialect"] = tx.get("sentenceDialect", tx.get("dialect", ""))
-        tx["domain"] = tx.get("domain", tx.get("topic", ""))
-        tx["gender"] = tx.get("gender", "")
-        tx["age"] = tx.get("ownerAge", "")
-        tx["county"] = tx.get("countyName", "")
+        tx["transcription"] = safe_series(tx, "actualSentence", safe_series(tx, "transcription", ""))
+        tx["translation"] = safe_series(tx, "translatedText", "")
+        tx["duration_seconds"] = pd.to_numeric(safe_series(tx, "duration", None), errors="coerce")
+        tx["speaker_id"] = safe_series(tx, "recorder_uuid", "")
+        tx["dialect"] = safe_series(tx, "sentenceDialect", safe_series(tx, "dialect", ""))
+        tx["domain"] = safe_series(tx, "domain", safe_series(tx, "topic", ""))
+        tx["gender"] = safe_series(tx, "gender", "")
+        tx["age"] = safe_series(tx, "ownerAge", "")
+        tx["county"] = safe_series(tx, "countyName", "")
         tx["metadata"] = "{}"
 
         keep = [
