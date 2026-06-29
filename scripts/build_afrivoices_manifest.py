@@ -39,6 +39,7 @@ ANV_SOURCES = {
 }
 
 KEEP_COLUMNS = [
+    "unique_id",
     "id",
     "language",
     "language_name",
@@ -191,6 +192,18 @@ def normalize_anv_transcripts(
         }
     )
 
+    out["unique_id"] = (
+        out["language"].astype(str)
+        + "_"
+        + out["split"].astype(str)
+        + "_"
+        + out["speech_type"].astype(str)
+        + "_"
+        + out["source_repo"].astype(str).str.replace("/", "_", regex=False)
+        + "_"
+        + out["id"].astype(str)
+    )
+
     return out[KEEP_COLUMNS]
 
 
@@ -298,6 +311,7 @@ def load_swahili_source() -> pd.DataFrame:
 
                 rows.append(
                     {
+                        "unique_id": f"swa_{split}_spontaneous_{key}",
                         "id": f"swa_{key}",
                         "language": "swa",
                         "language_name": "Swahili",
@@ -338,7 +352,7 @@ def load_swahili_source() -> pd.DataFrame:
 
 
 def validate_manifest(df: pd.DataFrame) -> None:
-    required = ["id", "language", "split", "audio_ref", "transcription"]
+    required = ["unique_id", "id", "language", "split", "audio_ref", "transcription"]
     missing_cols = [column for column in required if column not in df.columns]
 
     if missing_cols:
@@ -360,8 +374,13 @@ def validate_manifest(df: pd.DataFrame) -> None:
         print(f"WARNING: train/dev rows with missing transcription: {missing_transcripts:,}")
 
     duplicate_ids = df["id"].duplicated().sum()
+    duplicate_unique_ids = df["unique_id"].duplicated().sum()
+
     if duplicate_ids:
-        print(f"WARNING: duplicate IDs detected: {duplicate_ids:,}")
+        print(f"NOTE: original source IDs are duplicated: {duplicate_ids:,}")
+
+    if duplicate_unique_ids:
+        raise ValueError(f"Duplicate unique_id values detected: {duplicate_unique_ids:,}")
 
 
 def write_outputs(df: pd.DataFrame) -> None:
