@@ -1,0 +1,34 @@
+language,language_name,split,speech_type,rows,hours
+kik,Kikuyu,dev,scripted,6824,8.430479381908333
+kik,Kikuyu,dev,unscripted,1047,0.0
+kik,Kikuyu,test,scripted,6522,8.291972106572223
+kik,Kikuyu,test,unscripted,2441,31.867337477069444
+kik,Kikuyu,train,scripted,111198,154.38387447451942
+kik,Kikuyu,train,unscripted,18604,0.0
+kln,Kalenjin,dev,scripted,8759,14.532986963894444
+kln,Kalenjin,dev,unscripted,1771,25.325740883511113
+kln,Kalenjin,test,scripted,2402,4.403625075466667
+kln,Kalenjin,test,unscripted,913,15.800797558586114
+kln,Kalenjin,train,scripted,59780,99.19611985669722
+kln,Kalenjin,train,unscripted,22598,336.99962874023106
+luo,Luo / Dholuo,dev,scripted,5377,10.250233384833333
+luo,Luo / Dholuo,dev,unscripted,1814,26.500998952097223
+luo,Luo / Dholuo,test,scripted,5132,9.560760176733336
+luo,Luo / Dholuo,test,unscripted,1530,21.92745438090278
+luo,Luo / Dholuo,train,scripted,87497,164.12469995325833
+luo,Luo / Dholuo,train,unscripted,30068,449.3345025593861
+mas,Maasai,dev,scripted,969,1.7041293400555555
+mas,Maasai,dev,unscripted,1314,21.59284810166111
+mas,Maasai,test,scripted,1426,2.7206852932888888
+mas,Maasai,test,unscripted,1479,22.447847525494442
+mas,Maasai,train,scripted,25811,43.11709673831389
+mas,Maasai,train,unscripted,28098,391.09038601109165
+som,Somali,dev,scripted,2559,4.4926117730833335
+som,Somali,dev,unscripted,1085,17.502717762525002
+som,Somali,test,scripted,3738,6.302416421361112
+som,Somali,test,unscripted,847,17.64544507373889
+som,Somali,train,scripted,63160,103.13054412244443
+som,Somali,train,unscripted,18411,329.111377101325
+swa,Swahili,dev,spontaneous,4059,23.241446759166664
+swa,Swahili,test,spontaneous,4188,24.303147777777777
+swa,Swahili,train,spontaneous,550578,3153.6398482505556
