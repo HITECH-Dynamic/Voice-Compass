@@ -32,13 +32,25 @@ SWAHILI_REPO = "DigitalUmuganda/Afrivoice_Swahili"
 
 
 def read_csv_safe(path):
-    """Read CSV with encoding fallback for multilingual metadata files."""
+    """Read CSV with encoding and parser fallback for multilingual metadata files."""
     for encoding in ["utf-8", "utf-8-sig", "latin1", "cp1252"]:
         try:
-            return pd.read_csv(path, encoding=encoding)
+            return pd.read_csv(
+                path,
+                encoding=encoding,
+                engine="python",
+                on_bad_lines="skip",
+            )
         except UnicodeDecodeError:
             continue
-    return pd.read_csv(path, encoding="latin1", encoding_errors="replace")
+
+    return pd.read_csv(
+        path,
+        encoding="latin1",
+        encoding_errors="replace",
+        engine="python",
+        on_bad_lines="skip",
+    )
 
 
 def load_anv_language(iso, info):
