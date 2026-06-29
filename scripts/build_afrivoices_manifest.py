@@ -420,6 +420,14 @@ def main() -> None:
         frames.append(load_anv_source(iso, info))
 
     manifest = pd.concat(frames, ignore_index=True)
+
+    # Guarantee row-level uniqueness while preserving original source IDs.
+    manifest["unique_id"] = (
+        manifest["unique_id"].astype(str)
+        + "_row"
+        + manifest.index.astype(str)
+    )
+
     write_outputs(manifest)
 
     print("Exp036B unified manifest generation complete.")
