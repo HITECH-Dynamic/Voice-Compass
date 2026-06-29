@@ -30,6 +30,17 @@ ANV_SOURCES = {
 SWAHILI_REPO = "DigitalUmuganda/Afrivoice_Swahili"
 
 
+
+def read_csv_safe(path):
+    """Read CSV with encoding fallback for multilingual metadata files."""
+    for encoding in ["utf-8", "utf-8-sig", "latin1", "cp1252"]:
+        try:
+            return pd.read_csv(path, encoding=encoding)
+        except UnicodeDecodeError:
+            continue
+    return pd.read_csv(path, encoding="latin1", encoding_errors="replace")
+
+
 def load_anv_language(iso, info):
     repo = info["repo"]
     files = list_repo_files(repo_id=repo, repo_type="dataset")
@@ -45,12 +56,12 @@ def load_anv_language(iso, info):
         speech_type = parts[1] if len(parts) > 1 else "unknown"
 
         tx_path = hf_hub_download(repo_id=repo, repo_type="dataset", filename=tx_file)
-        tx = pd.read_csv(tx_path)
+        tx = read_csv_safe(tx_path)
 
         matching_meta = tx_file.replace("transcripts.csv", "meta.csv")
         if matching_meta in meta_files:
             meta_path = hf_hub_download(repo_id=repo, repo_type="dataset", filename=matching_meta)
-            meta = pd.read_csv(meta_path)
+            meta = read_csv_safe(meta_path)
             if "recorder_uuid" in tx.columns and "recorder_uuid" in meta.columns:
                 tx = tx.merge(meta, on="recorder_uuid", how="left", suffixes=("", "_speaker"))
 
