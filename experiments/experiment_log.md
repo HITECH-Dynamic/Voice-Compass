@@ -2764,3 +2764,5 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Planned | B
 
 # | Exp036B | 
 Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed | Generated train/dev/test manifests across all six AfriVoices languages. Added row-level unique IDs. Train/dev/test rows: 1,015,803 / 35,578 / 30,618. |
+
+| Exp037 | First AfriVoices Real-Data Training Run | Whisper Large-v3 + LoRA | Unified Manifest / Balanced Subset | Planned | First real competition-data training run. Use Exp026 champion settings with filtered balanced AfriVoices subset. Primary goal is end-to-end validation of manifest loading, audio resolution, training, validation, and checkpointing. |
