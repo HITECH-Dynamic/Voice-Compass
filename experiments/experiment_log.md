@@ -2755,3 +2755,5 @@ Hypothesis not supported.
 Close the effective batch size study.
 
 Retain Exp026 as the current champion configuration.
+
+| Exp036A | AfriVoices Dataset Profiling | Whisper Large-v3 (N/A) | Dataset Engineering | Completed | Successfully profiled the full AfriVoices competition corpus (1.08M utterances, 5,542.97 hours, 6 languages, 7 source repositories). Identified significant language imbalance and validated dataset accessibility. Established reusable profiling pipeline to support manifest generation and future experiments. |
