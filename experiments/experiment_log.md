@@ -2784,3 +2784,6 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed |
 | Exp040A | ANV Audio Index Builder | N/A | Dataset Optimization | Planned | Build filename-to-parquet-shard lookup index for ANV audio so training no longer scans many large Parquet files per example. |
 
 | Exp040B | Indexed ANV Resolver | N/A | Dataset Optimization | Planned | Update AfriVoicesDataset to use prebuilt ANV audio index for direct filename-to-shard lookup, with fallback to original scanning behavior. |
+
+| Exp040A | Bounded ANV Audio Index Builder | N/A | Dataset Optimization | Completed | Revised from full-corpus indexing to bounded smoke index after full indexing proved too expensive. Built Kikuyu train/scripted index over 2 shards with 2,550 unique audio filenames. |
+| Exp040B | Indexed ANV Resolver | N/A | Dataset Optimization | Completed | Updated AfriVoicesDataset to use optional ANV audio index for direct filename-to-Parquet lookup. Successfully resolved a Kikuyu example directly from indexed shard train_scripted_001.parquet. |
