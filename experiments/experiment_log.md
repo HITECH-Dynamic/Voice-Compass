@@ -2770,3 +2770,5 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed |
 | Exp037 | AfriVoices Audio Resolver Test | N/A | Audio Resolution | Completed | Successfully resolved and decoded both ANV-KE parquet_bytes audio and Swahili tar.xz/WebM audio from unified manifests. Confirmed 16 kHz waveform output. Identified need to optimize parquet shard lookup before large-scale training. |
 
 | Exp038A | AfriVoices Dataset Class Test | N/A | Dataset Loader | Planned | Build a dataset-style loader that reads unified manifests, filters bad rows, resolves audio, and returns decoded waveform/transcript examples before Whisper processor integration. |
+
+| Exp038A | AfriVoices Dataset Class Test | N/A | Dataset Loader | Completed | Built reusable AfriVoicesDataset class and validated manifest-to-waveform loading for both ANV Parquet audio and Swahili tar.xz/WebM audio. |
