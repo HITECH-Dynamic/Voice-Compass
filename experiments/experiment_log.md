@@ -2782,3 +2782,5 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed |
 | Exp039 | First End-to-End Whisper Training | Whisper Large-v3 + LoRA | Smoke Training | Completed | Successfully trained and evaluated Whisper Large-v3 with LoRA on real AfriVoices data. Verified complete pipeline from manifest through audio decoding, feature extraction, Trainer, evaluation, and checkpoint generation. Train loss: 1.033, Eval loss: 1.8156. |
 
 | Exp040A | ANV Audio Index Builder | N/A | Dataset Optimization | Planned | Build filename-to-parquet-shard lookup index for ANV audio so training no longer scans many large Parquet files per example. |
+
+| Exp040B | Indexed ANV Resolver | N/A | Dataset Optimization | Planned | Update AfriVoicesDataset to use prebuilt ANV audio index for direct filename-to-shard lookup, with fallback to original scanning behavior. |
