@@ -26,12 +26,42 @@ class AfriVoicesDataset(Dataset):
         languages=None,
         max_duration=30.0,
         max_rows_per_language=None,
+        anv_index_path=None,
     ):
         self.manifest_path = Path(manifest_path)
         self.languages = languages
         self.max_duration = max_duration
         self.max_rows_per_language = max_rows_per_language
+        self.anv_index_path = Path(anv_index_path) if anv_index_path else None
+        self.anv_index = self._load_anv_index()
         self.df = self._load_manifest()
+
+    def _load_anv_index(self):
+        if self.anv_index_path is None:
+            return None
+
+        if not self.anv_index_path.exists():
+            raise FileNotFoundError(f"ANV index not found: {self.anv_index_path}")
+
+        index = pd.read_parquet(self.anv_index_path)
+        return index
+
+    def _lookup_indexed_parquet(self, row):
+        if self.anv_index is None:
+            return None
+
+        filename = str(row["audio_filename"])
+        language = str(row["language"])
+
+        matches = self.anv_index[
+            (self.anv_index["language"].astype(str) == language)
+            & (self.anv_index["audio_filename"].astype(str) == filename)
+        ]
+
+        if matches.empty:
+            return None
+
+        return matches.iloc[0]["parquet_file"]
 
     def _load_manifest(self):
         df = pd.read_parquet(self.manifest_path)
@@ -75,7 +105,12 @@ class AfriVoicesDataset(Dataset):
     def _resolve_anv_parquet(self, row):
         repo_id = row["source_repo"]
         filename = row["audio_filename"]
-        candidates = json.loads(row["audio_parquet_candidates"])
+
+        indexed_parquet = self._lookup_indexed_parquet(row)
+        if indexed_parquet:
+            candidates = [indexed_parquet]
+        else:
+            candidates = json.loads(row["audio_parquet_candidates"])
 
         for parquet_file in candidates:
             parquet_path = hf_hub_download(
