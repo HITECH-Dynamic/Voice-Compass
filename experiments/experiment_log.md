@@ -2800,3 +2800,6 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed |
 
 | Exp041B | Global ANV Audio Index Generation | N/A | Dataset Optimization | Planned | Build a production filename → Parquet lookup table incrementally across all ANV repositories. Support resumable indexing and generate a reusable global audio index. |
 
+
+| Exp041B | Global ANV Audio Index Generation | N/A | Dataset Optimization | Planned | Build a production filename → Parquet lookup table incrementally across all ANV repositories. Builder will support resumable execution, automatic shard skipping, checkpointing after each shard, and recovery from interrupted Colab sessions. |
+
