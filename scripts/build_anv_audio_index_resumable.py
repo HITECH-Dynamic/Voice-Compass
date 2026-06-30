@@ -17,6 +17,7 @@ Outputs:
 
 from pathlib import Path
 import argparse
+import time
 import pandas as pd
 from huggingface_hub import hf_hub_download, list_repo_files
 
@@ -45,6 +46,8 @@ def parse_args():
     parser.add_argument("--split", default=None)
     parser.add_argument("--speech-type", default=None)
     parser.add_argument("--max-shards", type=int, default=None)
+    parser.add_argument("--max-retries", type=int, default=3)
+    parser.add_argument("--retry-sleep", type=int, default=30)
     parser.add_argument("--force", action="store_true")
     return parser.parse_args()
 
@@ -129,16 +132,35 @@ def get_candidate_shards(repo, split_filter=None, speech_type_filter=None):
     return shards
 
 
-def read_filenames_from_shard(repo, parquet_file):
-    local_path = hf_hub_download(
-        repo_id=repo,
-        repo_type="dataset",
-        filename=parquet_file,
-    )
+def read_filenames_from_shard(repo, parquet_file, max_retries=3, retry_sleep=30):
+    last_error = None
 
-    df = pd.read_parquet(local_path, columns=["filename"])
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"Download attempt {attempt}/{max_retries}: {parquet_file}")
 
-    return df["filename"].astype(str)
+            local_path = hf_hub_download(
+                repo_id=repo,
+                repo_type="dataset",
+                filename=parquet_file,
+                resume_download=True,
+            )
+
+            df = pd.read_parquet(local_path, columns=["filename"])
+            return df["filename"].astype(str)
+
+        except KeyboardInterrupt:
+            raise
+
+        except Exception as exc:
+            last_error = exc
+            print(f"WARNING: attempt {attempt} failed for {parquet_file}: {exc}")
+
+            if attempt < max_retries:
+                print(f"Sleeping {retry_sleep}s before retry...")
+                time.sleep(retry_sleep)
+
+    raise RuntimeError(f"Failed after {max_retries} attempts: {parquet_file}") from last_error
 
 
 def main():
@@ -179,39 +201,65 @@ def main():
             print(f"INDEXING: {parquet_file}")
 
             split, speech_type = parse_shard_path(parquet_file)
-            filenames = read_filenames_from_shard(repo, parquet_file)
+            try:
+                filenames = read_filenames_from_shard(
+                    repo,
+                    parquet_file,
+                    max_retries=args.max_retries,
+                    retry_sleep=args.retry_sleep,
+                )
 
-            rows = pd.DataFrame(
-                {
-                    "language": iso,
-                    "repo": repo,
-                    "split": split,
-                    "speech_type": speech_type,
-                    "parquet_file": parquet_file,
-                    "audio_filename": filenames,
-                }
-            )
+                rows = pd.DataFrame(
+                    {
+                        "language": iso,
+                        "repo": repo,
+                        "split": split,
+                        "speech_type": speech_type,
+                        "parquet_file": parquet_file,
+                        "audio_filename": filenames,
+                    }
+                )
 
-            index = pd.concat([index, rows], ignore_index=True)
+                index = pd.concat([index, rows], ignore_index=True)
 
-            progress_row = pd.DataFrame(
-                [{
-                    "language": iso,
-                    "repo": repo,
-                    "split": split,
-                    "speech_type": speech_type,
-                    "parquet_file": shard_key,
-                    "status": "completed",
-                    "rows": len(rows),
-                }]
-            )
-            progress = pd.concat([progress, progress_row], ignore_index=True)
+                progress_row = pd.DataFrame(
+                    [{
+                        "language": iso,
+                        "repo": repo,
+                        "split": split,
+                        "speech_type": speech_type,
+                        "parquet_file": shard_key,
+                        "status": "completed",
+                        "rows": len(rows),
+                    }]
+                )
+                progress = pd.concat([progress, progress_row], ignore_index=True)
 
-            save_outputs(index, progress)
+                save_outputs(index, progress)
 
-            total_processed_this_run += 1
+                total_processed_this_run += 1
 
-            print(f"Saved progress after shard. Rows added: {len(rows):,}")
+                print(f"Saved progress after shard. Rows added: {len(rows):,}")
+
+            except Exception as exc:
+                print(f"ERROR: failed shard: {parquet_file}")
+                print(f"ERROR: {exc}")
+
+                progress_row = pd.DataFrame(
+                    [{
+                        "language": iso,
+                        "repo": repo,
+                        "split": split,
+                        "speech_type": speech_type,
+                        "parquet_file": shard_key,
+                        "status": "failed",
+                        "rows": 0,
+                    }]
+                )
+                progress = pd.concat([progress, progress_row], ignore_index=True)
+                save_outputs(index, progress)
+                print("Saved failed shard status and continuing.")
+                continue
 
     save_outputs(index, progress)
 
