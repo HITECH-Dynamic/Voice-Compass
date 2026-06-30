@@ -23,7 +23,7 @@ def main():
         manifest_path=MANIFEST_PATH,
         languages=["kik"],
         max_duration=30.0,
-        max_rows_per_language=50,
+        max_rows_per_language=None,
         anv_index_path=INDEX_PATH,
     )
 
