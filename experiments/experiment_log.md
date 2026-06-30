@@ -2790,3 +2790,7 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed |
 
 | Exp041 | Full ANV Audio Index | N/A | Dataset Optimization | Planned | Build a complete filename-to-Parquet index for every ANV language and shard. This becomes the production lookup table used during multilingual training. |
 
+
+| Exp041A | ANV Index Strategy Inspection | N/A | Dataset Optimization | Planned | Inspect whether ANV audio filename-to-shard mapping can be derived without downloading every large audio Parquet shard. |
+| Exp041B | Incremental ANV Index Builder | N/A | Dataset Optimization | Planned | Build ANV audio indexes incrementally by language/split/speech type to avoid long fragile full-corpus runs. |
+| Exp041C | ANV Index Coverage Validation | N/A | Dataset Optimization | Planned | Validate indexed audio coverage against the unified AfriVoices manifests before using the index for training. |
