@@ -2776,3 +2776,5 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed |
 | Exp038B | Whisper Processor Dataset Integration | Whisper Large-v3 Processor | Dataset Loader | Planned | Extend AfriVoicesDataset so decoded audio examples are converted into Whisper input_features and tokenized labels. No training yet. |
 
 | Exp038B | Whisper Processor Integration | Whisper Large-v3 | Dataset Pipeline | Completed | Connected AfriVoicesDataset to WhisperProcessor. Verified end-to-end conversion from manifest to decoded waveform, Whisper input_features, and tokenized labels for both ANV and Swahili datasets. |
+
+| Exp039 | First End-to-End Whisper Training | Whisper Large-v3 + LoRA | Real AfriVoices Smoke Training | Planned | Connect AfriVoicesWhisperDataset to a data collator, Whisper model, Trainer, validation metrics, and checkpoint saving. First goal is to prove the full training loop on a small balanced real-data subset. |
