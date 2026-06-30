@@ -2847,3 +2847,6 @@ Freeze Exp041B and continue with dataset pipeline development (Exp042). Addition
 
 Exp041B skipped/stalled shards to revisit if needed: train_unscripted_027, train_unscripted_031, train_unscripted_104, train_unscripted_122, train_unscripted_137.
 
+
+| Exp042 | Multilingual Dataset Builder | N/A | Dataset Assembly | Planned | Build YAML-driven AfriVoices dataset builder using unified manifests plus optional ANV audio index. Outputs train/eval Parquet files and summary report for future multilingual training. |
+
