@@ -45,6 +45,7 @@ def parse_args():
     parser.add_argument("--languages", nargs="+", default=list(ANV_SOURCES.keys()))
     parser.add_argument("--split", default=None)
     parser.add_argument("--speech-type", default=None)
+    parser.add_argument("--start-shard-index", type=int, default=0)
     parser.add_argument("--max-shards", type=int, default=None)
     parser.add_argument("--max-retries", type=int, default=3)
     parser.add_argument("--retry-sleep", type=int, default=30)
@@ -183,6 +184,9 @@ def main():
 
         _, repo = ANV_SOURCES[iso]
         shards = get_candidate_shards(repo, args.split, args.speech_type)
+
+        if args.start_shard_index:
+            shards = shards[args.start_shard_index:]
 
         if args.max_shards is not None:
             shards = shards[: args.max_shards]
