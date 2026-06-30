@@ -2797,3 +2797,6 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed |
 
 | Exp041A | ANV Dataset Index Strategy Inspection | N/A | Dataset Optimization | Completed | Determined that transcript metadata does not contain a deterministic filename-to-Parquet mapping. Confirmed that the correct architecture is a persistent global filename → Parquet index for future preprocessing and training. |
 
+
+| Exp041B | Global ANV Audio Index Generation | N/A | Dataset Optimization | Planned | Build a production filename → Parquet lookup table incrementally across all ANV repositories. Support resumable indexing and generate a reusable global audio index. |
+
