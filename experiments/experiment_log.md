@@ -2774,3 +2774,5 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed |
 | Exp038A | AfriVoices Dataset Class Test | N/A | Dataset Loader | Completed | Built reusable AfriVoicesDataset class and validated manifest-to-waveform loading for both ANV Parquet audio and Swahili tar.xz/WebM audio. |
 
 | Exp038B | Whisper Processor Dataset Integration | Whisper Large-v3 Processor | Dataset Loader | Planned | Extend AfriVoicesDataset so decoded audio examples are converted into Whisper input_features and tokenized labels. No training yet. |
+
+| Exp038B | Whisper Processor Integration | Whisper Large-v3 | Dataset Pipeline | Completed | Connected AfriVoicesDataset to WhisperProcessor. Verified end-to-end conversion from manifest to decoded waveform, Whisper input_features, and tokenized labels for both ANV and Swahili datasets. |
