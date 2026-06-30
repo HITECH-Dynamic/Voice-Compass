@@ -2672,7 +2672,7 @@ Close augmentation study.
 Exp026 remains the project champion.
 
 
-## Exp035 — Effective Batch Size Study
+# Exp035 — Effective Batch Size Study
 
 Status: PLANNED
 
@@ -2765,23 +2765,32 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Planned | B
 # | Exp036B | 
 Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed | Generated train/dev/test manifests across all six AfriVoices languages. Added row-level unique IDs. Train/dev/test rows: 1,015,803 / 35,578 / 30,618. |
 
-| Exp037 | First AfriVoices Real-Data Training Run | Whisper Large-v3 + LoRA | Unified Manifest / Balanced Subset | Planned | First real competition-data training run. Use Exp026 champion settings with filtered balanced AfriVoices subset. Primary goal is end-to-end validation of manifest loading, audio resolution, training, validation, and checkpointing. |
+# | Exp037 |
+First AfriVoices Real-Data Training Run | Whisper Large-v3 + LoRA | Unified Manifest / Balanced Subset | Planned | First real competition-data training run. Use Exp026 champion settings with filtered balanced AfriVoices subset. Primary goal is end-to-end validation of manifest loading, audio resolution, training, validation, and checkpointing. |
 
-| Exp037 | AfriVoices Audio Resolver Test | N/A | Audio Resolution | Completed | Successfully resolved and decoded both ANV-KE parquet_bytes audio and Swahili tar.xz/WebM audio from unified manifests. Confirmed 16 kHz waveform output. Identified need to optimize parquet shard lookup before large-scale training. |
+# | Exp037 | 
+AfriVoices Audio Resolver Test | N/A | Audio Resolution | Completed | Successfully resolved and decoded both ANV-KE parquet_bytes audio and Swahili tar.xz/WebM audio from unified manifests. Confirmed 16 kHz waveform output. Identified need to optimize parquet shard lookup before large-scale training. |
 
-| Exp038A | AfriVoices Dataset Class Test | N/A | Dataset Loader | Planned | Build a dataset-style loader that reads unified manifests, filters bad rows, resolves audio, and returns decoded waveform/transcript examples before Whisper processor integration. |
+# | Exp038A |
+ AfriVoices Dataset Class Test | N/A | Dataset Loader | Planned | Build a dataset-style loader that reads unified manifests, filters bad rows, resolves audio, and returns decoded waveform/transcript examples before Whisper processor integration. |
 
-| Exp038A | AfriVoices Dataset Class Test | N/A | Dataset Loader | Completed | Built reusable AfriVoicesDataset class and validated manifest-to-waveform loading for both ANV Parquet audio and Swahili tar.xz/WebM audio. |
+# | Exp038A | 
+AfriVoices Dataset Class Test | N/A | Dataset Loader | Completed | Built reusable AfriVoicesDataset class and validated manifest-to-waveform loading for both ANV Parquet audio and Swahili tar.xz/WebM audio. |
 
-| Exp038B | Whisper Processor Dataset Integration | Whisper Large-v3 Processor | Dataset Loader | Planned | Extend AfriVoicesDataset so decoded audio examples are converted into Whisper input_features and tokenized labels. No training yet. |
+# | Exp038B | 
+Whisper Processor Dataset Integration | Whisper Large-v3 Processor | Dataset Loader | Planned | Extend AfriVoicesDataset so decoded audio examples are converted into Whisper input_features and tokenized labels. No training yet. |
 
-| Exp038B | Whisper Processor Integration | Whisper Large-v3 | Dataset Pipeline | Completed | Connected AfriVoicesDataset to WhisperProcessor. Verified end-to-end conversion from manifest to decoded waveform, Whisper input_features, and tokenized labels for both ANV and Swahili datasets. |
+# | Exp038B |
+ Whisper Processor Integration | Whisper Large-v3 | Dataset Pipeline | Completed | Connected AfriVoicesDataset to WhisperProcessor. Verified end-to-end conversion from manifest to decoded waveform, Whisper input_features, and tokenized labels for both ANV and Swahili datasets. |
 
-| Exp039 | First End-to-End Whisper Training | Whisper Large-v3 + LoRA | Real AfriVoices Smoke Training | Planned | Connect AfriVoicesWhisperDataset to a data collator, Whisper model, Trainer, validation metrics, and checkpoint saving. First goal is to prove the full training loop on a small balanced real-data subset. |
+# | Exp039 | 
+First End-to-End Whisper Training | Whisper Large-v3 + LoRA | Real AfriVoices Smoke Training | Planned | Connect AfriVoicesWhisperDataset to a data collator, Whisper model, Trainer, validation metrics, and checkpoint saving. First goal is to prove the full training loop on a small balanced real-data subset. |
 
-| Exp039 | First End-to-End Whisper Training | Whisper Large-v3 + LoRA | Smoke Training | Completed | Successfully trained and evaluated Whisper Large-v3 with LoRA on real AfriVoices data. Verified complete pipeline from manifest through audio decoding, feature extraction, Trainer, evaluation, and checkpoint generation. Train loss: 1.033, Eval loss: 1.8156. |
+# | Exp039 | 
+First End-to-End Whisper Training | Whisper Large-v3 + LoRA | Smoke Training | Completed | Successfully trained and evaluated Whisper Large-v3 with LoRA on real AfriVoices data. Verified complete pipeline from manifest through audio decoding, feature extraction, Trainer, evaluation, and checkpoint generation. Train loss: 1.033, Eval loss: 1.8156. |
 
-| Exp040A | ANV Audio Index Builder | N/A | Dataset Optimization | Planned | Build filename-to-parquet-shard lookup index for ANV audio so training no longer scans many large Parquet files per example. |
+# | Exp040A | 
+ANV Audio Index Builder | N/A | Dataset Optimization | Planned | Build filename-to-parquet-shard lookup index for ANV audio so training no longer scans many large Parquet files per example. |
 
 | Exp040B | Indexed ANV Resolver | N/A | Dataset Optimization | Planned | Update AfriVoicesDataset to use prebuilt ANV audio index for direct filename-to-shard lookup, with fallback to original scanning behavior. |
 
@@ -2802,4 +2811,36 @@ Unified AfriVoices Manifest Generation | N/A | Dataset Engineering | Completed |
 
 
 | Exp041B | Global ANV Audio Index Generation | N/A | Dataset Optimization | Planned | Build a production filename → Parquet lookup table incrementally across all ANV repositories. Builder will support resumable execution, automatic shard skipping, checkpointing after each shard, and recovery from interrupted Colab sessions. |
+
+
+## Exp041B — Resumable ANV Audio Indexing
+**Date:** 2026-06-30
+**Status:** ✅ Completed (Infrastructure)
+
+### Objective
+Build a resumable audio index for the ANV Hugging Face datasets to eliminate repeated repository scans and enable fast audio lookup during multilingual dataset construction.
+
+### Changes
+- Added resumable indexing with progress tracking.
+- Added checkpoint file (`anv_audio_index_progress.csv`).
+- Added incremental parquet index updates.
+- Added retry logic for transient Hugging Face download failures.
+- Added configurable shard offset support.
+- Verified successful resume after interrupted Colab sessions.
+
+### Results
+- Indexed all scripted splits.
+- Indexed dev and dev_test splits.
+- Indexed 133 Kikuyu unscripted shards before stopping.
+- Final index contains approximately 150k audio entries.
+- Successfully recovered from multiple interrupted sessions without data loss.
+
+### Findings
+- The indexing pipeline itself is stable.
+- Remaining bottleneck is intermittent Hugging Face/Xet downloads, not repository code.
+- Full indexing is beneficial but not required for successful ASR training.
+- The generated index is already large enough to support continued Phase 4 development.
+
+### Decision
+Freeze Exp041B and continue with dataset pipeline development (Exp042). Additional indexing can be resumed later if higher dataset coverage becomes necessary.
 
