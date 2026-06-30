@@ -20,7 +20,7 @@ def main():
     dataset = AfriVoicesDataset(
         manifest_path=MANIFEST_PATH,
         max_duration=30.0,
-        languages=["kik", "swa"],
+        languages=["swa"],
         max_rows_per_language=1,
     )
 
