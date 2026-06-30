@@ -2844,3 +2844,6 @@ Build a resumable audio index for the ANV Hugging Face datasets to eliminate rep
 ### Decision
 Freeze Exp041B and continue with dataset pipeline development (Exp042). Additional indexing can be resumed later if higher dataset coverage becomes necessary.
 
+
+Exp041B skipped/stalled shards to revisit if needed: train_unscripted_027, train_unscripted_031, train_unscripted_104, train_unscripted_122, train_unscripted_137.
+
