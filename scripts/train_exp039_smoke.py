@@ -75,7 +75,7 @@ def main() -> None:
     train_dataset = AfriVoicesWhisperDataset(
         manifest_path=TRAIN_MANIFEST,
         processor_name=MODEL_NAME,
-        languages=["kik", "swa"],
+        languages=["swa"],
         max_duration=30.0,
         max_rows_per_language=1,
     )
@@ -83,7 +83,7 @@ def main() -> None:
     eval_dataset = AfriVoicesWhisperDataset(
         manifest_path=DEV_MANIFEST,
         processor_name=MODEL_NAME,
-        languages=["kik", "swa"],
+        languages=["swa"],
         max_duration=30.0,
         max_rows_per_language=1,
     )
