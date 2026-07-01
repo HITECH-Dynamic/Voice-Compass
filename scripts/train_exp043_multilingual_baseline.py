@@ -1,17 +1,17 @@
 """
 Exp043 — First Multilingual Whisper Baseline
-
-Uses Exp042 processed train/eval parquet files.
-Goal: first Kikuyu + Swahili multilingual training baseline.
+Download-efficient multilingual baseline with WER.
 """
 
 from pathlib import Path
 import sys
+import numpy as np
+import torch
+import evaluate
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-import torch
 from transformers import (
     WhisperForConditionalGeneration,
     WhisperProcessor,
@@ -19,6 +19,7 @@ from transformers import (
     Seq2SeqTrainingArguments,
 )
 from peft import LoraConfig, get_peft_model
+from src.datasets.afrivoices_whisper_dataset import AfriVoicesWhisperDataset
 
 
 class WhisperDataCollator:
@@ -26,15 +27,13 @@ class WhisperDataCollator:
         self.processor = processor
 
     def __call__(self, features):
-        input_features = [{"input_features": f["input_features"]} for f in features]
         batch = self.processor.feature_extractor.pad(
-            input_features,
+            [{"input_features": f["input_features"]} for f in features],
             return_tensors="pt",
         )
 
-        label_features = [{"input_ids": f["labels"]} for f in features]
         labels_batch = self.processor.tokenizer.pad(
-            label_features,
+            [{"input_ids": f["labels"]} for f in features],
             return_tensors="pt",
         )
 
@@ -47,28 +46,24 @@ class WhisperDataCollator:
         return batch
 
 
-from src.datasets.afrivoices_whisper_dataset import AfriVoicesWhisperDataset
-
-
 def main():
     print("Exp043 multilingual baseline starting...")
     print(f"CUDA available: {torch.cuda.is_available()}")
 
     model_name = "openai/whisper-small"
     processor = WhisperProcessor.from_pretrained(model_name, language=None, task="transcribe")
+    wer_metric = evaluate.load("wer")
 
     train_dataset = AfriVoicesWhisperDataset(
         manifest_path="data/processed/exp042_train.parquet",
         processor_name=model_name,
         max_duration=30.0,
-        max_rows_per_language=None,
     )
 
     eval_dataset = AfriVoicesWhisperDataset(
         manifest_path="data/processed/exp042_eval.parquet",
         processor_name=model_name,
         max_duration=30.0,
-        max_rows_per_language=None,
     )
 
     print(f"Train rows: {len(train_dataset)}")
@@ -85,8 +80,26 @@ def main():
         lora_dropout=0.05,
         bias="none",
     )
+
     model = get_peft_model(model, lora_config)
     model.print_trainable_parameters()
+
+    def compute_metrics(pred):
+        pred_ids = pred.predictions
+        label_ids = pred.label_ids
+
+        if isinstance(pred_ids, tuple):
+            pred_ids = pred_ids[0]
+
+        if pred_ids.ndim == 3:
+            pred_ids = np.argmax(pred_ids, axis=-1)
+
+        label_ids = np.where(label_ids != -100, label_ids, processor.tokenizer.pad_token_id)
+
+        pred_str = processor.tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
+        label_str = processor.tokenizer.batch_decode(label_ids, skip_special_tokens=True)
+
+        return {"wer": wer_metric.compute(predictions=pred_str, references=label_str)}
 
     training_args = Seq2SeqTrainingArguments(
         output_dir="checkpoints/exp043_multilingual_baseline",
@@ -104,6 +117,9 @@ def main():
         report_to=[],
         remove_unused_columns=False,
         save_total_limit=1,
+        metric_for_best_model="wer",
+        greater_is_better=False,
+        load_best_model_at_end=True,
     )
 
     trainer = Seq2SeqTrainer(
@@ -113,6 +129,7 @@ def main():
         eval_dataset=eval_dataset,
         processing_class=processor,
         data_collator=WhisperDataCollator(processor),
+        compute_metrics=compute_metrics,
     )
 
     trainer.train()
