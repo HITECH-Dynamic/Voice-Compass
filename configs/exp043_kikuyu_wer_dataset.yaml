@@ -1,0 +1,25 @@
+experiment: exp042_multilingual_dataset
+inputs:
+  train_manifest: data/afrivoices/manifests/manifest_train.parquet
+  dev_manifest: data/afrivoices/manifests/manifest_dev.parquet
+  test_manifest: data/afrivoices/manifests/manifest_test.parquet
+  anv_audio_index: data/afrivoices/indexes/anv_audio_index.parquet
+outputs:
+  train: data/processed/exp043_train.parquet
+  eval: data/processed/exp043_eval.parquet
+  summary: reports/dataset_analysis/exp043_dataset_summary.csv
+filters:
+  languages:
+  - kik
+  source_splits:
+  - train
+  speech_types:
+  - scripted
+  - spontaneous
+  min_duration_seconds: 0.5
+  max_duration_seconds: 30.0
+  require_transcription: true
+sampling:
+  max_rows_per_language: 100
+  eval_fraction: 0.2
+  random_seed: 42

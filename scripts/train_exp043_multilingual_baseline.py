@@ -55,13 +55,13 @@ def main():
     wer_metric = evaluate.load("wer")
 
     train_dataset = AfriVoicesWhisperDataset(
-        manifest_path="data/processed/exp042_train.parquet",
+        manifest_path="data/processed/exp043_train.parquet",
         processor_name=model_name,
         max_duration=30.0,
     )
 
     eval_dataset = AfriVoicesWhisperDataset(
-        manifest_path="data/processed/exp042_eval.parquet",
+        manifest_path="data/processed/exp043_eval.parquet",
         processor_name=model_name,
         max_duration=30.0,
     )
