@@ -1,0 +1,29 @@
+experiment: exp044
+
+inputs:
+  train_manifest: data/manifests/afrivoices_train.parquet
+  dev_manifest: data/manifests/afrivoices_dev.parquet
+  test_manifest: data/manifests/afrivoices_test.parquet
+  anv_audio_index: data/afrivoices/indexes/anv_audio_index.parquet
+
+filters:
+  languages:
+    - kik
+  source_splits:
+    - train
+  speech_types:
+    - scripted
+  require_transcription: true
+  min_duration_seconds: 0.25
+  max_duration_seconds: 30
+
+sampling:
+  strategy: shard_aware
+  max_rows_per_language: 100
+  eval_fraction: 0.20
+  random_seed: 42
+
+outputs:
+  train: data/processed/exp044_train.parquet
+  eval: data/processed/exp044_eval.parquet
+  summary: reports/dataset_analysis/exp044_dataset_summary.csv

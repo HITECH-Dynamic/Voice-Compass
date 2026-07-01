@@ -1,7 +1,8 @@
 """
-Exp042 — Multilingual Dataset Builder
+Multilingual Dataset Builder
 
 Builds train/eval parquet datasets from AfriVoices manifests using a YAML config.
+Supports random sampling and shard-aware sampling.
 """
 
 from pathlib import Path
@@ -91,8 +92,54 @@ def attach_index_status(df, cfg):
     return merged
 
 
+def sample_language_random(part, max_rows, seed):
+    part = part.sample(frac=1.0, random_state=seed).reset_index(drop=True)
+    if max_rows:
+        part = part.head(int(max_rows))
+    return part
+
+
+def sample_language_shard_aware(part, max_rows, seed):
+    if "indexed_parquet_file" not in part.columns:
+        return sample_language_random(part, max_rows, seed)
+
+    indexed = part[part["indexed_parquet_file"].astype(str).str.strip() != ""].copy()
+
+    if indexed.empty:
+        return sample_language_random(part, max_rows, seed)
+
+    target = int(max_rows) if max_rows else len(indexed)
+
+    shard_counts = (
+        indexed.groupby("indexed_parquet_file")
+        .size()
+        .sort_values(ascending=False)
+    )
+
+    selected_parts = []
+    selected_count = 0
+
+    for shard_path in shard_counts.index:
+        shard_df = indexed[indexed["indexed_parquet_file"] == shard_path]
+        shard_df = shard_df.sample(frac=1.0, random_state=seed).reset_index(drop=True)
+
+        remaining = target - selected_count
+        if remaining <= 0:
+            break
+
+        take = shard_df.head(remaining)
+        selected_parts.append(take)
+        selected_count += len(take)
+
+    sampled = pd.concat(selected_parts, ignore_index=True)
+    sampled = sampled.sample(frac=1.0, random_state=seed).reset_index(drop=True)
+
+    return sampled
+
+
 def sample_and_split(df, cfg):
     s = cfg["sampling"]
+    strategy = s.get("strategy", "random")
     max_rows = s.get("max_rows_per_language")
     eval_fraction = float(s.get("eval_fraction", 0.2))
     seed = int(s.get("random_seed", 42))
@@ -100,10 +147,12 @@ def sample_and_split(df, cfg):
     sampled = []
 
     for lang, part in df.groupby("language"):
-        part = part.sample(frac=1.0, random_state=seed).reset_index(drop=True)
-        if max_rows:
-            part = part.head(int(max_rows))
-        sampled.append(part)
+        if strategy == "shard_aware":
+            lang_sample = sample_language_shard_aware(part, max_rows, seed)
+        else:
+            lang_sample = sample_language_random(part, max_rows, seed)
+
+        sampled.append(lang_sample)
 
     df = pd.concat(sampled, ignore_index=True)
     df = df.sample(frac=1.0, random_state=seed).reset_index(drop=True)
@@ -122,6 +171,15 @@ def sample_and_split(df, cfg):
     return train, eval_df
 
 
+def count_unique_shards(df):
+    if df.empty or "indexed_parquet_file" not in df.columns:
+        return 0
+
+    values = df["indexed_parquet_file"].astype(str).str.strip()
+    values = values[values != ""]
+    return int(values.nunique())
+
+
 def write_summary(train, eval_df, cfg):
     rows = []
 
@@ -134,9 +192,11 @@ def write_summary(train, eval_df, cfg):
             .agg(
                 rows=("unique_id", "count"),
                 hours=("duration_seconds", lambda x: x.dropna().sum() / 3600),
+                unique_parquet_shards=("indexed_parquet_file", lambda x: x.astype(str).str.strip().replace("", pd.NA).dropna().nunique()),
             )
             .reset_index()
         )
+
         summary["dataset_split"] = name
         rows.append(summary)
 
@@ -177,7 +237,7 @@ def main():
     print()
     print(summary)
     print()
-    print("Exp042 dataset builder complete.")
+    print("Dataset builder complete.")
 
 
 if __name__ == "__main__":

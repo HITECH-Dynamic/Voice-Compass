@@ -2924,3 +2924,15 @@ Next Experiment:
 Exp044 — Shard-Aware Dataset Builder
 Goal:
 Concentrate sampled examples into as few parquet shards as possible before multilingual scaling.
+
+
+## Exp044 — PREPPED 🚧
+
+Purpose:
+Shard-aware dataset builder.
+
+Goal:
+Reduce experiment runtime by sampling examples from fewer ANV parquet shards.
+
+Success Metric:
+`unique_parquet_shards` should be much lower than Exp043 while maintaining 80 train / 20 eval rows.
