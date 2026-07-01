@@ -84,7 +84,7 @@ def main():
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
-        tokenizer=processor.tokenizer,
+        processing_class=processor,
     )
 
     trainer.train()
