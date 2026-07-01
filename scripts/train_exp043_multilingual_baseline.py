@@ -32,14 +32,14 @@ def main():
 
     train_dataset = AfriVoicesWhisperDataset(
         manifest_path="data/processed/exp042_train.parquet",
-        processor=processor,
+        processor_name=model_name,
         max_duration=30.0,
         max_rows_per_language=None,
     )
 
     eval_dataset = AfriVoicesWhisperDataset(
         manifest_path="data/processed/exp042_eval.parquet",
-        processor=processor,
+        processor_name=model_name,
         max_duration=30.0,
         max_rows_per_language=None,
     )
