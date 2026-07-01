@@ -5,6 +5,7 @@ Download-efficient multilingual baseline with WER.
 
 from pathlib import Path
 import sys
+import argparse
 import numpy as np
 import torch
 import evaluate
@@ -46,8 +47,23 @@ class WhisperDataCollator:
         return batch
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--experiment_name", default="exp043_multilingual_baseline")
+    parser.add_argument("--train_manifest", default="data/processed/exp043_train.parquet")
+    parser.add_argument("--eval_manifest", default="data/processed/exp043_eval.parquet")
+    parser.add_argument("--output_dir", default="checkpoints/exp043_multilingual_baseline")
+    parser.add_argument("--max_steps", type=int, default=5)
+    return parser.parse_args()
+
+
 def main():
-    print("Exp043 multilingual baseline starting...")
+    args = parse_args()
+
+    print(f"{args.experiment_name} starting...")
+    print(f"Train manifest: {args.train_manifest}")
+    print(f"Eval manifest: {args.eval_manifest}")
+    print(f"Output dir: {args.output_dir}")
     print(f"CUDA available: {torch.cuda.is_available()}")
 
     model_name = "openai/whisper-small"
@@ -55,13 +71,13 @@ def main():
     wer_metric = evaluate.load("wer")
 
     train_dataset = AfriVoicesWhisperDataset(
-        manifest_path="data/processed/exp043_train.parquet",
+        manifest_path=args.train_manifest,
         processor_name=model_name,
         max_duration=30.0,
     )
 
     eval_dataset = AfriVoicesWhisperDataset(
-        manifest_path="data/processed/exp043_eval.parquet",
+        manifest_path=args.eval_manifest,
         processor_name=model_name,
         max_duration=30.0,
     )
@@ -102,12 +118,12 @@ def main():
         return {"wer": wer_metric.compute(predictions=pred_str, references=label_str)}
 
     training_args = Seq2SeqTrainingArguments(
-        output_dir="checkpoints/exp043_multilingual_baseline",
+        output_dir=args.output_dir,
         per_device_train_batch_size=2,
         per_device_eval_batch_size=2,
         gradient_accumulation_steps=1,
         learning_rate=1e-5,
-        max_steps=5,
+        max_steps=args.max_steps,
         eval_strategy="steps",
         eval_steps=5,
         save_steps=5,
@@ -136,10 +152,10 @@ def main():
     metrics = trainer.evaluate()
     print("Eval metrics:", metrics)
 
-    trainer.save_model("checkpoints/exp043_multilingual_baseline")
-    processor.save_pretrained("checkpoints/exp043_multilingual_baseline")
+    trainer.save_model(args.output_dir)
+    processor.save_pretrained(args.output_dir)
 
-    print("Exp043 multilingual baseline complete.")
+    print(f"{args.experiment_name} complete.")
 
 
 if __name__ == "__main__":
