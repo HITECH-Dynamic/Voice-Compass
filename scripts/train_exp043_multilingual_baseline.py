@@ -20,6 +20,33 @@ from transformers import (
 )
 from peft import LoraConfig, get_peft_model
 
+
+class WhisperDataCollator:
+    def __init__(self, processor):
+        self.processor = processor
+
+    def __call__(self, features):
+        input_features = [{"input_features": f["input_features"]} for f in features]
+        batch = self.processor.feature_extractor.pad(
+            input_features,
+            return_tensors="pt",
+        )
+
+        label_features = [{"input_ids": f["labels"]} for f in features]
+        labels_batch = self.processor.tokenizer.pad(
+            label_features,
+            return_tensors="pt",
+        )
+
+        labels = labels_batch["input_ids"].masked_fill(
+            labels_batch["attention_mask"].ne(1),
+            -100,
+        )
+
+        batch["labels"] = labels
+        return batch
+
+
 from src.datasets.afrivoices_whisper_dataset import AfriVoicesWhisperDataset
 
 
@@ -85,6 +112,7 @@ def main():
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
         processing_class=processor,
+        data_collator=WhisperDataCollator(processor),
     )
 
     trainer.train()
