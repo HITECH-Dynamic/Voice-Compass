@@ -2899,3 +2899,28 @@ Proceed to Exp043 to validate end-to-end multilingual Whisper training using dat
 - WER metric integration.
 - Best checkpoint selected by WER.
 - Resume multilingual baseline after updates.
+
+
+## Exp043 — COMPLETE ✅
+
+Purpose:
+First end-to-end Whisper training validation with automatic WER.
+
+Result:
+Pipeline successful.
+WER integrated.
+LoRA validated.
+Audio indexing validated.
+
+Key Result:
+Train Loss: 4.422
+Eval Loss: 4.302
+WER: 1.0099
+
+Major Finding:
+Runtime dominated by downloading many large ANV parquet shards because randomly sampled examples span dozens of shard files.
+
+Next Experiment:
+Exp044 — Shard-Aware Dataset Builder
+Goal:
+Concentrate sampled examples into as few parquet shards as possible before multilingual scaling.
