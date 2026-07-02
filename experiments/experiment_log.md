@@ -3442,3 +3442,40 @@ WER may increase because this is now true autoregressive decoding instead of tea
 
 Success Metric:
 Run completes and logs generation-based WER.
+
+
+## Exp054 — COMPLETE ✅
+
+Purpose:
+Correct evaluation from teacher-forced proxy WER to generation-based WER.
+
+Control:
+Exp053 best proxy-WER configuration.
+
+Variable:
+predict_with_generate changed from False to True.
+
+Generation Settings:
+generation_max_length=225
+generation_num_beams=1
+
+Dataset:
+396 training
+98 evaluation
+
+Results:
+WER: 1.0416
+Eval Loss: 3.1612
+Train Loss: 6.1452
+
+Runtime:
+2048.7 seconds (~34.1 minutes)
+
+Finding:
+Generation-based WER is dramatically worse than teacher-forced proxy WER.
+
+Decision:
+Use Exp054 as the first true-WER reference baseline.
+
+Next:
+Do not continue hyperparameter tuning yet. Prep Exp055 as a debugging/comparison experiment to diagnose generation/tokenizer/data pipeline behavior.
