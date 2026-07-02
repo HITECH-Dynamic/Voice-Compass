@@ -2936,3 +2936,24 @@ Reduce experiment runtime by sampling examples from fewer ANV parquet shards.
 
 Success Metric:
 `unique_parquet_shards` should be much lower than Exp043 while maintaining 80 train / 20 eval rows.
+
+
+## Exp044 — COMPLETE ✅
+
+Purpose:
+Evaluate whether shard-aware sampling improves runtime.
+
+Result:
+Dataset successfully reduced to one parquet shard.
+
+Key Finding:
+Runtime increased despite accessing only one shard.
+
+Conclusion:
+Primary bottleneck is repeated parquet loading.
+
+Next Experiment:
+Exp045 — Shard Cache Loader
+
+Goal:
+Load each parquet shard once and reuse it for every example from that shard.
