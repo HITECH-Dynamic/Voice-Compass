@@ -3174,3 +3174,33 @@ Same clean 5-language dataset and 500-step training setup as Exp048.
 
 Success Metric:
 Comparable WER with much lower runtime.
+
+
+## Exp049 — COMPLETE ✅
+
+Purpose:
+Evaluation/checkpoint cadence optimization for the five-language multilingual baseline.
+
+Control:
+Same clean five-language dataset and 500-step training setup as Exp048.
+
+Variable:
+eval_steps/save_steps changed from 5 to 50.
+
+Dataset:
+396 training
+98 evaluation
+
+Results:
+WER: 0.9962
+Eval Loss: 3.2725
+Train Loss: 3.605
+
+Runtime:
+681 seconds (~11.4 minutes)
+
+Major Finding:
+Runtime dropped from ~59.1 minutes to ~11.4 minutes while WER remained comparable/slightly improved.
+
+Decision:
+Adopt eval_steps=50 and save_steps=50 as the default cadence for future multilingual optimization experiments.
