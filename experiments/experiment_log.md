@@ -3314,3 +3314,24 @@ Candidate next variables:
 - LoRA rank/alpha
 - Training steps
 - Scheduler/seed repeat
+
+
+## Exp052 — PREPPED 🚧
+
+Purpose:
+Continue multilingual learning-rate sweep by testing a higher LR.
+
+Control:
+Exp051 higher-LR multilingual baseline.
+
+Variable:
+learning_rate changed from 2e-5 to 3e-5.
+
+Seed:
+42
+
+Success Metric:
+WER improves below Exp051 baseline of 0.9786.
+
+Risk:
+Possible instability from higher LR; monitor eval loss, WER, and grad_norm.
