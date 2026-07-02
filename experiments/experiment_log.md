@@ -2969,3 +2969,32 @@ Reduce runtime by caching loaded ANV parquet shards in memory during dataset acc
 
 Control:
 Same Exp044 dataset, model, LoRA settings, and 5-step training setup.
+
+
+## Exp045 — COMPLETE ✅
+
+Purpose:
+Validate in-memory parquet shard caching.
+
+Result:
+Successful.
+
+Key Metrics:
+Train runtime: 17.23 sec
+Eval runtime: 6.22 sec
+WER: 1.1148
+
+Major Finding:
+Parquet caching reduced runtime by roughly 240× while producing equivalent model behavior.
+
+Infrastructure Status:
+The data loading pipeline is now suitable for rapid experimentation.
+
+Next Experiment:
+Exp046 — Production Training Pipeline
+
+Goals:
+- Re-enable Weights & Biases.
+- Keep WER evaluation.
+- Save best checkpoint by WER.
+- Begin real multilingual experimentation.
