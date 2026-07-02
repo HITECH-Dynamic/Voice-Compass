@@ -3335,3 +3335,39 @@ WER improves below Exp051 baseline of 0.9786.
 
 Risk:
 Possible instability from higher LR; monitor eval loss, WER, and grad_norm.
+
+
+## Exp052 — COMPLETE ✅
+
+Purpose:
+Test LR 3e-5 against Exp051 LR 2e-5.
+
+Results:
+WER: 0.9786
+Eval Loss: 2.7535
+Train Loss: 2.993
+Runtime: ~11.3 minutes
+
+Finding:
+3e-5 tied Exp051 on WER and improved eval loss, but showed more gradient volatility.
+
+Decision:
+Keep Exp051 / LR 2e-5 as the safer active baseline.
+
+## Exp053 — PREPPED 🚧
+
+Purpose:
+Test larger effective batch size.
+
+Control:
+Exp051 active baseline.
+
+Variable:
+gradient_accumulation_steps changed from 1 to 2.
+
+Effective Batch:
+Before: 2 × 1 = 2
+Exp053: 2 × 2 = 4
+
+Success Metric:
+WER improves below 0.9786 or ties WER with smoother/lower eval loss.

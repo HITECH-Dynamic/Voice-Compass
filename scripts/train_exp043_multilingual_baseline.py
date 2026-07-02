@@ -57,6 +57,9 @@ def parse_args():
     parser.add_argument("--max_steps", type=int, default=5)
     parser.add_argument("--learning_rate", type=float, default=1e-5)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--per_device_train_batch_size", type=int, default=2)
+    parser.add_argument("--per_device_eval_batch_size", type=int, default=2)
+    parser.add_argument("--gradient_accumulation_steps", type=int, default=1)
     parser.add_argument("--eval_steps", type=int, default=5)
     parser.add_argument("--save_steps", type=int, default=5)
     parser.add_argument("--report_to", default="wandb")
@@ -131,9 +134,9 @@ def main():
 
     training_args = Seq2SeqTrainingArguments(
         output_dir=args.output_dir,
-        per_device_train_batch_size=2,
-        per_device_eval_batch_size=2,
-        gradient_accumulation_steps=1,
+        per_device_train_batch_size=args.per_device_train_batch_size,
+        per_device_eval_batch_size=args.per_device_eval_batch_size,
+        gradient_accumulation_steps=args.gradient_accumulation_steps,
         learning_rate=args.learning_rate,
         max_steps=args.max_steps,
         eval_strategy="steps",
