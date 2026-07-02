@@ -3010,3 +3010,30 @@ Goals:
 - Keep WER evaluation.
 - Keep shard-cache speedup.
 - Standardize experiment naming and output directories.
+
+
+## Exp046 — COMPLETE ✅
+
+Purpose:
+Validate the production training pipeline.
+
+Result:
+Successful.
+
+Key Metrics:
+Train runtime: 17.21 sec
+Eval runtime: 6.22 sec
+WER: 1.1148
+
+Major Accomplishments:
+- W&B restored
+- Cached dataset loader validated
+- WER integrated
+- Reusable trainer implemented
+- Stable experiment infrastructure established
+
+Project Status:
+Training infrastructure ready for model optimization.
+
+Next Experiment:
+Exp047 — First true multilingual baseline (Kikuyu + Swahili) using the optimized training pipeline.
