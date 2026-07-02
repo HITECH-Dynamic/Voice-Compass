@@ -3371,3 +3371,43 @@ Exp053: 2 × 2 = 4
 
 Success Metric:
 WER improves below 0.9786 or ties WER with smoother/lower eval loss.
+
+
+## Exp053 — COMPLETE ✅
+
+Purpose:
+Test larger effective batch size after learning-rate optimization.
+
+Control:
+Exp051 active baseline.
+
+Variable:
+gradient_accumulation_steps changed from 1 to 2.
+
+Effective Batch:
+Previous: 2 × 1 = 2
+Exp053: 2 × 2 = 4
+
+Dataset:
+396 training
+98 evaluation
+
+Results:
+WER: 0.9748
+Eval Loss: 2.9061
+Train Loss: 6.151
+
+Runtime:
+1004 seconds (~16.7 minutes)
+
+Finding:
+Larger effective batch improved proxy WER slightly and produced the best proxy-WER result so far.
+
+Decision:
+Adopt Exp053 as the best proxy-WER training configuration.
+
+Caveat:
+Current WER is teacher-forced proxy WER because predict_with_generate=False.
+
+Next:
+Prep Exp054 to switch evaluation to generation-based WER with predict_with_generate=True.
