@@ -3122,3 +3122,40 @@ Multilingual run failed due to undecodable audio row during evaluation.
 
 Fix:
 Add decode-filter script to remove bad audio rows before training.
+
+
+## Exp048 — COMPLETE ✅
+
+Purpose:
+First five-language multilingual Whisper baseline.
+
+Languages:
+kik
+kln
+luo
+mas
+som
+
+Dataset:
+396 training
+98 evaluation
+
+Results:
+WER: 1.0028
+Eval Loss: 3.2587
+Train Loss: 3.5893
+
+Runtime:
+59.1 minutes
+
+Major achievement:
+First successful multilingual production training pipeline.
+
+Lessons Learned:
+• Decode-filter utility required for corrupted audio.
+• Cached shard loader scales well.
+• Evaluation frequency dominates runtime.
+• Multilingual training improved WER over the Kikuyu-only baseline.
+
+Decision:
+Future experiments will reduce evaluation frequency while optimizing the multilingual model.
