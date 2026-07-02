@@ -3204,3 +3204,18 @@ Runtime dropped from ~59.1 minutes to ~11.4 minutes while WER remained comparabl
 
 Decision:
 Adopt eval_steps=50 and save_steps=50 as the default cadence for future multilingual optimization experiments.
+
+
+## Exp050 — PREPPED 🚧
+
+Purpose:
+Multilingual learning-rate study.
+
+Control:
+Exp049 runtime-efficient five-language setup.
+
+Variable:
+learning_rate changed from 1e-5 to 5e-6.
+
+Success Metric:
+WER improves below Exp049 baseline of 0.9962.

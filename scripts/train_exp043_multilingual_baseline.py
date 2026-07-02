@@ -54,6 +54,7 @@ def parse_args():
     parser.add_argument("--eval_manifest", default="data/processed/exp043_eval.parquet")
     parser.add_argument("--output_dir", default="checkpoints/exp043_multilingual_baseline")
     parser.add_argument("--max_steps", type=int, default=5)
+    parser.add_argument("--learning_rate", type=float, default=1e-5)
     parser.add_argument("--eval_steps", type=int, default=5)
     parser.add_argument("--save_steps", type=int, default=5)
     parser.add_argument("--report_to", default="wandb")
@@ -131,7 +132,7 @@ def main():
         per_device_train_batch_size=2,
         per_device_eval_batch_size=2,
         gradient_accumulation_steps=1,
-        learning_rate=1e-5,
+        learning_rate=args.learning_rate,
         max_steps=args.max_steps,
         eval_strategy="steps",
         eval_steps=args.eval_steps,
