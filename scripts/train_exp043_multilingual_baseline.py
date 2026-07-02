@@ -13,7 +13,7 @@ import evaluate
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from transformers import (
+from transformers import set_seed, (
     WhisperForConditionalGeneration,
     WhisperProcessor,
     Seq2SeqTrainer,
@@ -55,6 +55,7 @@ def parse_args():
     parser.add_argument("--output_dir", default="checkpoints/exp043_multilingual_baseline")
     parser.add_argument("--max_steps", type=int, default=5)
     parser.add_argument("--learning_rate", type=float, default=1e-5)
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--eval_steps", type=int, default=5)
     parser.add_argument("--save_steps", type=int, default=5)
     parser.add_argument("--report_to", default="wandb")

@@ -3219,3 +3219,50 @@ learning_rate changed from 1e-5 to 5e-6.
 
 Success Metric:
 WER improves below Exp049 baseline of 0.9962.
+
+
+## Exp050 — COMPLETE ✅
+
+Purpose:
+Multilingual learning-rate study testing a lower LR.
+
+Control:
+Exp049 runtime-efficient five-language setup.
+
+Variable:
+learning_rate changed from 1e-5 to 5e-6.
+
+Dataset:
+396 training
+98 evaluation
+
+Results:
+WER: 1.0240
+Eval Loss: 3.8578
+Train Loss: 3.979
+
+Runtime:
+675.3 seconds (~11.3 minutes)
+
+Finding:
+Lower learning rate degraded performance.
+
+Decision:
+Reject 5e-6. Keep Exp049 as active baseline.
+
+## Exp051 — PREPPED 🚧
+
+Purpose:
+Phase 3-informed multilingual learning-rate study testing a higher LR.
+
+Control:
+Exp049 runtime-efficient five-language setup.
+
+Variable:
+learning_rate changed from 1e-5 to 2e-5.
+
+Seed:
+Add explicit --seed argument with default seed=42 and set_seed(args.seed).
+
+Success Metric:
+WER improves below Exp049 baseline of 0.9962.
