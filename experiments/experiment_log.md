@@ -3159,3 +3159,18 @@ Lessons Learned:
 
 Decision:
 Future experiments will reduce evaluation frequency while optimizing the multilingual model.
+
+
+## Exp049 — PREPPED 🚧
+
+Purpose:
+Evaluation cadence optimization.
+
+Variable:
+eval_steps/save_steps changed from 5 to 50.
+
+Control:
+Same clean 5-language dataset and 500-step training setup as Exp048.
+
+Success Metric:
+Comparable WER with much lower runtime.

@@ -54,6 +54,8 @@ def parse_args():
     parser.add_argument("--eval_manifest", default="data/processed/exp043_eval.parquet")
     parser.add_argument("--output_dir", default="checkpoints/exp043_multilingual_baseline")
     parser.add_argument("--max_steps", type=int, default=5)
+    parser.add_argument("--eval_steps", type=int, default=5)
+    parser.add_argument("--save_steps", type=int, default=5)
     parser.add_argument("--report_to", default="wandb")
     parser.add_argument("--wandb_project", default="voice-compass")
     return parser.parse_args()
@@ -132,8 +134,8 @@ def main():
         learning_rate=1e-5,
         max_steps=args.max_steps,
         eval_strategy="steps",
-        eval_steps=5,
-        save_steps=5,
+        eval_steps=args.eval_steps,
+        save_steps=args.save_steps,
         logging_steps=1,
         predict_with_generate=False,
         fp16=torch.cuda.is_available(),
