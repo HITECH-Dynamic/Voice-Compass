@@ -34,6 +34,7 @@ class AfriVoicesDataset(Dataset):
         self.max_rows_per_language = max_rows_per_language
         self.anv_index_path = Path(anv_index_path) if anv_index_path else None
         self.anv_index = self._load_anv_index()
+        self.parquet_cache = {}
         self.df = self._load_manifest()
 
     def _load_anv_index(self):
@@ -47,6 +48,11 @@ class AfriVoicesDataset(Dataset):
         return index
 
     def _lookup_indexed_parquet(self, row):
+        if "indexed_parquet_file" in row.index:
+            value = str(row.get("indexed_parquet_file", "")).strip()
+            if value:
+                return value
+
         if self.anv_index is None:
             return None
 
@@ -119,7 +125,13 @@ class AfriVoicesDataset(Dataset):
                 filename=parquet_file,
             )
 
-            df = pd.read_parquet(parquet_path, columns=["audio", "filename"])
+            if parquet_file not in self.parquet_cache:
+                self.parquet_cache[parquet_file] = pd.read_parquet(
+                    parquet_path,
+                    columns=["audio", "filename"],
+                )
+
+            df = self.parquet_cache[parquet_file]
             match = df[df["filename"].astype(str) == str(filename)]
 
             if not match.empty:

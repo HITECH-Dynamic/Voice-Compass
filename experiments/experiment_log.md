@@ -2957,3 +2957,15 @@ Exp045 — Shard Cache Loader
 
 Goal:
 Load each parquet shard once and reuse it for every example from that shard.
+
+
+## Exp045 — PREPPED 🚧
+
+Purpose:
+Shard cache loader.
+
+Goal:
+Reduce runtime by caching loaded ANV parquet shards in memory during dataset access.
+
+Control:
+Same Exp044 dataset, model, LoRA settings, and 5-step training setup.
