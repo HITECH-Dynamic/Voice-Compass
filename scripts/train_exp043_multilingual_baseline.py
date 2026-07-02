@@ -122,15 +122,29 @@ def main():
         if isinstance(pred_ids, tuple):
             pred_ids = pred_ids[0]
 
-        if pred_ids.ndim == 3:
-            pred_ids = np.argmax(pred_ids, axis=-1)
+        label_ids = np.where(
+            label_ids != -100,
+            label_ids,
+            processor.tokenizer.pad_token_id,
+        )
 
-        label_ids = np.where(label_ids != -100, label_ids, processor.tokenizer.pad_token_id)
+        pred_str = processor.tokenizer.batch_decode(
+            pred_ids,
+            skip_special_tokens=True,
+        )
 
-        pred_str = processor.tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
-        label_str = processor.tokenizer.batch_decode(label_ids, skip_special_tokens=True)
+        label_str = processor.tokenizer.batch_decode(
+            label_ids,
+            skip_special_tokens=True,
+        )
 
-        return {"wer": wer_metric.compute(predictions=pred_str, references=label_str)}
+        wer = wer_metric.compute(
+            predictions=pred_str,
+            references=label_str,
+        )
+
+        return {"wer": wer}
+
 
     training_args = Seq2SeqTrainingArguments(
         output_dir=args.output_dir,
@@ -143,7 +157,9 @@ def main():
         eval_steps=args.eval_steps,
         save_steps=args.save_steps,
         logging_steps=1,
-        predict_with_generate=False,
+        predict_with_generate=True,
+        generation_max_length=225,
+        generation_num_beams=1,
         fp16=torch.cuda.is_available(),
         report_to=[args.report_to] if args.report_to != "none" else [],
         run_name=args.experiment_name,
