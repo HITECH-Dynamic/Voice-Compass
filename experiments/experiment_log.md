@@ -3037,3 +3037,18 @@ Training infrastructure ready for model optimization.
 
 Next Experiment:
 Exp047 — First true multilingual baseline (Kikuyu + Swahili) using the optimized training pipeline.
+
+
+## Exp047 — PREPPED 🚧
+
+Purpose:
+300-step Kikuyu WER baseline.
+
+Variable:
+Increase max_steps from 5 to 300.
+
+Control:
+Same dataset, model, LoRA config, W&B, cached loader, and WER evaluation as Exp046.
+
+Success Metric:
+Eval WER improves below Exp046 baseline of 1.1148.
