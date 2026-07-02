@@ -3113,3 +3113,12 @@ Single-language Kikuyu dataset → 5-language multilingual parquet dataset.
 
 Success Metric:
 Training completes with W&B and WER while runtime remains practical.
+
+
+## Exp048 — PATCH 🚧
+
+Issue:
+Multilingual run failed due to undecodable audio row during evaluation.
+
+Fix:
+Add decode-filter script to remove bad audio rows before training.
