@@ -3052,3 +3052,23 @@ Same dataset, model, LoRA config, W&B, cached loader, and WER evaluation as Exp0
 
 Success Metric:
 Eval WER improves below Exp046 baseline of 1.1148.
+
+
+## Exp047 — COMPLETE ✅
+
+Purpose:
+First meaningful 300-step Kikuyu WER baseline.
+
+Result:
+Successful.
+
+Key Metrics:
+Train runtime: 624 sec
+Eval loss: 3.854
+WER: 1.0492
+
+Comparison:
+Improved from Exp046 WER 1.1148 to Exp047 WER 1.0492.
+
+Conclusion:
+Longer training produces measurable WER improvement. Use 300-step runs as the new standard for optimization studies.
