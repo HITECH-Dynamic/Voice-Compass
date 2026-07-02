@@ -3266,3 +3266,51 @@ Add explicit --seed argument with default seed=42 and set_seed(args.seed).
 
 Success Metric:
 WER improves below Exp049 baseline of 0.9962.
+
+
+## Exp051 — COMPLETE ✅
+
+Purpose:
+Phase 3-informed multilingual learning-rate study testing higher LR.
+
+Control:
+Exp049 runtime-efficient five-language setup with seed=42.
+
+Variable:
+learning_rate changed from 1e-5 to 2e-5.
+
+Dataset:
+396 training
+98 evaluation
+
+Results:
+WER: 0.9786
+Eval Loss: 2.9022
+Train Loss: 3.225
+
+Runtime:
+673.6 seconds (~11.2 minutes)
+
+Finding:
+Higher LR improved WER versus Exp049 and clearly beat Exp050.
+
+Decision:
+Adopt learning_rate=2e-5 as the new active multilingual baseline.
+
+## Exp052 — PREPPED 🚧
+
+Purpose:
+Continue Phase 4 multilingual optimization from the new Exp051 baseline.
+
+Control:
+Exp051 setup.
+
+Variable:
+TBD.
+
+Candidate next variables:
+- More data per language
+- LoRA dropout
+- LoRA rank/alpha
+- Training steps
+- Scheduler/seed repeat
