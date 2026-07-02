@@ -2998,3 +2998,15 @@ Goals:
 - Keep WER evaluation.
 - Save best checkpoint by WER.
 - Begin real multilingual experimentation.
+
+
+## Exp046 — PREPPED 🚧
+
+Purpose:
+Production training pipeline.
+
+Goals:
+- Enable W&B logging.
+- Keep WER evaluation.
+- Keep shard-cache speedup.
+- Standardize experiment naming and output directories.

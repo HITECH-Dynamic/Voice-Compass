@@ -54,6 +54,8 @@ def parse_args():
     parser.add_argument("--eval_manifest", default="data/processed/exp043_eval.parquet")
     parser.add_argument("--output_dir", default="checkpoints/exp043_multilingual_baseline")
     parser.add_argument("--max_steps", type=int, default=5)
+    parser.add_argument("--report_to", default="wandb")
+    parser.add_argument("--wandb_project", default="voice-compass")
     return parser.parse_args()
 
 
@@ -65,6 +67,11 @@ def main():
     print(f"Eval manifest: {args.eval_manifest}")
     print(f"Output dir: {args.output_dir}")
     print(f"CUDA available: {torch.cuda.is_available()}")
+
+    if args.report_to == "wandb":
+        import os
+        os.environ["WANDB_PROJECT"] = args.wandb_project
+        os.environ["WANDB_NAME"] = args.experiment_name
 
     model_name = "openai/whisper-small"
     processor = WhisperProcessor.from_pretrained(model_name, language=None, task="transcribe")
@@ -130,7 +137,8 @@ def main():
         logging_steps=1,
         predict_with_generate=False,
         fp16=torch.cuda.is_available(),
-        report_to=[],
+        report_to=[args.report_to] if args.report_to != "none" else [],
+        run_name=args.experiment_name,
         remove_unused_columns=False,
         save_total_limit=1,
         metric_for_best_model="wer",
