@@ -3092,3 +3092,24 @@ Improved from Exp046 WER 1.1148 to Exp047 WER 1.0492.
 
 Conclusion:
 Longer training produces measurable WER improvement. Use 300-step runs as the new standard for optimization studies.
+
+
+## Exp048 — PREPPED 🚧
+
+Purpose:
+First true multilingual AfriVoices baseline using five cache-friendly parquet languages.
+
+Languages:
+kik, kln, luo, mas, som
+
+Excluded:
+swa because it uses tar-based audio references.
+
+Control:
+Same 300-step production pipeline as Exp047.
+
+Variable:
+Single-language Kikuyu dataset → 5-language multilingual parquet dataset.
+
+Success Metric:
+Training completes with W&B and WER while runtime remains practical.
