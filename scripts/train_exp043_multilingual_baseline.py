@@ -13,11 +13,12 @@ import evaluate
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from transformers import set_seed, (
+from transformers import (
     WhisperForConditionalGeneration,
     WhisperProcessor,
     Seq2SeqTrainer,
     Seq2SeqTrainingArguments,
+    set_seed,
 )
 from peft import LoraConfig, get_peft_model
 from src.datasets.afrivoices_whisper_dataset import AfriVoicesWhisperDataset
