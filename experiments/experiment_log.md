@@ -3411,3 +3411,34 @@ Current WER is teacher-forced proxy WER because predict_with_generate=False.
 
 Next:
 Prep Exp054 to switch evaluation to generation-based WER with predict_with_generate=True.
+
+
+## Exp054 — PREPPED 🚧
+
+Purpose:
+Correct evaluation from teacher-forced proxy WER to generation-based WER.
+
+Control:
+Exp053 best proxy-WER configuration.
+
+Variable:
+predict_with_generate changed from False to True.
+
+Generation Settings:
+generation_max_length=225
+generation_num_beams=1
+
+Fixed:
+learning_rate=2e-5
+seed=42
+per_device_train_batch_size=2
+gradient_accumulation_steps=2
+max_steps=500
+eval_steps/save_steps=50
+same clean five-language dataset
+
+Expected Result:
+WER may increase because this is now true autoregressive decoding instead of teacher-forced/logit-argmax proxy evaluation.
+
+Success Metric:
+Run completes and logs generation-based WER.
