@@ -3479,3 +3479,24 @@ Use Exp054 as the first true-WER reference baseline.
 
 Next:
 Do not continue hyperparameter tuning yet. Prep Exp055 as a debugging/comparison experiment to diagnose generation/tokenizer/data pipeline behavior.
+
+
+## Exp055 — PREPPED 🚧
+
+Purpose:
+Diagnose poor generation-based WER from Exp054.
+
+Control:
+Exp054 checkpoint and clean five-language eval dataset.
+
+Task:
+Generate predictions and compare them with reference transcripts.
+
+Dataset:
+98 evaluation rows
+
+No Training:
+This is a diagnostic/debugging experiment only.
+
+Success Metric:
+Identify whether Exp054 failure is caused by generation config, tokenizer/decoder behavior, data/transcript quality, or audio/transcript mismatch.
