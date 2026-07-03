@@ -3500,3 +3500,46 @@ This is a diagnostic/debugging experiment only.
 
 Success Metric:
 Identify whether Exp054 failure is caused by generation config, tokenizer/decoder behavior, data/transcript quality, or audio/transcript mismatch.
+
+
+## Exp055 — COMPLETE ✅
+
+Purpose:
+Diagnose poor generation-based WER from Exp054.
+
+Finding:
+The active ANV audio index only contained Kikuyu.
+
+Index Contents:
+kik: 150,515 rows
+kln: 0
+luo: 0
+mas: 0
+som: 0
+
+Conclusion:
+Exp054/Exp055 issue is upstream data infrastructure. The five-language dataset was not fully backed by a five-language audio index.
+
+Decision:
+Pause model debugging until the ANV audio index is rebuilt for all five parquet-backed languages.
+
+
+## Exp056 — PREPPED 🚧
+
+Purpose:
+Rebuild the ANV audio index for all five non-Swahili parquet-backed languages.
+
+Languages:
+kik, kln, luo, mas, som
+
+Scope:
+train/scripted
+
+Variable:
+Audio index coverage changes from Kikuyu-only to five-language.
+
+Success Metric:
+Dataset builder reports indexed audio and nonzero unique parquet shards for all five languages.
+
+No Training:
+Data infrastructure experiment only.
