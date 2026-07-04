@@ -3576,3 +3576,24 @@ Adopt the rebuilt multilingual index as the new standard infrastructure.
 
 Next:
 Prep Exp057 to integrate Swahili and produce the first six-language Whisper baseline.
+
+
+## Exp057 — PREPPED 🚧
+
+Purpose:
+Add Swahili to the repaired five-language multilingual dataset pipeline.
+
+Control:
+Exp056 indexed five-language ANV dataset.
+
+Variable:
+Add swa from DigitalUmuganda/Afrivoice_Swahili using swahili_tar_ref.
+
+Languages:
+kik, kln, luo, mas, som, swa
+
+Success Metric:
+Six-language train/eval manifests build successfully and pass decode filtering.
+
+Next:
+Exp058 will train the first six-language Whisper baseline.
