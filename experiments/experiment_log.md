@@ -3543,3 +3543,36 @@ Dataset builder reports indexed audio and nonzero unique parquet shards for all 
 
 No Training:
 Data infrastructure experiment only.
+
+
+## Exp056 — COMPLETE ✅
+
+Purpose:
+Rebuild the multilingual ANV audio index.
+
+Infrastructure:
+- Rebuilt manifests.
+- Rebuilt multilingual ANV audio index.
+- Verified indexed audio resolution for kik, kln, luo, mas, som.
+
+Dataset:
+Train:
+400 rows
+0 bad audio
+
+Eval:
+99 usable
+1 bad audio
+
+Verification:
+Dataset builder successfully resolved all five languages.
+Each language reported one indexed parquet shard.
+
+Finding:
+The previous multilingual failure was caused by an incomplete Kikuyu-only index.
+
+Decision:
+Adopt the rebuilt multilingual index as the new standard infrastructure.
+
+Next:
+Prep Exp057 to integrate Swahili and produce the first six-language Whisper baseline.
