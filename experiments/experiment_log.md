@@ -3683,3 +3683,34 @@ Updated:
 ### Next Experiment
 Exp058 — First complete six-language multilingual Whisper baseline using indexed audio resolution.
 
+## Exp058 — PREPPED 🚧
+
+Purpose:
+Train first true six-language multilingual Whisper baseline using indexed audio infrastructure.
+
+Languages:
+kik, kln, luo, mas, som, swa
+
+Infrastructure:
+- ANV Parquet index restored from Exp056 Drive artifacts.
+- Swahili TAR index restored from Exp057 Drive artifacts.
+- AfriVoicesDataset now supports indexed resolution for both storage formats.
+
+Training Control:
+Based on Exp054/Exp053 best configuration:
+- Whisper Small
+- LoRA
+- LR: 2e-5
+- seed: 42
+- train batch: 2
+- eval batch: 2
+- gradient accumulation: 2
+- effective batch: 4
+- max_steps: 500
+- generation-based WER
+
+Success Metric:
+Training completes and logs true generation-based six-language WER.
+
+Next:
+Run Colab setup, restore indexes, build dataset, filter decodable rows, train Exp058.
