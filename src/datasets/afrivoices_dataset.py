@@ -27,13 +27,16 @@ class AfriVoicesDataset(Dataset):
         max_duration=30.0,
         max_rows_per_language=None,
         anv_index_path=None,
+        swahili_index_path=None,
     ):
         self.manifest_path = Path(manifest_path)
         self.languages = languages
         self.max_duration = max_duration
         self.max_rows_per_language = max_rows_per_language
         self.anv_index_path = Path(anv_index_path) if anv_index_path else None
+        self.swahili_index_path = Path(swahili_index_path) if swahili_index_path else None
         self.anv_index = self._load_anv_index()
+        self.swahili_index = self._load_swahili_index()
         self.parquet_cache = {}
         self.df = self._load_manifest()
 
@@ -45,6 +48,17 @@ class AfriVoicesDataset(Dataset):
             raise FileNotFoundError(f"ANV index not found: {self.anv_index_path}")
 
         index = pd.read_parquet(self.anv_index_path)
+        return index
+
+
+    def _load_swahili_index(self):
+        if self.swahili_index_path is None:
+            return None
+
+        if not self.swahili_index_path.exists():
+            raise FileNotFoundError(f"Swahili index not found: {self.swahili_index_path}")
+
+        index = pd.read_parquet(self.swahili_index_path)
         return index
 
     def _lookup_indexed_parquet(self, row):
@@ -143,41 +157,45 @@ class AfriVoicesDataset(Dataset):
         raise FileNotFoundError(f"Could not find {filename} in parquet candidates")
 
     def _resolve_swahili(self, row):
-        repo_id = row["source_repo"]
-        audio_ref = row["audio_ref"]
-        audio_filename = row["audio_filename"]
-        folder = str(audio_ref).split("/")[0]
-
-        files = list_repo_files(repo_id=repo_id, repo_type="dataset")
-
-        archive_matches = [
-            f for f in files
-            if folder in f and (f.endswith(".tar") or f.endswith(".tar.gz") or f.endswith(".tar.xz"))
-        ]
-
-        if not archive_matches:
-            raise FileNotFoundError(f"No Swahili archive found for {audio_ref}")
-
-        for archive_file in archive_matches:
-            archive_path = hf_hub_download(
-                repo_id=repo_id,
-                repo_type="dataset",
-                filename=archive_file,
+        if self.swahili_index is None:
+            raise FileNotFoundError(
+                "Swahili TAR index required for swahili_tar_ref rows. "
+                "Pass swahili_index_path to AfriVoicesDataset."
             )
 
-            with tarfile.open(archive_path, "r:*") as tar:
-                for member in tar.getmembers():
-                    if Path(member.name).name == audio_filename:
-                        extracted = tar.extractfile(member)
-                        if extracted is None:
-                            continue
+        repo_id = row["source_repo"]
+        audio_filename = str(row["audio_filename"])
+        raw_split = str(row["raw_split"])
 
-                        audio_bytes = extracted.read()
-                        suffix = Path(audio_filename).suffix or ".webm"
-                        audio, sr = self._decode_audio_bytes(audio_bytes, suffix=suffix)
-                        return audio, sr, archive_file + "::" + member.name
+        matches = self.swahili_index[
+            (self.swahili_index["raw_split"].astype(str) == raw_split)
+            & (self.swahili_index["audio_filename"].astype(str) == audio_filename)
+        ]
 
-        raise FileNotFoundError(f"Could not resolve Swahili audio {audio_ref}")
+        if matches.empty:
+            raise FileNotFoundError(f"Could not resolve Swahili audio {raw_split}/{audio_filename}")
+
+        match = matches.iloc[0]
+        archive_file = match["archive_file"]
+        member_name = match["member_name"]
+
+        archive_path = hf_hub_download(
+            repo_id=repo_id,
+            repo_type="dataset",
+            filename=archive_file,
+        )
+
+        with tarfile.open(archive_path, "r:*") as tar:
+            extracted = tar.extractfile(member_name)
+            if extracted is None:
+                raise FileNotFoundError(f"Could not extract {member_name} from {archive_file}")
+
+            audio_bytes = extracted.read()
+
+        suffix = Path(audio_filename).suffix or ".webm"
+        audio, sr = self._decode_audio_bytes(audio_bytes, suffix=suffix)
+        return audio, sr, archive_file + "::" + member_name
+
 
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
