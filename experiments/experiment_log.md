@@ -3597,3 +3597,52 @@ Six-language train/eval manifests build successfully and pass decode filtering.
 
 Next:
 Exp058 will train the first six-language Whisper baseline.
+
+
+## Exp057 — Six-Language Dataset Integration & Swahili Infrastructure
+
+**Status:** 🚧 In Progress
+
+### Objective
+Extend the multilingual training pipeline from five ANV languages to all six AfriVoices languages by integrating the Swahili corpus while maintaining a unified dataset abstraction.
+
+### Progress
+- Successfully generated unified six-language manifests.
+- Successfully rebuilt the ANV filename → Parquet index.
+- Verified ANV indexed audio resolution.
+- Verified Swahili TAR-based audio resolution.
+- Successfully generated balanced six-language train/eval manifests.
+- Identified a major performance bottleneck during decode filtering.
+
+### Key Finding
+The current Swahili resolver performs repeated archive searches for every requested audio sample:
+
+audio sample
+→ list repository files
+→ search matching TAR archives
+→ iterate every TAR member
+→ locate requested file
+
+This approach is functionally correct but scales poorly, causing decode filtering to require many hours and making iterative experimentation impractical.
+
+### Decision
+Rather than continue optimizing around the existing resolver, build a permanent indexed lookup system for Swahili similar to the existing ANV Parquet index.
+
+Planned artifact:
+
+data/afrivoices/indexes/swahili_tar_index.parquet
+
+The index will map:
+
+raw_split
+archive_file
+member_name
+audio_filename
+
+allowing direct archive resolution without repeated repository or TAR scans.
+
+### Expected Outcome
+- Constant-time lookup of Swahili audio locations.
+- Elimination of repeated TAR scanning.
+- Greatly reduced dataset preparation time.
+- Stable infrastructure for all remaining competition experiments.
