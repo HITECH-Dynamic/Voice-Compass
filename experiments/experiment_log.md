@@ -3646,3 +3646,40 @@ allowing direct archive resolution without repeated repository or TAR scans.
 - Elimination of repeated TAR scanning.
 - Greatly reduced dataset preparation time.
 - Stable infrastructure for all remaining competition experiments.
+
+---
+
+## Exp057 — Six-Language Indexed Audio Infrastructure ✅
+
+**Status:** COMPLETE
+
+### Objective
+Extend the multilingual AfriVoices pipeline to support efficient indexed audio resolution for all six competition languages.
+
+### Major Outcomes
+- Built resumable Swahili TAR index builder (`build_swahili_tar_index_resumable.py`)
+- Indexed all five Swahili domains (Agriculture, Education, Financial, Government, Health)
+- Indexed 83 TAR archives containing 559,791 audio files
+- Refactored `AfriVoicesDataset` to support indexed TAR lookup
+- Eliminated repeated TAR archive scanning during audio resolution
+- Established permanent multilingual indexing infrastructure:
+  - ANV Parquet Index (5 languages)
+  - Swahili TAR Index (5 domains)
+
+### Permanent Artifacts
+Google Drive:
+- exp056/anv_audio_index.parquet
+- exp056/anv_audio_index_progress.csv
+- exp057/swahili_tar_index.parquet
+- exp057/swahili_tar_index_progress.csv
+
+### Repository Changes
+Added:
+- scripts/build_swahili_tar_index_resumable.py
+
+Updated:
+- src/datasets/afrivoices_dataset.py
+
+### Next Experiment
+Exp058 — First complete six-language multilingual Whisper baseline using indexed audio resolution.
+
