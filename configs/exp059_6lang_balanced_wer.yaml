@@ -1,48 +1,59 @@
 experiment: exp059
-
 inputs:
   train_manifest: data/afrivoices/manifests/manifest_train.parquet
   dev_manifest: data/afrivoices/manifests/manifest_dev.parquet
   test_manifest: data/afrivoices/manifests/manifest_test.parquet
   anv_audio_index: data/afrivoices/indexes/anv_audio_index.parquet
   swahili_tar_index: data/afrivoices/indexes/swahili_tar_index.parquet
-
 filters:
   languages:
-    - kik
-    - kln
-    - luo
-    - mas
-    - som
-    - swa
+  - kik
+  - kln
+  - luo
+  - mas
+  - som
+  - swa
   source_splits:
-    - train
+  - train
   speech_types:
-    - scripted
-    - spontaneous
+  - scripted
+  - spontaneous
   require_transcription: true
   min_duration_seconds: 0.25
   max_duration_seconds: 30
-
 sampling:
   strategy: shard_aware
   max_rows_per_language: 600
   eval_fraction: 0.1667
   random_seed: 42
-
 outputs:
   train: data/processed/exp059_train.parquet
   eval: data/processed/exp059_eval.parquet
   summary: reports/dataset_analysis/exp059_dataset_summary.csv
-
 evaluation:
   report_global_wer: true
   report_per_language_wer: true
   report_kaggle_average_wer: true
   language_order:
-    - swa
-    - kik
-    - luo
-    - som
-    - mas
-    - kln
+  - swa
+  - kik
+  - luo
+  - som
+  - mas
+  - kln
+model:
+  name: openai/whisper-small
+training:
+  output_dir: checkpoints/exp059_6lang_balanced_wer
+  max_steps: 500
+  learning_rate: 2.0e-05
+  seed: 42
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 2
+  eval_steps: 100
+  save_steps: 100
+  logging_steps: 1
+tracking:
+  report_to: wandb
+  wandb_project: voice-compass

@@ -77,6 +77,22 @@ def main():
 
     print(f"Loaded config: {args.config}")
 
+    # YAML defaults. CLI args can still override later if needed.
+    args.experiment_name = cfg.get("experiment", args.experiment_name)
+    args.train_manifest = cfg.get("outputs", {}).get("train", args.train_manifest)
+    args.eval_manifest = cfg.get("outputs", {}).get("eval", args.eval_manifest)
+    args.output_dir = cfg.get("training", {}).get("output_dir", f"checkpoints/{args.experiment_name}")
+    args.max_steps = cfg.get("training", {}).get("max_steps", args.max_steps)
+    args.learning_rate = cfg.get("training", {}).get("learning_rate", args.learning_rate)
+    args.seed = cfg.get("training", {}).get("seed", args.seed)
+    args.per_device_train_batch_size = cfg.get("training", {}).get("per_device_train_batch_size", args.per_device_train_batch_size)
+    args.per_device_eval_batch_size = cfg.get("training", {}).get("per_device_eval_batch_size", args.per_device_eval_batch_size)
+    args.gradient_accumulation_steps = cfg.get("training", {}).get("gradient_accumulation_steps", args.gradient_accumulation_steps)
+    args.eval_steps = cfg.get("training", {}).get("eval_steps", args.eval_steps)
+    args.save_steps = cfg.get("training", {}).get("save_steps", args.save_steps)
+    args.report_to = cfg.get("tracking", {}).get("report_to", args.report_to)
+    args.wandb_project = cfg.get("tracking", {}).get("wandb_project", args.wandb_project)
+
     print(f"{args.experiment_name} starting...")
     print(f"Train manifest: {args.train_manifest}")
     print(f"Eval manifest: {args.eval_manifest}")
@@ -88,7 +104,7 @@ def main():
         os.environ["WANDB_PROJECT"] = args.wandb_project
         os.environ["WANDB_NAME"] = args.experiment_name
 
-    model_name = "openai/whisper-small"
+    model_name = cfg.get("model", {}).get("name", "openai/whisper-small")
     processor = WhisperProcessor.from_pretrained(model_name, language=None, task="transcribe")
     wer_metric = evaluate.load("wer")
 
