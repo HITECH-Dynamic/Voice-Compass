@@ -3714,3 +3714,5 @@ Training completes and logs true generation-based six-language WER.
 
 Next:
 Run Colab setup, restore indexes, build dataset, filter decodable rows, train Exp058.
+
+| Exp058 | Six-language indexed baseline | Whisper Small + LoRA | 6-language balanced dataset (480/120), indexed ANV + Swahili TAR resolver | Successful end-to-end multilingual training. Infrastructure validated. Runtime dominated by Swahili TAR extraction. Proceed to cached audio pipeline (Exp059). |
