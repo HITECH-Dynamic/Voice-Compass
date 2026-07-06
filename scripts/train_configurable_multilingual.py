@@ -6,6 +6,7 @@ Download-efficient multilingual baseline with WER.
 from pathlib import Path
 import sys
 import argparse
+import yaml
 import numpy as np
 import torch
 import evaluate
@@ -50,6 +51,7 @@ class WhisperDataCollator:
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--config", default="configs/exp059_6lang_balanced_wer.yaml")
     parser.add_argument("--experiment_name", default="exp043_multilingual_baseline")
     parser.add_argument("--train_manifest", default="data/processed/exp043_train.parquet")
     parser.add_argument("--eval_manifest", default="data/processed/exp043_eval.parquet")
@@ -69,6 +71,11 @@ def parse_args():
 
 def main():
     args = parse_args()
+
+    with open(args.config, "r") as f:
+        cfg = yaml.safe_load(f)
+
+    print(f"Loaded config: {args.config}")
 
     print(f"{args.experiment_name} starting...")
     print(f"Train manifest: {args.train_manifest}")
