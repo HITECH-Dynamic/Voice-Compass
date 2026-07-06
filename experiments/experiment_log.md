@@ -3718,3 +3718,5 @@ Run Colab setup, restore indexes, build dataset, filter decodable rows, train Ex
 | Exp058 | Six-language indexed baseline | Whisper Small + LoRA | 6-language balanced dataset (480/120), indexed ANV + Swahili TAR resolver | Successful end-to-end multilingual training. Infrastructure validated. Runtime dominated by Swahili TAR extraction. Proceed to cached audio pipeline (Exp059). |
 
 | Exp059 | Prep | Kaggle-aligned multilingual evaluation + larger balanced dataset | Target: 500 train / 100 eval per language; add per-language WER and Kaggle-style average WER | Prepped. Goal is WER reduction through metric alignment, balanced scaling, and faster data loading if needed. |
+
+| Exp059 | Training Pipeline Upgrade | Config-driven multilingual training framework | YAML-configurable dataset, training, evaluation and pipeline settings. Add Kaggle-style per-language WER reporting and optional audio caching. | PREP |
