@@ -3720,3 +3720,5 @@ Run Colab setup, restore indexes, build dataset, filter decodable rows, train Ex
 | Exp059 | Prep | Kaggle-aligned multilingual evaluation + larger balanced dataset | Target: 500 train / 100 eval per language; add per-language WER and Kaggle-style average WER | Prepped. Goal is WER reduction through metric alignment, balanced scaling, and faster data loading if needed. |
 
 | Exp059 | Training Pipeline Upgrade | Config-driven multilingual training framework | YAML-configurable dataset, training, evaluation and pipeline settings. Add Kaggle-style per-language WER reporting and optional audio caching. | PREP |
+
+| Exp059 | Progress | Configurable experiment platform | Added YAML-driven trainer foundation. Adopted architecture separating experiment definition (YAML) from implementation (Python). Planned expansion to support configurable model, dataset, training, augmentation, evaluation, caching, and deployment settings. | IN PROGRESS |
