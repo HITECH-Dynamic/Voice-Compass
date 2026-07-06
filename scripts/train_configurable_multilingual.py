@@ -161,12 +161,45 @@ def main():
             skip_special_tokens=True,
         )
 
-        wer = wer_metric.compute(
+        metrics = {}
+
+        global_wer = wer_metric.compute(
             predictions=pred_str,
             references=label_str,
         )
+        metrics["global_wer"] = global_wer
+        metrics["wer"] = global_wer
 
-        return {"wer": wer}
+        eval_languages = list(eval_dataset.base_dataset.df["language"].astype(str))
+
+        language_order = (
+            cfg.get("evaluation", {})
+            .get("language_order", ["swa", "kik", "luo", "som", "mas", "kln"])
+        )
+
+        per_language_wers = []
+
+        for lang in language_order:
+            idxs = [i for i, x in enumerate(eval_languages) if x == lang]
+
+            if not idxs:
+                continue
+
+            lang_predictions = [pred_str[i] for i in idxs]
+            lang_references = [label_str[i] for i in idxs]
+
+            lang_wer = wer_metric.compute(
+                predictions=lang_predictions,
+                references=lang_references,
+            )
+
+            metrics[f"wer_{lang}"] = lang_wer
+            per_language_wers.append(lang_wer)
+
+        if per_language_wers:
+            metrics["kaggle_avg_wer"] = float(np.mean(per_language_wers))
+
+        return metrics
 
 
     training_args = Seq2SeqTrainingArguments(
