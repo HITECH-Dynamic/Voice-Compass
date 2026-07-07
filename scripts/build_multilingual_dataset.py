@@ -158,7 +158,7 @@ def sample_and_split(df, cfg):
 
     # Preserve shard locality so downstream audio loading does not thrash
     # between large parquet/TAR shards.
-    sort_cols = [c for c in ["language", "indexed_parquet_file", "tar_path", "audio_filename"] if c in df.columns]
+    sort_cols = [c for c in ["language", "indexed_parquet_file", "raw_split", "audio_filename"] if c in df.columns]
     if sort_cols:
         df = df.sort_values(sort_cols).reset_index(drop=True)
     else:
