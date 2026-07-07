@@ -3715,10 +3715,34 @@ Training completes and logs true generation-based six-language WER.
 Next:
 Run Colab setup, restore indexes, build dataset, filter decodable rows, train Exp058.
 
-| Exp058 | Six-language indexed baseline | Whisper Small + LoRA | 6-language balanced dataset (480/120), indexed ANV + Swahili TAR resolver | Successful end-to-end multilingual training. Infrastructure validated. Runtime dominated by Swahili TAR extraction. Proceed to cached audio pipeline (Exp059). |
+# | Exp058 | Six-language indexed baseline |
+ Whisper Small + LoRA | 6-language balanced dataset (480/120), indexed ANV + Swahili TAR resolver | Successful end-to-end multilingual training. Infrastructure validated. Runtime dominated by Swahili TAR extraction. Proceed to cached audio pipeline (Exp059). |
 
-| Exp059 | Prep | Kaggle-aligned multilingual evaluation + larger balanced dataset | Target: 500 train / 100 eval per language; add per-language WER and Kaggle-style average WER | Prepped. Goal is WER reduction through metric alignment, balanced scaling, and faster data loading if needed. |
+# | Exp059 | Prep |
+ Kaggle-aligned multilingual evaluation + larger balanced dataset | Target: 500 train / 100 eval per language; add per-language WER and Kaggle-style average WER | Prepped. Goal is WER reduction through metric alignment, balanced scaling, and faster data loading if needed. |
 
-| Exp059 | Training Pipeline Upgrade | Config-driven multilingual training framework | YAML-configurable dataset, training, evaluation and pipeline settings. Add Kaggle-style per-language WER reporting and optional audio caching. | PREP |
+# | Exp059 | 
+Training Pipeline Upgrade | Config-driven multilingual training framework | YAML-configurable dataset, training, evaluation and pipeline settings. Add Kaggle-style per-language WER reporting and optional audio caching. | PREP |
 
-| Exp059 | Progress | Configurable experiment platform | Added YAML-driven trainer foundation. Adopted architecture separating experiment definition (YAML) from implementation (Python). Planned expansion to support configurable model, dataset, training, augmentation, evaluation, caching, and deployment settings. | IN PROGRESS |
+# | Exp059 |
+ Progress | Configurable experiment platform | Added YAML-driven trainer foundation. Adopted architecture separating experiment definition (YAML) from implementation (Python). Planned expansion to support configurable model, dataset, training, augmentation, evaluation, caching, and deployment settings. | IN PROGRESS |
+
+### Exp059 — Configurable Multilingual Infrastructure
+
+Status: COMPLETE
+
+Result:
+✓ Configurable training pipeline established.
+✓ Balanced multilingual dataset generation completed.
+✓ Kaggle-aligned evaluation infrastructure completed.
+✓ Validation workflow implemented.
+✓ Master experiment matrix introduced.
+
+Finding:
+Identified Swahili TAR archive indexing as the primary infrastructure bottleneck preventing rapid experimentation.
+
+Decision:
+Partial Adopt
+
+Next:
+Exp060 — Persistent Swahili TAR Cache

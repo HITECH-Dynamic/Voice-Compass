@@ -30,3 +30,8 @@ Each WER-producing experiment should record:
 - Partial adopt
 - Reject
 - Pending
+
+
+| Exp    | Status     | Decision      |
+| ------ | ---------- | ------------- |
+| Exp059 | ✅ Complete | Partial Adopt |

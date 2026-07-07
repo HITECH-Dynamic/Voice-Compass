@@ -1,0 +1,5 @@
+language,split,speech_type,files,shards
+kik,dev,scripted,6824,4
+kik,dev_test,scripted,6522,4
+kik,train,scripted,111197,63
+kik,train,unscripted,25972,133
