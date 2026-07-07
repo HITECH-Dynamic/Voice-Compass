@@ -1,0 +1,5 @@
+exp,phase,goal,primary_variable,dataset_version,model,status,result,decision,global_wer,kaggle_avg_wer,wer_swa,wer_kik,wer_luo,wer_som,wer_mas,wer_kln,notes
+exp056,Phase 4,Build ANV audio index,audio indexing,anv_index_v1,N/A,completed,ANV index built,adopt,,,,,,,,,Required for fast 5-language audio lookup
+exp057,Phase 4,Build Swahili TAR index,audio indexing,swahili_index_v1,N/A,completed,Swahili index built,adopt,,,,,,,,,Required for Swahili spontaneous data
+exp058,Phase 4,Indexed multilingual smoke,index-aware training,balanced_6lang_v0,Whisper Small + LoRA,completed,Pipeline trained but exposed validation/cache bottleneck,partial adopt,,,,,,,,,Keep indexed loading; improve dataset validation
+exp059,Phase 4,Configurable trainer + Kaggle WER,YAML config + balanced dataset + per-language WER,balanced_6lang_v1,Whisper Small + LoRA,in_progress,pending,pending,,,,,,,,,Create clean dataset and validate trainer end-to-end
