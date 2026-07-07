@@ -155,7 +155,14 @@ def sample_and_split(df, cfg):
         sampled.append(lang_sample)
 
     df = pd.concat(sampled, ignore_index=True)
-    df = df.sample(frac=1.0, random_state=seed).reset_index(drop=True)
+
+    # Preserve shard locality so downstream audio loading does not thrash
+    # between large parquet/TAR shards.
+    sort_cols = [c for c in ["language", "indexed_parquet_file", "tar_path", "audio_filename"] if c in df.columns]
+    if sort_cols:
+        df = df.sort_values(sort_cols).reset_index(drop=True)
+    else:
+        df = df.sample(frac=1.0, random_state=seed).reset_index(drop=True)
 
     eval_parts = []
     train_parts = []
