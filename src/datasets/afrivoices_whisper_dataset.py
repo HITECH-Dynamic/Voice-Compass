@@ -20,12 +20,16 @@ class AfriVoicesWhisperDataset:
         languages=None,
         max_duration=30.0,
         max_rows_per_language=None,
+        anv_index_path=None,
+        swahili_index_path=None,
     ):
         self.base_dataset = AfriVoicesDataset(
             manifest_path=manifest_path,
             languages=languages,
             max_duration=max_duration,
             max_rows_per_language=max_rows_per_language,
+            anv_index_path=anv_index_path,
+            swahili_index_path=swahili_index_path,
         )
 
         self.processor = WhisperProcessor.from_pretrained(

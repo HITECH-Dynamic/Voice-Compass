@@ -108,16 +108,24 @@ def main():
     processor = WhisperProcessor.from_pretrained(model_name, language=None, task="transcribe")
     wer_metric = evaluate.load("wer")
 
+    anv_index_path = cfg.get("inputs", {}).get("anv_audio_index")
+    swahili_index_path = cfg.get("inputs", {}).get("swahili_tar_index")
+    max_duration = cfg.get("audio", {}).get("max_audio_seconds", 30.0)
+
     train_dataset = AfriVoicesWhisperDataset(
         manifest_path=args.train_manifest,
         processor_name=model_name,
-        max_duration=30.0,
+        max_duration=max_duration,
+        anv_index_path=anv_index_path,
+        swahili_index_path=swahili_index_path,
     )
 
     eval_dataset = AfriVoicesWhisperDataset(
         manifest_path=args.eval_manifest,
         processor_name=model_name,
-        max_duration=30.0,
+        max_duration=max_duration,
+        anv_index_path=anv_index_path,
+        swahili_index_path=swahili_index_path,
     )
 
     print(f"Train rows: {len(train_dataset)}")
