@@ -38,6 +38,7 @@ class AfriVoicesDataset(Dataset):
         self.anv_index = self._load_anv_index()
         self.swahili_index = self._load_swahili_index()
         self.parquet_cache = {}
+        self.tar_cache = {}
         self.df = self._load_manifest()
 
     def _load_anv_index(self):
@@ -122,6 +123,35 @@ class AfriVoicesDataset(Dataset):
             audio, sr = librosa.load(tmp.name, sr=16000, mono=True)
         return audio, sr
 
+    def _get_tar_index(self, archive_path):
+        archive_key = str(archive_path)
+
+        if archive_key not in self.tar_cache:
+            print(f"[TAR CACHE MISS] indexing {archive_path}")
+            tar = tarfile.open(archive_path, "r:*")
+            members = {m.name: m for m in tar.getmembers()}
+            self.tar_cache[archive_key] = (tar, members)
+        else:
+            print(f"[TAR CACHE HIT] {archive_path}")
+
+        return self.tar_cache[archive_key]
+
+
+    def close(self):
+        for tar, _members in self.tar_cache.values():
+            try:
+                tar.close()
+            except Exception:
+                pass
+        self.tar_cache.clear()
+
+    def __del__(self):
+        try:
+            self.close()
+        except Exception:
+            pass
+
+
     def _resolve_anv_parquet(self, row):
         repo_id = row["source_repo"]
         filename = row["audio_filename"]
@@ -185,12 +215,17 @@ class AfriVoicesDataset(Dataset):
             filename=archive_file,
         )
 
-        with tarfile.open(archive_path, "r:*") as tar:
-            extracted = tar.extractfile(member_name)
-            if extracted is None:
-                raise FileNotFoundError(f"Could not extract {member_name} from {archive_file}")
+        tar, members = self._get_tar_index(archive_path)
 
-            audio_bytes = extracted.read()
+        tarinfo = members.get(member_name)
+        if tarinfo is None:
+            raise FileNotFoundError(f"Could not find {member_name} in {archive_file}")
+
+        extracted = tar.extractfile(tarinfo)
+        if extracted is None:
+            raise FileNotFoundError(f"Could not extract {member_name} from {archive_file}")
+
+        audio_bytes = extracted.read()
 
         suffix = Path(audio_filename).suffix or ".webm"
         audio, sr = self._decode_audio_bytes(audio_bytes, suffix=suffix)
