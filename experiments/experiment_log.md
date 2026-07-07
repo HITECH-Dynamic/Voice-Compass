@@ -3746,3 +3746,19 @@ Partial Adopt
 
 Next:
 Exp060 — Persistent Swahili TAR Cache
+
+## Exp060 — Persistent Swahili TAR Cache
+
+**Status:** 🚧 In Progress
+
+**Objective:** Eliminate repeated Swahili `.tar.xz` archive indexing during validation/training.
+
+**Hypothesis:** Caching open TAR handles and member indexes per archive will prevent repeated decompression scans and improve Swahili throughput.
+
+**Scope:** Data-loading infrastructure only. No model or hyperparameter changes.
+
+**Success Criteria:**
+- TAR archive opened/indexed once per run.
+- Cached member lookup reused.
+- Faster Swahili validation/training.
+- Ready to resume WER-focused experiments.
