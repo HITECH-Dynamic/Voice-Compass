@@ -62,6 +62,7 @@ def filter_dataset(df, cfg):
 
 
 def attach_index_status(df, cfg):
+    n_before = len(df)
     index_path = Path(cfg["inputs"].get("anv_audio_index", ""))
 
     df["audio_index_status"] = "not_required"
@@ -118,6 +119,12 @@ def attach_index_status(df, cfg):
         merged = merged.drop(
             columns=["archive_file_swahili", "member_name_swahili"],
             errors="ignore",
+        )
+
+    if len(merged) != n_before:
+        raise ValueError(
+            f"Row count changed during index merge: {n_before} -> {len(merged)}. "
+            "Check for duplicate index keys."
         )
 
     return merged
