@@ -2813,7 +2813,7 @@ ANV Audio Index Builder | N/A | Dataset Optimization | Planned | Build filename-
 | Exp041B | Global ANV Audio Index Generation | N/A | Dataset Optimization | Planned | Build a production filename → Parquet lookup table incrementally across all ANV repositories. Builder will support resumable execution, automatic shard skipping, checkpointing after each shard, and recovery from interrupted Colab sessions. |
 
 
-## Exp041B — Resumable ANV Audio Indexing
+# Exp041B — Resumable ANV Audio Indexing
 **Date:** 2026-06-30
 **Status:** ✅ Completed (Infrastructure)
 
@@ -2851,7 +2851,7 @@ Exp041B skipped/stalled shards to revisit if needed: train_unscripted_027, train
 | Exp042 | Multilingual Dataset Builder | N/A | Dataset Assembly | Planned | Build YAML-driven AfriVoices dataset builder using unified manifests plus optional ANV audio index. Outputs train/eval Parquet files and summary report for future multilingual training. |
 
 
-## Exp042 — Multilingual Dataset Builder
+# Exp042 — Multilingual Dataset Builder
 **Date:** 2026-06-30
 **Status:** ✅ Completed
 
@@ -2926,7 +2926,7 @@ Goal:
 Concentrate sampled examples into as few parquet shards as possible before multilingual scaling.
 
 
-## Exp044 — PREPPED 🚧
+# Exp044 — PREPPED 🚧
 
 Purpose:
 Shard-aware dataset builder.
@@ -2959,7 +2959,7 @@ Goal:
 Load each parquet shard once and reuse it for every example from that shard.
 
 
-## Exp045 — PREPPED 🚧
+# Exp045 — PREPPED 🚧
 
 Purpose:
 Shard cache loader.
@@ -3000,7 +3000,7 @@ Goals:
 - Begin real multilingual experimentation.
 
 
-## Exp046 — PREPPED 🚧
+# Exp046 — PREPPED 🚧
 
 Purpose:
 Production training pipeline.
@@ -3039,7 +3039,7 @@ Next Experiment:
 Exp047 — First true multilingual baseline (Kikuyu + Swahili) using the optimized training pipeline.
 
 
-## Exp047 — PREPPED 🚧
+# Exp047 — PREPPED 🚧
 
 Purpose:
 300-step Kikuyu WER baseline.
@@ -3094,7 +3094,7 @@ Conclusion:
 Longer training produces measurable WER improvement. Use 300-step runs as the new standard for optimization studies.
 
 
-## Exp048 — PREPPED 🚧
+# Exp048 — PREPPED 🚧
 
 Purpose:
 First true multilingual AfriVoices baseline using five cache-friendly parquet languages.
@@ -3161,7 +3161,7 @@ Decision:
 Future experiments will reduce evaluation frequency while optimizing the multilingual model.
 
 
-## Exp049 — PREPPED 🚧
+# Exp049 — PREPPED 🚧
 
 Purpose:
 Evaluation cadence optimization.
@@ -3206,7 +3206,7 @@ Decision:
 Adopt eval_steps=50 and save_steps=50 as the default cadence for future multilingual optimization experiments.
 
 
-## Exp050 — PREPPED 🚧
+# Exp050 — PREPPED 🚧
 
 Purpose:
 Multilingual learning-rate study.
@@ -3250,7 +3250,7 @@ Lower learning rate degraded performance.
 Decision:
 Reject 5e-6. Keep Exp049 as active baseline.
 
-## Exp051 — PREPPED 🚧
+# Exp051 — PREPPED 🚧
 
 Purpose:
 Phase 3-informed multilingual learning-rate study testing a higher LR.
@@ -3297,7 +3297,7 @@ Higher LR improved WER versus Exp049 and clearly beat Exp050.
 Decision:
 Adopt learning_rate=2e-5 as the new active multilingual baseline.
 
-## Exp052 — PREPPED 🚧
+# Exp052 — PREPPED 🚧
 
 Purpose:
 Continue Phase 4 multilingual optimization from the new Exp051 baseline.
@@ -3316,7 +3316,7 @@ Candidate next variables:
 - Scheduler/seed repeat
 
 
-## Exp052 — PREPPED 🚧
+# Exp052 — PREPPED 🚧
 
 Purpose:
 Continue multilingual learning-rate sweep by testing a higher LR.
@@ -3354,7 +3354,7 @@ Finding:
 Decision:
 Keep Exp051 / LR 2e-5 as the safer active baseline.
 
-## Exp053 — PREPPED 🚧
+# Exp053 — PREPPED 🚧
 
 Purpose:
 Test larger effective batch size.
@@ -3413,7 +3413,7 @@ Next:
 Prep Exp054 to switch evaluation to generation-based WER with predict_with_generate=True.
 
 
-## Exp054 — PREPPED 🚧
+# Exp054 — PREPPED 🚧
 
 Purpose:
 Correct evaluation from teacher-forced proxy WER to generation-based WER.
@@ -3444,7 +3444,7 @@ Success Metric:
 Run completes and logs generation-based WER.
 
 
-## Exp054 — COMPLETE ✅
+# Exp054 — COMPLETE ✅
 
 Purpose:
 Correct evaluation from teacher-forced proxy WER to generation-based WER.
@@ -3481,7 +3481,7 @@ Next:
 Do not continue hyperparameter tuning yet. Prep Exp055 as a debugging/comparison experiment to diagnose generation/tokenizer/data pipeline behavior.
 
 
-## Exp055 — PREPPED 🚧
+# Exp055 — PREPPED 🚧
 
 Purpose:
 Diagnose poor generation-based WER from Exp054.
@@ -3502,7 +3502,7 @@ Success Metric:
 Identify whether Exp054 failure is caused by generation config, tokenizer/decoder behavior, data/transcript quality, or audio/transcript mismatch.
 
 
-## Exp055 — COMPLETE ✅
+# Exp055 — COMPLETE ✅
 
 Purpose:
 Diagnose poor generation-based WER from Exp054.
@@ -3524,7 +3524,7 @@ Decision:
 Pause model debugging until the ANV audio index is rebuilt for all five parquet-backed languages.
 
 
-## Exp056 — PREPPED 🚧
+# Exp056 — PREPPED 🚧
 
 Purpose:
 Rebuild the ANV audio index for all five non-Swahili parquet-backed languages.
@@ -3545,7 +3545,7 @@ No Training:
 Data infrastructure experiment only.
 
 
-## Exp056 — COMPLETE ✅
+# Exp056 — COMPLETE ✅
 
 Purpose:
 Rebuild the multilingual ANV audio index.
@@ -3578,7 +3578,7 @@ Next:
 Prep Exp057 to integrate Swahili and produce the first six-language Whisper baseline.
 
 
-## Exp057 — PREPPED 🚧
+# Exp057 — PREPPED 🚧
 
 Purpose:
 Add Swahili to the repaired five-language multilingual dataset pipeline.
@@ -3599,7 +3599,7 @@ Next:
 Exp058 will train the first six-language Whisper baseline.
 
 
-## Exp057 — Six-Language Dataset Integration & Swahili Infrastructure
+# Exp057 — Six-Language Dataset Integration & Swahili Infrastructure
 
 **Status:** 🚧 In Progress
 
@@ -3649,7 +3649,7 @@ allowing direct archive resolution without repeated repository or TAR scans.
 
 ---
 
-## Exp057 — Six-Language Indexed Audio Infrastructure ✅
+# Exp057 — Six-Language Indexed Audio Infrastructure ✅
 
 **Status:** COMPLETE
 
@@ -3683,7 +3683,7 @@ Updated:
 ### Next Experiment
 Exp058 — First complete six-language multilingual Whisper baseline using indexed audio resolution.
 
-## Exp058 — PREPPED 🚧
+# Exp058 — PREPPED 🚧
 
 Purpose:
 Train first true six-language multilingual Whisper baseline using indexed audio infrastructure.
@@ -3747,7 +3747,7 @@ Partial Adopt
 Next:
 Exp060 — Persistent Swahili TAR Cache
 
-## Exp060 — Persistent Swahili TAR Cache
+# Exp060 — Persistent Swahili TAR Cache
 
 **Status:** 🚧 In Progress
 
@@ -3762,3 +3762,20 @@ Exp060 — Persistent Swahili TAR Cache
 - Cached member lookup reused.
 - Faster Swahili validation/training.
 - Ready to resume WER-focused experiments.
+
+## Exp060 — Swahili TAR Cache & Archive Locality
+
+Status: ✅ SUCCESS
+
+Purpose:
+Optimize multilingual dataset loading by eliminating repeated TAR indexing.
+
+Key findings:
+- Archive metadata successfully propagated into manifests.
+- Train/eval split remains random.
+- Archive-local ordering preserved after split.
+- TAR cache produced repeated cache hits.
+- Row-count guard prevents silent merge expansion.
+
+Decision:
+Adopt this pipeline as the new baseline for all future multilingual experiments.
