@@ -89,6 +89,37 @@ def attach_index_status(df, cfg):
     merged["indexed_parquet_file"] = merged["parquet_file"].fillna("")
     merged = merged.drop(columns=["parquet_file"])
 
+    # Attach Swahili TAR archive metadata so rows can be sorted by archive.
+    swahili_index_path = Path(cfg["inputs"].get("swahili_tar_index", ""))
+    merged["archive_file"] = ""
+    merged["member_name"] = ""
+
+    if swahili_index_path.exists():
+        swahili_index = pd.read_parquet(swahili_index_path)
+        swahili_index = swahili_index[
+            ["raw_split", "audio_filename", "archive_file", "member_name"]
+        ].drop_duplicates()
+
+        merged = merged.merge(
+            swahili_index,
+            on=["raw_split", "audio_filename"],
+            how="left",
+            suffixes=("", "_swahili"),
+        )
+
+        is_swahili = merged["audio_source_type"].eq("swahili_tar_ref")
+        merged.loc[is_swahili, "archive_file"] = merged.loc[
+            is_swahili, "archive_file_swahili"
+        ].fillna("")
+        merged.loc[is_swahili, "member_name"] = merged.loc[
+            is_swahili, "member_name_swahili"
+        ].fillna("")
+
+        merged = merged.drop(
+            columns=["archive_file_swahili", "member_name_swahili"],
+            errors="ignore",
+        )
+
     return merged
 
 
