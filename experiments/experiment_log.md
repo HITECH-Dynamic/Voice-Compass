@@ -3779,3 +3779,43 @@ Key findings:
 
 Decision:
 Adopt this pipeline as the new baseline for all future multilingual experiments.
+
+-------------------------------------------------------------------------------
+Experiment: Exp061
+Status: PREPARED
+Date: 2026-07-07 (Day 20)
+
+Objective:
+Establish the first multilingual Whisper Small baseline using the optimized
+Exp060 data pipeline.
+
+Changes from Exp060:
+- None (training configuration unchanged)
+
+Pipeline inherited from Exp060:
+- Persistent TAR cache
+- Archive-local dataset ordering
+- Random train/eval split
+- Merge validation safeguards
+
+Controlled variables:
+- Whisper Small
+- Same multilingual dataset
+- Same LoRA configuration
+- Same learning rate
+- Same batch size
+- Same gradient accumulation
+- Same training schedule
+- Same evaluation methodology
+
+Hypothesis:
+The optimized data pipeline will eliminate archive thrashing while producing
+comparable training behavior and WER to the previous multilingual baseline.
+
+Success Criteria:
+- Dataset builds successfully
+- Training starts without data-loading stalls
+- TAR cache remains effective
+- No merge or indexing errors
+- Comparable WER to Exp059
+-------------------------------------------------------------------------------

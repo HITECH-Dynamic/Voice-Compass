@@ -35,3 +35,9 @@ Each WER-producing experiment should record:
 | Exp    | Status     | Decision      |
 | ------ | ---------- | ------------- |
 | Exp059 | ✅ Complete | Partial Adopt |
+
+| Experiment | Pipeline Version | Notes                     |
+| ---------- | ---------------- | ------------------------- |
+| Exp059     | Legacy           | TAR thrashing discovered  |
+| Exp060     | Optimized        | Infrastructure validation |
+| Exp061     | Optimized        | New multilingual baseline |
