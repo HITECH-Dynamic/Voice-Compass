@@ -187,18 +187,12 @@ def sample_and_split(df, cfg):
 
     df = pd.concat(sampled, ignore_index=True)
 
-    # Preserve shard locality so downstream audio loading does not thrash
-    # between large parquet/TAR shards.
-    sort_cols = [c for c in ["language", "indexed_parquet_file", "archive_file", "raw_split", "audio_filename"] if c in df.columns]
-    if sort_cols:
-        df = df.sort_values(sort_cols).reset_index(drop=True)
-    else:
-        df = df.sample(frac=1.0, random_state=seed).reset_index(drop=True)
-
+    # Split before sorting so eval remains randomly sampled across shards.
     eval_parts = []
     train_parts = []
 
     for lang, part in df.groupby("language"):
+        part = part.sample(frac=1.0, random_state=seed).reset_index(drop=True)
         n_eval = max(1, int(len(part) * eval_fraction)) if len(part) > 1 else 0
         eval_parts.append(part.head(n_eval))
         train_parts.append(part.iloc[n_eval:])
@@ -206,8 +200,25 @@ def sample_and_split(df, cfg):
     train = pd.concat(train_parts, ignore_index=True) if train_parts else pd.DataFrame()
     eval_df = pd.concat(eval_parts, ignore_index=True) if eval_parts else pd.DataFrame()
 
-    return train, eval_df
+    # Sort each split independently for shard/archive locality.
+    sort_cols = [
+        c for c in [
+            "language",
+            "indexed_parquet_file",
+            "archive_file",
+            "raw_split",
+            "audio_filename",
+        ]
+        if c in df.columns
+    ]
 
+    if sort_cols:
+        if not train.empty:
+            train = train.sort_values(sort_cols).reset_index(drop=True)
+        if not eval_df.empty:
+            eval_df = eval_df.sort_values(sort_cols).reset_index(drop=True)
+
+    return train, eval_df
 
 def count_unique_shards(df):
     if df.empty or "indexed_parquet_file" not in df.columns:
