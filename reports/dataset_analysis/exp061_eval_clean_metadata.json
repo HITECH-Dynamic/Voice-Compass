@@ -1,0 +1,16 @@
+{
+  "dataset_version": "exp061_eval_clean",
+  "input": "data/processed/exp061_eval.parquet",
+  "output": "data/processed/exp061_eval_clean.parquet",
+  "bad_report": "reports/dataset_analysis/exp061_eval_bad_audio.csv",
+  "rows_input": 600,
+  "rows_clean": 599,
+  "rows_bad": 1,
+  "validated": true,
+  "max_duration": 30.0,
+  "anv_index": "data/afrivoices/indexes/anv_audio_index.parquet",
+  "swahili_index": "data/afrivoices/indexes/swahili_tar_index.parquet",
+  "input_sha256": "8055ef53cd85209ae88bcaf25ed836c4d3335b7dfd06801e0dc2406c35fc6a0c",
+  "anv_index_sha256": "4f95233cb2c7227281dea7123212602486158112dff83c90acc84d6498013949",
+  "swahili_index_sha256": "faf2c6008dbfa5279f1b8ad5db5ec4ca263054bed6d11a4e56da48e6508a76c3"
+}

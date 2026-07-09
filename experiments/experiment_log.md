@@ -3819,3 +3819,88 @@ Success Criteria:
 - No merge or indexing errors
 - Comparable WER to Exp059
 -------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------
+Experiment: Exp061
+Status: IN PROGRESS
+Date: 2026-07-08 (Day 21)
+
+Objective:
+Train the first multilingual Whisper Small baseline using the optimized
+Exp060 multilingual data pipeline.
+
+Progress:
+- Training launched successfully.
+- Whisper Small + LoRA initialized correctly.
+- TAR archive cache validated.
+- Archive-local dataset ordering validated.
+- First evaluation reached successfully.
+- Evaluation halted because of one corrupt audio sample.
+
+Dataset Validation:
+- Evaluation rows: 600
+- Clean rows: 599
+- Bad rows: 1
+
+Infrastructure Findings:
+✓ TAR caching functioning correctly.
+✓ Archive-local ordering functioning correctly.
+✓ Exp060 optimization confirmed effective.
+✓ Training pipeline stable.
+
+Open Items:
+- Generate and preserve clean datasets.
+- Resume training from checkpoint.
+- Evaluate shard-aware sampling to improve cache efficiency.
+
+-------------------------------------------------------------------------------
+
+
+
+-------------------------------------------------------------------------------
+Experiment: Exp061
+Status: READY TO RESUME TRAINING
+Date: 2026-07-09 (Day 22)
+
+Summary
+
+Completed validation of both multilingual datasets.
+
+Training Dataset
+- 3000 samples validated.
+- No corrupt audio detected.
+- Clean manifest generated and archived.
+
+Evaluation Dataset
+- 600 samples validated.
+- One corrupt sample removed.
+- Clean manifest generated and archived.
+
+Artifacts
+- Clean train/eval manifests saved locally.
+- Validation reports saved.
+- Metadata saved.
+- All artifacts backed up to Google Drive.
+
+Infrastructure Outcome
+
+Exp061 now has a reproducible multilingual dataset pipeline with:
+
+✓ Archive-local ordering
+✓ TAR caching
+✓ Validated manifests
+✓ Permanent backups
+✓ Reproducible training inputs
+
+Next Action
+
+Resume Exp061 training using:
+
+- exp061_train_clean.parquet
+- exp061_eval_clean.parquet
+
+Primary objective now shifts from infrastructure work to multilingual WER reduction.
+
+-------------------------------------------------------------------------------
+
