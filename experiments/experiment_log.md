@@ -3904,3 +3904,62 @@ Primary objective now shifts from infrastructure work to multilingual WER reduct
 
 -------------------------------------------------------------------------------
 
+
+
+-------------------------------------------------------------------------------
+Experiment: Exp061
+Status: COMPLETE
+Date: 2026-07-09 (Day 22)
+
+Objective
+Train the first multilingual Whisper Small baseline using the validated
+six-language dataset.
+
+Results
+
+Training
+- Whisper Small + LoRA
+- 500 training steps
+- 3000 training samples
+- 599 evaluation samples
+- Clean validated manifests used successfully.
+
+Evaluation
+
+Eval Loss:
+2.7322
+
+Global WER:
+1.0759
+
+Kaggle Average WER:
+1.1879
+
+Per-Language WER
+- Swahili : 0.8990
+- Luo      : 1.0657
+- Maasai   : 1.2040
+- Kalenjin : 1.2260
+- Kikuyu   : 1.3390
+- Somali   : 1.3937
+
+Infrastructure Achievements
+✓ Stable multilingual dataset builder
+✓ TAR archive caching
+✓ Archive-local ordering
+✓ Clean train/eval manifests
+✓ Automatic validation pipeline
+✓ Final model and checkpoint archived to Google Drive
+
+Key Findings
+- The multilingual training pipeline is now fully reproducible.
+- Dataset validation eliminated the evaluation crash caused by corrupt audio.
+- Swahili currently performs best.
+- Somali and Kikuyu require the greatest improvement.
+- Future work should prioritize lowering multilingual WER rather than additional infrastructure work.
+
+Next Experiment
+Exp062 — Multilingual WER Optimization
+
+-------------------------------------------------------------------------------
+
