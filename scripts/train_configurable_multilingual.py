@@ -229,7 +229,7 @@ def main():
         run_name=args.experiment_name,
         remove_unused_columns=False,
         save_total_limit=1,
-        metric_for_best_model="wer",
+        metric_for_best_model="kaggle_avg_wer",
         greater_is_better=False,
         load_best_model_at_end=True,
     )
