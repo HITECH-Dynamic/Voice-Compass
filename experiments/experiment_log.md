@@ -3963,3 +3963,47 @@ Exp062 — Multilingual WER Optimization
 
 -------------------------------------------------------------------------------
 
+
+
+-------------------------------------------------------------------------------
+Experiment: Exp062
+Status: PREPARATION
+Date: 2026-07-10 (Day 23)
+
+Objective
+
+Improve multilingual Whisper Small performance using the validated Exp061
+pipeline as the fixed baseline.
+
+Baseline Reference
+
+Exp061
+- Global WER: 1.0759
+- Kaggle Average WER: 1.1879
+
+Methodology
+
+The multilingual dataset, validation pipeline, archive caching,
+and preprocessing remain unchanged.
+
+Exp062 will modify one primary training variable so that changes
+in WER can be directly attributed to the experimental condition.
+
+Planned Preparation
+
+- Audit evaluation pipeline.
+- Verify generation configuration.
+- Review compute_metrics implementation.
+- Select optimization variable.
+- Launch first WER optimization experiment.
+
+Success Criterion
+
+Achieve a measurable reduction in multilingual WER relative to Exp061.
+
+Status
+
+Preparation complete after evaluation pipeline review.
+
+-------------------------------------------------------------------------------
+
