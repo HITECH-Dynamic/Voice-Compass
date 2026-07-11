@@ -4007,3 +4007,72 @@ Preparation complete after evaluation pipeline review.
 
 -------------------------------------------------------------------------------
 
+
+
+-------------------------------------------------------------------------------
+Experiment: Exp062
+Status: COMPLETE
+Date: 2026-07-11 (Day 24)
+
+Objective
+
+Reduce multilingual WER while maintaining the validated multilingual pipeline.
+
+Configuration
+
+- Whisper Small + LoRA
+- 1000 training steps
+- Best model selected using Kaggle Average WER
+- 3000 training samples
+- 599 evaluation samples
+
+Final Results
+
+Eval Loss
+2.4909
+
+Global WER
+0.9727
+
+Kaggle Average WER
+1.0508
+
+Per-Language WER
+
+- Swahili : 0.8484
+- Kikuyu  : 1.0607
+- Luo     : 1.0211
+- Somali  : 1.0132
+- Maasai  : 1.1034
+- Kalenjin: 1.2580
+
+Comparison to Exp061
+
+Global WER
+1.0759 → 0.9727
+
+Kaggle Average WER
+1.1879 → 1.0508
+
+Approximate Improvement
+
+- Global WER: ~9.6%
+- Kaggle Average WER: ~11.5%
+
+Key Findings
+
+✓ Longer training improved multilingual performance.
+✓ Kaggle-based checkpoint selection improved model selection.
+✓ Five of six languages improved.
+✓ Kalenjin remains the primary language requiring further optimization.
+
+Conclusion
+
+Exp062 establishes the strongest multilingual baseline achieved so far and becomes the reference point for future optimization experiments.
+
+Next Experiment
+
+Exp063 — Targeted multilingual WER optimization.
+
+-------------------------------------------------------------------------------
+
