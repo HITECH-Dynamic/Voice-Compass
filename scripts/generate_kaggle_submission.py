@@ -68,6 +68,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--save-every", type=int, default=100)
     parser.add_argument("--max-new-tokens", type=int, default=225)
     parser.add_argument("--num-beams", type=int, default=1)
+    parser.add_argument(
+        "--shard-index",
+        type=int,
+        default=None,
+        help=(
+            "Process only one test Parquet shard by zero-based index "
+            "after lexicographic sorting."
+        ),
+    )
+    parser.add_argument(
+        "--list-shards",
+        action="store_true",
+        help="List sorted test shard indices and exit.",
+    )
 
     return parser.parse_args()
 
@@ -194,6 +208,25 @@ def main() -> None:
         raise FileNotFoundError(
             f"No Parquet files found beneath {test_root}"
         )
+
+    if args.list_shards:
+        for index, parquet_path in enumerate(parquet_files):
+            print(f"{index:03d}  {parquet_path.relative_to(test_root)}")
+        return
+
+    if args.shard_index is not None:
+        if args.shard_index < 0 or args.shard_index >= len(parquet_files):
+            raise IndexError(
+                f"shard-index {args.shard_index} is outside the valid range "
+                f"0–{len(parquet_files) - 1}"
+            )
+
+        selected = parquet_files[args.shard_index]
+        print(
+            f"Selected shard {args.shard_index}: "
+            f"{selected.relative_to(test_root)}"
+        )
+        parquet_files = [selected]
 
     if not (adapter_dir / "adapter_config.json").exists():
         raise FileNotFoundError(
