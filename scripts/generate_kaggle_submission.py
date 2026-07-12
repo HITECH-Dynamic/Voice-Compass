@@ -230,8 +230,7 @@ def main() -> None:
     ).to(device)
 
     model.eval()
-    model.config.forced_decoder_ids = None
-    model.config.suppress_tokens = []
+    model.generation_config.forced_decoder_ids = None
 
     completed_rows: list[dict] = []
 
