@@ -301,11 +301,26 @@ def main() -> None:
                             "language": row["language"],
                             "shard": str(parquet_path),
                             "error": repr(exc),
+                            "fallback_transcription": "[inaudible]",
                         }
                     )
+
+                    fallback = {
+                        "id": str(row["id"]),
+                        "language": str(row["language"]),
+                        "transcription": "[inaudible]",
+                    }
+
+                    completed_rows.append(fallback)
+                    completed_keys.add(
+                        (fallback["id"], fallback["language"])
+                    )
+                    generated_since_save += 1
+
                     print(
                         f"WARNING: failed to decode "
-                        f"{row['language']}/{row['id']}: {exc}"
+                        f"{row['language']}/{row['id']}: {exc}. "
+                        "Using [inaudible]."
                     )
 
             if not valid_rows:
